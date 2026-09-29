@@ -32,10 +32,12 @@
     ['a-propos.html', 'À propos'],
     ['actualites.html', 'Actualités & presse']
   ];
-  const page = (location.pathname.split('/').pop() || 'index.html');
+  // Page courante, tolérante aux URL propres (/assureurs) comme aux fichiers (/assureurs.html)
+  const page = (location.pathname.split('/').pop() || 'index').replace(/\.html$/, '') || 'index';
+  const isCurrent = href => href.replace(/\.html$/, '') === page;
 
   function renderHeader() {
-    const links = NAV.map(n => `<a href="${n.href}" class="${n.audience ? 'is-audience' : ''} ${page === n.href ? 'is-active' : ''}">${n.label}</a>`).join('');
+    const links = NAV.map(n => `<a href="${n.href}" class="${n.audience ? 'is-audience' : ''} ${isCurrent(n.href) ? 'is-active' : ''}">${n.label}</a>`).join('');
     const header = document.createElement('header');
     header.className = 'site-header';
     header.innerHTML = `
