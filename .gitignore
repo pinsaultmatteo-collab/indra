@@ -1,0 +1,6 @@
+# Système
+.DS_Store
+Thumbs.db
+
+# Documents internes client / prospection (ne pas publier sur un dépôt public)
+fiches-references/

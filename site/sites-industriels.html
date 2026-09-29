@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nos sites industriels — 9 sites de déconstruction détenus | INDRA</title>
+  <meta name="description" content="INDRA détient 9 sites de déconstruction en France : Seyssuel, Pruniers-en-Sologne, Auxerre, Allez-et-Cazeneuve, Valence-d'Agen, Chambray-lès-Tours, Saint-Marcel, Tournus, Cabariot. 420 000 pièces de réemploi en stock, process 25 VHU/jour/équipe, sites certifiés ISO 9001, 14001, 45001.">
+  <link rel="icon" href="assets/img/logo-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Raleway:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/main.css">
+  <style>
+    #sites-map .map-pt { display: none; }
+    #sites-map .map-site { stroke-width: 1.8; }
+    .sites-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    @media (max-width: 900px) { .sites-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 560px) { .sites-grid { grid-template-columns: 1fr; } }
+    .acq { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+    .acq > div { background: var(--bg-2); padding: 28px 26px; min-height: 220px; display: flex; flex-direction: column; gap: 10px; }
+    .acq .year { font-family: var(--font-display); font-weight: 700; font-size: 44px; line-height: 0.9; color: var(--green); }
+    .acq p { color: var(--ink-2); font-size: 14.5px; }
+    .acq .logos { display: flex; gap: 8px; flex-wrap: wrap; margin-top: auto; }
+    .acq .logos img { height: 30px; width: auto; background: #fff; padding: 3px 6px; max-width: 110px; object-fit: contain; }
+    @media (max-width: 900px) { .acq { grid-template-columns: 1fr 1fr; } }
+  </style>
+</head>
+<body>
+
+<section class="page-hero">
+  <div class="page-hero__bg"><img src="assets/img/workshop-line.jpg" alt="Ligne de déconstruction d'un site industriel INDRA"></div>
+  <div class="container">
+    <div class="crumbs"><a href="index.html">Accueil</a><span>Nos sites industriels</span></div>
+    <h1 class="page-hero__title reveal-lines">Neuf sites détenus.<br><em>Des usines</em> de pièces<br>et de matières.</h1>
+    <p class="lead" data-reveal style="--d:0.4s">INDRA n'anime pas seulement un réseau : c'est un industriel qui exploite ses propres sites de déconstruction, y conçoit ses procédés et y produit les pièces de réemploi et les matières qui alimentent la boucle. Depuis 2023, un programme d'acquisitions renforce les capacités régionales.</p>
+    <div class="page-hero__meta" data-reveal style="--d:0.6s">
+      <div><div class="num"><span data-count="9">0</span></div><p>sites de déconstruction détenus</p></div>
+      <div><div class="num"><span data-count="420000">0</span></div><p>pièces de réemploi en stock</p></div>
+      <div><div class="num"><span data-count="25">0</span></div><p>véhicules par jour et par équipe</p></div>
+      <div><div class="num">SMI</div><p>ISO 9001 · 14001 · 45001 (Vaulx-Milieu, Pruniers-en-Sologne)</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- Carte + liste -->
+<section class="section">
+  <div class="container">
+    <div class="grid split-40 align-start">
+      <div class="map-wrap" id="sites-map" data-reveal="scale" style="position:sticky;top:calc(var(--header-h) + 24px)"></div>
+      <div>
+        <p class="eyebrow" data-reveal>Implantations</p>
+        <h2 class="display-3 split-words mb-3">Un maillage industriel du Val de Loire au Sud-Ouest.</h2>
+        <div class="sites-grid" data-stagger="0.06">
+          <div class="site-card"><div class="site-card__dept">38</div><h3>A7 Auto Pièces</h3><p>Seyssuel · Isère</p><span class="site-card__meta">Acquis en 2005 · site historique · ISO 14001 (Re-source Auto Pièces)</span></div>
+          <div class="site-card"><div class="site-card__dept">41</div><h3>Site industriel de Pruniers-en-Sologne</h3><p>Romorantin · Loir-et-Cher</p><span class="site-card__meta">Inauguré en 2007 · R&amp;D matières (PP, PMMA) · SMI ISO 9001, 14001, 45001</span></div>
+          <div class="site-card"><div class="site-card__dept">89</div><h3>Cars Pièces Express</h3><p>Auxerre · Yonne</p><span class="site-card__meta">Acquis en 2023 · premier site du programme d'acquisitions</span></div>
+          <div class="site-card"><div class="site-card__dept">47</div><h3>Re-source Industries 47</h3><p>Allez-et-Cazeneuve · Lot-et-Garonne</p><span class="site-card__meta">Acquis en 2024 (ex-LGA 47)</span><div class="site-card__logo"><img src="assets/img/logos/lga47.png" alt="LGA 47"></div></div>
+          <div class="site-card"><div class="site-card__dept">82</div><h3>ACCIAUTO</h3><p>Valence-d'Agen · Tarn-et-Garonne</p><span class="site-card__meta">Acquis en 2024</span><div class="site-card__logo"><img src="assets/img/logos/acciauto.png" alt="ACCIAUTO"></div></div>
+          <div class="site-card"><div class="site-card__dept">37</div><h3>ADCO · Auto&amp;Co / Moto&amp;Co</h3><p>Chambray-lès-Tours · Indre-et-Loire</p><span class="site-card__meta">Acquis en 2025 · pièces auto et moto</span><div class="site-card__logo"><img src="assets/img/logos/autoco.png" alt="Auto&Co"></div></div>
+          <div class="site-card"><div class="site-card__dept">71</div><h3>SMAP Pièces Auto</h3><p>Saint-Marcel · Saône-et-Loire</p><span class="site-card__meta">Acquis en 2025</span><div class="site-card__logo"><img src="assets/img/logos/smap.png" alt="SMAP"></div></div>
+          <div class="site-card"><div class="site-card__dept">71</div><h3>TDA · Tournus Démolition Automobile</h3><p>Tournus · Saône-et-Loire</p><span class="site-card__meta">Acquis en 2025</span><div class="site-card__logo"><img src="assets/img/logos/tda.jpg" alt="TDA"></div></div>
+          <div class="site-card"><div class="site-card__dept">17</div><h3>Re-source Industries 17</h3><p>Cabariot · Charente-Maritime</p><span class="site-card__meta">Acquis en 2025</span><div class="site-card__logo"><img src="assets/img/logos/resource17.png" alt="Re-source Industries 17"></div></div>
+        </div>
+        <div class="site-card mt-2" data-reveal style="border-color:rgba(160,191,56,0.4)"><div class="site-card__dept" style="font-size:28px">Siège</div><h3>INDRA SAS · Vaulx-Milieu (38)</h3><p>ZAC Business Airport, Immeuble Gazelle, 80 avenue Condorcet. Direction, grands comptes, animation réseau, Re-source Engineering Solutions, AURECA.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- À l'intérieur -->
+<section class="section section--dark-2">
+  <div class="container">
+    <div class="grid split-60 align-end mb-4">
+      <div><p class="eyebrow" data-reveal>À l'intérieur d'un site</p><h2 class="display-2 split-words">Une ligne, pas une casse.</h2></div>
+      <p class="lead" data-reveal>Le process INDRA est organisé comme une ligne de production inversée : le véhicule avance de poste en poste, chaque opérateur a son geste, ses équipements et ses consignes de sécurité.</p>
+    </div>
+    <div class="strip" data-stagger="0.1">
+      <div class="media media__cap-bg" data-parallax="10"><img src="assets/img/clio-lift.jpg" alt="Véhicule sur pont de dépollution" loading="lazy"><span class="media__cap">Poste dépollution</span></div>
+      <div class="media media__cap-bg" data-parallax="10"><img src="assets/img/underbody.jpg" alt="Soubassement d'un véhicule sur la ligne" loading="lazy"><span class="media__cap">Poste démontage soubassement</span></div>
+      <div class="media media__cap-bg" data-parallax="10"><img src="assets/img/racks-side.jpg" alt="Stock de pièces de carrosserie" loading="lazy"><span class="media__cap">Stockage PIEC référencé</span></div>
+    </div>
+    <div class="kpi-grid mt-5" data-stagger="0.1" style="border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+      <div class="kpi"><div class="kpi__num num"><span data-count="25">0</span></div><div class="kpi__label">véhicules par jour et par équipe</div><div class="kpi__src">soit 5 500 véhicules par an et par ligne</div></div>
+      <div class="kpi"><div class="kpi__num num">20<small>à</small>30</div><div class="kpi__label">pièces démontées par véhicule</div><div class="kpi__src">objectif Valeur 2030 : doubler</div></div>
+      <div class="kpi"><div class="kpi__num num"><span data-count="9">0</span><small>kg</small></div><div class="kpi__label">de câbles cuivre extraits par véhicule</div><div class="kpi__src">Car Power Dismantler (brevet)</div></div>
+      <div class="kpi"><div class="kpi__num num">15<small>à</small>20<small>kg</small></div><div class="kpi__label">de polypropylène par véhicule</div><div class="kpi__src">réinjecté dans des pièces neuves</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- Studio -->
+<section class="section section--light">
+  <div class="container">
+    <div class="grid split-40 align-center">
+      <div class="strip" data-stagger="0.1">
+        <div class="media" data-parallax="8"><img src="assets/img/studio-door.jpg" alt="Portière photographiée en studio" loading="lazy"></div>
+        <div class="media" data-parallax="8"><img src="assets/img/studio-screen.jpg" alt="Contrôle de la prise de vue d'une pièce" loading="lazy"></div>
+        <div class="media" data-parallax="8"><img src="assets/img/studio-headlight.jpg" alt="Optique sur plateau tournant du studio" loading="lazy"></div>
+      </div>
+      <div>
+        <p class="eyebrow" data-reveal>La pièce, digitalisée</p>
+        <h2 class="display-2 split-words">Chaque pièce photographiée, référencée, mise en ligne.</h2>
+        <p class="lead mt-3" data-reveal>Les sites INDRA sont équipés de studios photo automatisés : la pièce démontée est identifiée, photographiée sous toutes ses faces, contrôlée, étiquetée et publiée sur Opisto, Precis et Digipiec. Le carrossier voit exactement ce qu'il achète.</p>
+        <ul class="checklist mt-3" data-reveal>
+          <li><strong>Une référence constructeur</strong> et un numéro de traçabilité par pièce, du véhicule d'origine au client.</li>
+          <li><strong>Un contrôle qualité</strong> qui classe la pièce dans l'une des trois gammes garanties.</li>
+          <li><strong>Un stock temps réel</strong> partagé entre les sites, expédié sous 24 à 48 h.</li>
+        </ul>
+        <a class="btn btn--dark mt-3" href="pieces-reemploi.html" data-reveal>Les pièces de réemploi <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Programme d'acquisitions -->
+<section class="section grid-bg">
+  <div class="container">
+    <div class="grid split-60 align-end mb-4">
+      <div><p class="eyebrow" data-reveal>Programme d'acquisitions · depuis 2023</p><h2 class="display-2 split-words">Une dizaine de sites pour produire la pièce au plus près des réparateurs.</h2></div>
+      <p class="lead" data-reveal>Lancé par Florence Bailleul et poursuivi par Xavier Kaufman, le programme vise des centres régionaux performants, intégrés aux standards INDRA, pour augmenter la production de pièces de réemploi et raccourcir les délais de livraison.</p>
+    </div>
+    <div class="acq" data-stagger="0.1">
+      <div><div class="year">2023</div><p>Cars Pièces Express, Auxerre (89). Premier site du programme.</p></div>
+      <div><div class="year">2024</div><p>LGA 47, Allez-et-Cazeneuve (47) et ACCIAUTO, Valence-d'Agen (82). Montée à 47 % dans Opisto.</p><div class="logos"><img src="assets/img/logos/lga47.png" alt="LGA 47"><img src="assets/img/logos/acciauto.png" alt="ACCIAUTO"><img src="assets/img/logos/opisto.svg" alt="Opisto"></div></div>
+      <div><div class="year">2025</div><p>Auto&amp;Co / Moto&amp;Co (37), SMAP (71), TDA (71), Re-source Industries 17 (17).</p><div class="logos"><img src="assets/img/logos/autoco.png" alt="Auto&Co"><img src="assets/img/logos/smap.png" alt="SMAP"><img src="assets/img/logos/tda.jpg" alt="TDA"><img src="assets/img/logos/resource17.png" alt="Re-source Industries 17"></div></div>
+      <div><div class="year">2027</div><p>DMS de référence des centres VHU, développé avec Opisto, déployé sur les sites détenus puis sur le réseau.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="cta-band__bg"><img src="assets/img/aerial-grab.jpg" alt="" loading="lazy"></div>
+  <div class="container">
+    <p class="eyebrow" data-reveal>Visiter un site</p>
+    <h2 class="display-2 split-words">Venez voir la ligne tourner.</h2>
+    <p class="lead mt-3 maxw" data-reveal>Assureurs et constructeurs sont accueillis sur nos sites pour constater les standards, la traçabilité et la production de pièces de réemploi. Rien ne remplace une visite.</p>
+    <div class="flex mt-3" data-reveal><a class="btn btn--xl" href="contact.html">Organiser une visite <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></div>
+  </div>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+<script src="assets/data/france.js" defer></script>
+<script src="assets/data/reseau.js" defer></script>
+<script src="assets/js/main.js" defer></script>
+<script src="assets/js/map.js" defer></script>
+<script>
+  document.addEventListener('indra:ready', function () {
+    if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
+    INDRA.initMap(document.getElementById('sites-map'), { compact: true, interactive: false, ownSites: true });
+  });
+</script>
+</body>
+</html>

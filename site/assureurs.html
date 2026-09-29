@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Assureurs — Enlèvement, traçabilité et pièces de réemploi partout en France | INDRA</title>
+  <meta name="description" content="39 groupes d'assurance confient à INDRA l'enlèvement et la destruction tracée de leurs véhicules sinistrés : réseau national audité, certificats de destruction, SIRA, Switch-Car, équipes habilitées VE, pièces de réemploi garanties.">
+  <link rel="icon" href="assets/img/logo-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Raleway:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/main.css">
+  <style>
+    .journey svg { width: 100%; height: auto; overflow: visible; }
+    .journey .node circle.bg { fill: #171d19; stroke: rgba(255,255,255,0.18); stroke-width: 1.2; transition: stroke 0.4s, fill 0.4s; }
+    .journey .node:hover circle.bg { stroke: #a0bf38; fill: #1f2622; }
+    .journey .node text.n { font-family: var(--font-display); font-weight: 700; font-size: 22px; fill: #a0bf38; }
+    .journey .node text.t { font-family: var(--font-body); font-weight: 700; font-size: 13px; fill: #f2f4ef; }
+    .journey .node text.s { font-family: var(--font-mono); font-size: 9.5px; fill: #848c82; letter-spacing: 0.08em; }
+    .journey .rail { stroke: rgba(255,255,255,0.14); stroke-width: 1.4; fill: none; }
+    .journey .flow { stroke: #a0bf38; stroke-width: 1.6; fill: none; stroke-dasharray: 5 10; animation: dash 1.5s linear infinite; }
+    .journey .clock { font-family: var(--font-mono); font-size: 10px; fill: #f0a030; letter-spacing: 0.1em; }
+    .guar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+    .guar > div { background: var(--bg); padding: 36px 30px; min-height: 320px; display: flex; flex-direction: column; transition: background 0.4s; }
+    .guar > div:hover { background: var(--bg-3); }
+    .guar .num { font-size: 56px; color: var(--green); margin-bottom: auto; }
+    .guar h3 { margin: 24px 0 10px; }
+    .guar p { color: var(--ink-2); font-size: 15px; }
+    @media (max-width: 1000px) { .guar { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 560px) { .guar { grid-template-columns: 1fr; } .guar > div { min-height: 0; } }
+  </style>
+</head>
+<body>
+
+<section class="page-hero">
+  <div class="page-hero__bg"><img src="assets/img/scan-part.jpg" alt="Lecture du code-barres d'une pièce dans un centre INDRA"></div>
+  <div class="container">
+    <div class="crumbs"><a href="index.html">Accueil</a><span>Assureurs</span></div>
+    <h1 class="page-hero__title reveal-lines">Vos véhicules sinistrés,<br><em>enlevés partout</em>,<br>tracés jusqu'au certificat.</h1>
+    <p class="lead" data-reveal style="--d:0.4s">Trente-neuf groupes d'assurance et mutuelles s'appuient sur le réseau INDRA pour enlever, dépolluer et détruire leurs véhicules économiquement irréparables. Sans trou dans la carte, sans trou dans la traçabilité, sans risque réputationnel.</p>
+    <div class="page-hero__meta" data-reveal style="--d:0.6s">
+      <div><div class="num"><span data-count="39">0</span></div><p>groupes d'assurance partenaires</p></div>
+      <div><div class="num"><span data-count="350">0</span>+</div><p>centres agréés, tous départements + DROM</p></div>
+      <div><div class="num">100 %</div><p>de centres agréés préfecture, audités</p></div>
+      <div><div class="num"><span data-count="96.8" data-dec="1">0</span> %</div><p>de valorisation (TRV), objectif 95 %</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- Quatre garanties -->
+<section class="section">
+  <div class="container">
+    <div class="grid split-60 align-end mb-4">
+      <div><p class="eyebrow" data-reveal>Ce que vous attendez d'un réseau</p><h2 class="display-2 split-words">Quatre garanties, mesurées.</h2></div>
+      <p class="lead" data-reveal>Un sinistre coûte cher quand le véhicule attend, quand un document manque ou quand un centre n'est pas à la hauteur. INDRA a construit son réseau pour qu'aucun de ces trois cas ne se produise.</p>
+    </div>
+    <div class="guar" data-stagger="0.1">
+      <div><div class="num">01</div><h3 class="h3">Enlèvement rapide, partout</h3><p>Un centre dédié dans chaque département métropolitain et dans cinq DROM. Les missions sont attribuées via Switch-Car au centre le plus pertinent, avec délai d'enlèvement contractuel et suivi.</p></div>
+      <div><div class="num">02</div><h3 class="h3">Traçabilité administrative sans faille</h3><p>Enregistrement au livre de police, identification code-barres, certificat de destruction, désimmatriculation SIV. Chaque étape est horodatée et consultable ; la destruction est opposable.</p></div>
+      <div><div class="num">03</div><h3 class="h3">Un professionnalisme audité</h3><p>Agrément préfectoral obligatoire, audits des conseillers réseau INDRA, formations AURECA, standards qualité-sécurité-environnement communs. Le nom de votre compagnie n'est jamais associé à une casse sauvage.</p></div>
+      <div><div class="num">04</div><h3 class="h3">Des pièces de réemploi de qualité</h3><p>420 000 pièces en stock, trois gammes garanties de 6 à 12 mois, disponibles sur Opisto, Precis et Digipiec pour faire baisser le coût moyen de vos réparations.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- Parcours d'un véhicule sinistré -->
+<section class="section section--dark-2">
+  <div class="container">
+    <p class="eyebrow" data-reveal>Le parcours d'un véhicule sinistré</p>
+    <h2 class="display-3 split-words mb-4">De la mission au certificat de destruction, six étapes tracées.</h2>
+    <div class="journey" data-reveal>
+      <svg viewBox="0 0 1200 250" aria-label="Parcours d'un véhicule sinistré dans le réseau INDRA">
+        <path class="rail" d="M60,90 H1140"/>
+        <path class="flow" d="M60,90 H1140"/>
+        <g class="node" transform="translate(60 90)"><circle class="bg" r="30"/><text class="n" text-anchor="middle" y="8">1</text><text class="t" text-anchor="middle" y="66">Mission assureur</text><text class="s" text-anchor="middle" y="84">VEI · ÉPAVE · GAGE</text><text class="clock" text-anchor="middle" y="-46">J0</text></g>
+        <g class="node" transform="translate(276 90)"><circle class="bg" r="30"/><text class="n" text-anchor="middle" y="8">2</text><text class="t" text-anchor="middle" y="66">Attribution Switch-Car</text><text class="s" text-anchor="middle" y="84">CENTRE DÉDIÉ · APPEL D'OFFRES</text><text class="clock" text-anchor="middle" y="-46">J0</text></g>
+        <g class="node" transform="translate(492 90)"><circle class="bg" r="30"/><text class="n" text-anchor="middle" y="8">3</text><text class="t" text-anchor="middle" y="66">Enlèvement</text><text class="s" text-anchor="middle" y="84">DÉLAI CONTRACTUEL · GÉOLOCALISÉ</text><text class="clock" text-anchor="middle" y="-46">J+1 À J+3</text></g>
+        <g class="node" transform="translate(708 90)"><circle class="bg" r="30"/><text class="n" text-anchor="middle" y="8">4</text><text class="t" text-anchor="middle" y="66">Prise en charge et dépollution</text><text class="s" text-anchor="middle" y="84">LIVRE DE POLICE · CODE-BARRES</text></g>
+        <g class="node" transform="translate(924 90)"><circle class="bg" r="30"/><text class="n" text-anchor="middle" y="8">5</text><text class="t" text-anchor="middle" y="66">Certificat de destruction</text><text class="s" text-anchor="middle" y="84">DÉSIMMATRICULATION SIV</text></g>
+        <g class="node" transform="translate(1140 90)"><circle class="bg" r="30"/><text class="n" text-anchor="middle" y="8">6</text><text class="t" text-anchor="middle" y="66">Reporting</text><text class="s" text-anchor="middle" y="84">DÉLAIS · CERTIFICATS · PIEC</text></g>
+      </svg>
+    </div>
+    <div class="grid grid-3 mt-4" data-stagger="0.1">
+      <div class="card"><div class="card__num">Ce que vous recevez</div><h3 class="h4">Un certificat de destruction par véhicule, systématiquement</h3><p>Émis par un centre agréé, transmis au SIV, archivé et consultable. La désimmatriculation est effective, le véhicule ne réapparaîtra pas sur la route ni à l'export illégal.</p></div>
+      <div class="card"><div class="card__num">Ce que vous mesurez</div><h3 class="h4">Des indicateurs consolidés par compagnie</h3><p>Délais d'enlèvement, taux de certificats émis, volumes par département, part de pièces de réemploi générée : le reporting INDRA alimente vos revues de performance.</p></div>
+      <div class="card"><div class="card__num">Ce que vous évitez</div><h3 class="h4">Le risque réputationnel et juridique</h3><p>Aucun véhicule confié à INDRA ne transite par la filière illégale. Le réseau est agréé à 100 %, audité, formé et assuré ; la responsabilité du détenteur est correctement transférée.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- SIRA -->
+<section class="section grid-bg" id="sira">
+  <div class="container">
+    <div class="grid split-40 align-center">
+      <div>
+        <p class="eyebrow" data-reveal>SIRA · Site Internet Réseaux Assurance</p>
+        <h2 class="display-2 split-words">Vos réseaux dédiés, visibles en un clic.</h2>
+        <p class="lead mt-3" data-reveal>Développée par INDRA et lancée en octobre 2025, la plateforme SIRA permet à chaque compagnie de visualiser les centres dédiés à ses besoins : enlèvement, expertise, stockage, pièces de réemploi, véhicules électriques. Filtrez par département et par compétence ; le réseau se dessine.</p>
+        <ul class="checklist mt-3" data-reveal>
+          <li><strong>Plus de 230 centres VHU spécialistes</strong> qualifiés par besoin et par zone.</li>
+          <li><strong>Des fiches centres complètes</strong> : agréments, habilitations VE, capacités de stockage, horaires.</li>
+          <li><strong>Une mise à jour continue</strong> par les conseillers réseau après chaque audit.</li>
+        </ul>
+        <div class="flex mt-3" data-reveal>
+          <a class="btn" href="https://sira.indra.fr" target="_blank" rel="noopener">Accéder à SIRA <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+          <a class="link-arrow" href="contact.html?profil=assureur">Demander une démonstration <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+        </div>
+      </div>
+      <div class="laptop" data-reveal="scale">
+        <div class="laptop__screen">
+          <div class="laptop__bar"><i></i><i></i><i></i><span>sira.indra.fr — réseaux assurance</span></div>
+          <div class="laptop__ui">
+            <div class="laptop__side">
+              <b>Besoin</b><span class="on">Enlèvement &amp; destruction</span><span>Expertise à distance</span><span>Pièces de réemploi</span><span class="on">Véhicule électrique</span>
+              <b>Zone</b><span class="on">France entière</span><span>DROM</span>
+              <b>Délai</b><span class="on">≤ 72 h</span>
+            </div>
+            <div class="laptop__map"><div class="map-wrap" id="sira-map"></div>
+              <div class="laptop__stats"><div><div class="num">231</div><p>centres dédiés</p></div><div><div class="num">96</div><p>départements</p></div><div><div class="num">100 %</div><p>habilités VE</p></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="laptop__base"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Switch-Car & Bidycar -->
+<section class="section section--dark-3">
+  <div class="container">
+    <div class="grid grid-2 align-end mb-4">
+      <div><p class="eyebrow" data-reveal>Vos flux de véhicules</p><h2 class="display-3 split-words">Mis en concurrence au sein d'un réseau qualifié.</h2></div>
+      <p class="lead" data-reveal>Deux outils développés par INDRA orientent chaque véhicule vers le bon centre, au bon prix, dans le bon délai.</p>
+    </div>
+    <div class="grid grid-2" data-stagger="0.1">
+      <div class="card"><div class="card__num">Switch-Car · depuis 2016</div><img src="assets/img/logos/switchcar.png" alt="Switch-Car" style="height:34px;width:auto;background:#fff;padding:4px 8px;margin-bottom:22px"><h3 class="h3">L'outil d'appel d'offres véhicules du réseau</h3><p>Vos lots de véhicules économiquement irréparables sont proposés aux centres INDRA qualifiés pour la zone. Vous obtenez la meilleure valorisation, un enlèvement rapide et la garantie que le repreneur est agréé.</p></div>
+      <div class="card"><div class="card__num">Bidycar · marque déposée 2024</div><div class="num" style="font-size:34px;margin-bottom:22px;color:var(--green)">BIDYCAR</div><h3 class="h3">La plateforme d'enchères entre professionnels</h3><p>Pour les véhicules réparables ou à fort potentiel de réemploi, Bidycar ouvre l'enchère aux professionnels du réseau. Traçabilité de bout en bout, paiement sécurisé, documents dématérialisés.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- Véhicules électriques -->
+<section class="section">
+  <div class="container">
+    <div class="grid split-60 align-center">
+      <div class="media media--ratio media--chamfer media__cap-bg" data-parallax="12" data-reveal="scale"><img src="assets/img/ev-experts.jpg" alt="Équipe habilitée manipulant une batterie de traction" loading="lazy"><span class="media__cap">Centre expert VE · extraction d'une batterie de traction</span></div>
+      <div>
+        <p class="eyebrow" data-reveal>Véhicules électrifiés</p>
+        <h2 class="display-3 split-words">20 % des accidentés sont déjà électrifiés. Nos équipes sont habilitées.</h2>
+        <p class="lead mt-3" data-reveal>Une batterie lithium-ion accidentée ou immergée est un risque d'incendie et de transport. INDRA a écrit les procédures, formé le réseau et créé des centres experts VE pour que vos sinistres électriques soient pris en charge sans délai supplémentaire.</p>
+        <ul class="checklist mt-3" data-reveal>
+          <li><strong>Habilitation électrique</strong> des équipes intervenantes sur l'ensemble du réseau.</li>
+          <li><strong>Centres experts VE</strong> pour le stockage sécurisé, l'extraction et le conditionnement des packs.</li>
+          <li><strong>Transport ADR</strong> et orientation vers les filières de recyclage de batteries de l'écosystème The Future Is NEUTRAL.</li>
+          <li><strong>Formation AURECA</strong> des sapeurs-pompiers et des experts aux risques des véhicules électriques et hybrides.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PIEC -->
+<section class="section section--light">
+  <div class="container">
+    <div class="grid split-60 align-end mb-4">
+      <div><p class="eyebrow" data-reveal>Pièces issues de l'économie circulaire</p><h2 class="display-2 split-words">Baisser le coût des sinistres, sans baisser la qualité.</h2></div>
+      <p class="lead" data-reveal>Depuis 2017, les réparateurs doivent proposer la pièce de réemploi. Le réseau INDRA en produit 385 000 par an, tracées, garanties et disponibles en ligne.</p>
+    </div>
+    <div class="stat-row" data-stagger="0.1">
+      <div class="stat"><div class="num"><span data-count="420000">0</span></div><p>pièces de réemploi en stock sur les 9 sites INDRA</p></div>
+      <div class="stat"><div class="num">3</div><p>gammes garanties : Premium, Médium, Eco · 12 ou 6 mois</p></div>
+      <div class="stat"><div class="num">−45 à −95 %</div><p>de gaz à effet de serre pour une pièce de carrosserie réemployée (ACV Quantis)</p></div>
+    </div>
+    <div class="grid grid-3 mt-4" data-stagger="0.1">
+      <div class="card card--light"><div class="card__num">Où commander</div><h3 class="h4">Opisto, Precis, Digipiec</h3><p>Marketplace leader (INDRA détient 47 % d'Opisto), plateforme B2B intégrée aux logiciels de chiffrage (Precis, avec Sidexa), boutique en ligne Digipiec.</p></div>
+      <div class="card card--light"><div class="card__num">Traçabilité</div><h3 class="h4">Chaque pièce a une histoire</h3><p>Origine véhicule, kilométrage, contrôle qualité, photo studio : la pièce arrive chez le carrossier avec son dossier.</p></div>
+      <div class="card card--light"><div class="card__num">Demain</div><h3 class="h4">Plan Valeur 2030</h3><p>Doubler le nombre de pièces démontées par véhicule, DMS commun avec Opisto en 2027 : la disponibilité de la PIEC va encore progresser.</p></div>
+    </div>
+    <a class="btn btn--dark mt-4" href="pieces-reemploi.html" data-reveal>L'offre pièces de réemploi <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+  </div>
+</section>
+
+<!-- Pourquoi INDRA -->
+<section class="section grid-bg">
+  <div class="container">
+    <p class="eyebrow" data-reveal>Pourquoi INDRA</p>
+    <p class="statement">Depuis 1985,* INDRA a sorti le recyclage automobile de l'image du ferrailleur. Aujourd'hui adossé à Renault Group et Suez,* c'est le seul réseau qui audite,* forme* et outille* chaque centre au même standard.</p>
+    <div class="grid grid-4 mt-5" data-stagger="0.1">
+      <div><div class="num" style="font-size:52px;color:var(--green)">40</div><p class="muted mt-1">ans d'expérience de la filière VHU, 1<sup>er</sup> réseau français</p></div>
+      <div><div class="num" style="font-size:52px;color:var(--green)">9</div><p class="muted mt-1">sites industriels détenus, certifiés ISO 9001, 14001, 45001</p></div>
+      <div><div class="num" style="font-size:52px;color:var(--green)">967</div><p class="muted mt-1">stagiaires formés chez AURECA en 2025, 97 % de recommandation</p></div>
+      <div><div class="num" style="font-size:52px;color:var(--green)">79 M€</div><p class="muted mt-1">de chiffre d'affaires en 2024, 360 salariés, une entreprise de The Future Is NEUTRAL</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA + formulaire -->
+<section class="section section--dark-2" id="rdv">
+  <div class="container">
+    <div class="grid split-40">
+      <div>
+        <p class="eyebrow" data-reveal>Rendez-vous grands comptes</p>
+        <h2 class="display-3 split-words">Parlons de vos volumes, de vos délais et de vos zones blanches.</h2>
+        <p class="lead mt-3" data-reveal>Un responsable grands comptes assurance vous rappelle sous 48 h avec une cartographie de couverture pour votre portefeuille et une simulation de gain PIEC.</p>
+        <div class="mt-3" data-reveal><div class="ticker-line">Réponse sous 48 h ouvrées</div></div>
+      </div>
+      <form class="form" data-demo data-reveal>
+        <div class="field"><label for="a-soc">Compagnie / mutuelle</label><input id="a-soc" type="text" placeholder="Nom de la société" required></div>
+        <div class="field"><label for="a-nom">Nom et fonction</label><input id="a-nom" type="text" placeholder="Prénom Nom, Direction sinistres" required></div>
+        <div class="field"><label for="a-mail">E-mail professionnel</label><input id="a-mail" type="email" placeholder="prenom.nom@compagnie.fr" required></div>
+        <div class="field"><label for="a-tel">Téléphone</label><input id="a-tel" type="tel" placeholder="+33"></div>
+        <div class="field full"><label>Vos besoins</label><div class="radio-row">
+          <label><input type="checkbox" checked><span>Enlèvement &amp; destruction</span></label><label><input type="checkbox"><span>Véhicules électriques</span></label><label><input type="checkbox"><span>Pièces de réemploi</span></label><label><input type="checkbox"><span>Accès SIRA</span></label><label><input type="checkbox"><span>Appels d'offres Switch-Car</span></label></div></div>
+        <div class="field full"><label for="a-vol">Volume annuel estimé et zones prioritaires</label><textarea id="a-vol" placeholder="Ex. : 4 000 VEI/an, Île-de-France et Sud-Est, besoin DROM"></textarea></div>
+        <div class="full flex between"><button class="btn" type="submit">Demander un rendez-vous <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button><span class="form-note">Données traitées par INDRA SAS pour répondre à votre demande.</span></div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+<script src="assets/data/france.js" defer></script>
+<script src="assets/data/reseau.js" defer></script>
+<script src="assets/js/main.js" defer></script>
+<script src="assets/js/map.js" defer></script>
+<script>
+  document.addEventListener('indra:ready', function () {
+    if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
+    INDRA.initMap(document.getElementById('sira-map'), { compact: true, interactive: false, ownSites: false });
+  });
+</script>
+</body>
+</html>

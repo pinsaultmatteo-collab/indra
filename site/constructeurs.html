@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Constructeurs — Prestataire REP VHU, batteries et éco-conception | INDRA</title>
+  <meta name="description" content="INDRA est le prestataire des systèmes individuels REP VHU de 15 constructeurs : réseau agréé, collecte gratuite, reporting réglementaire, gestion sécurisée des batteries lithium-ion, éco-conception et R&D matières avec The Future Is NEUTRAL.">
+  <link rel="icon" href="assets/img/logo-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Raleway:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/main.css">
+  <style>
+    .rep { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
+    .rep-track { position: relative; padding-top: 34px; }
+    .rep-track::before { content: ""; position: absolute; left: 0; right: 0; top: 14px; height: 1px; background: var(--line-2); }
+    .rep-years { display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 12px; color: var(--ink-3); letter-spacing: 0.1em; position: absolute; left: 0; right: 0; top: -6px; }
+    .rep-years span { background: var(--bg); padding: 0 8px; }
+    .obj { display: grid; grid-template-columns: 200px 1fr 90px; gap: 18px; align-items: center; padding: 16px 0; border-bottom: 1px solid var(--line); }
+    .obj__name { font-weight: 700; }
+    .obj__name small { display: block; font-family: var(--font-mono); font-weight: 400; font-size: 11px; color: var(--ink-3); letter-spacing: 0.08em; margin-top: 4px; }
+    .obj__track { position: relative; height: 26px; background: rgba(255,255,255,0.04); }
+    .obj__seg { position: absolute; top: 0; bottom: 0; background: var(--steel-3); display: grid; place-items: center; font-family: var(--font-mono); font-size: 11px; color: var(--ink-2); border-right: 1px solid var(--bg); transform-origin: left; transform: scaleX(0); transition: transform 1.2s var(--ease-2); transition-delay: var(--d, 0s); }
+    .obj__indra { position: absolute; top: -6px; bottom: -6px; width: 3px; background: var(--green); box-shadow: 0 0 14px var(--glow); }
+    .obj__indra::after { content: attr(data-l); position: absolute; top: -22px; left: 50%; transform: translateX(-50%); font-family: var(--font-mono); font-size: 10.5px; color: var(--green); white-space: nowrap; letter-spacing: 0.08em; }
+    .obj__val { text-align: right; font-family: var(--font-display); font-weight: 700; font-size: 24px; color: var(--green); }
+    .rep.is-in .obj__seg { transform: scaleX(1); }
+    @media (max-width: 1000px) { .rep { grid-template-columns: 1fr; } }
+    @media (max-width: 600px) { .obj { grid-template-columns: 1fr; gap: 8px; overflow: hidden; padding-top: 34px; } .obj__val { text-align: left; } .obj__indra::after { left: auto; right: 0; transform: none; } .rep-years { display: none; } .rep-track::before { display: none; } .rep-track { padding-top: 0; } }
+    .dash { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 14px; }
+    .dash div { border: 1px solid var(--line); padding: 10px 12px; background: rgba(255,255,255,0.02); }
+    .dash .num { font-size: 22px; color: var(--ink); }
+    .dash p { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); margin-top: 4px; }
+    .dash-bars { grid-column: 1 / -1; display: flex; gap: 6px; align-items: flex-end; height: 90px; padding: 10px 12px 6px; }
+    .dash-bars i { flex: 1; background: linear-gradient(to top, var(--green-dark), var(--green)); height: var(--h); opacity: 0.85; transform-origin: bottom; animation: grow 1.2s var(--ease) both; animation-delay: calc(var(--i) * 0.05s); }
+    @keyframes grow { from { transform: scaleY(0); } }
+  </style>
+</head>
+<body>
+
+<section class="page-hero">
+  <div class="page-hero__bg"><img src="assets/img/ev-battery-bench.jpg" alt="Extraction d'une batterie de traction dans un centre expert VE INDRA"></div>
+  <div class="container">
+    <div class="crumbs"><a href="index.html">Accueil</a><span>Constructeurs</span></div>
+    <h1 class="page-hero__title reveal-lines">Vos obligations REP,<br><em>tenues clé en main</em>.<br>Vos batteries, sécurisées.</h1>
+    <p class="lead" data-reveal style="--d:0.4s">Depuis le 1<sup>er</sup> janvier 2024, chaque constructeur doit organiser et financer la collecte gratuite et le traitement de ses véhicules hors d'usage. Quinze marques ont choisi INDRA comme prestataire de leur système individuel : un réseau agréé, un reporting consolidé, une expertise batteries et vingt ans d'éco-conception.</p>
+    <div class="page-hero__meta" data-reveal style="--d:0.6s">
+      <div><div class="num"><span data-count="15">0</span></div><p>constructeurs · systèmes individuels REP</p></div>
+      <div><div class="num"><span data-count="425000">0</span></div><p>VHU traités par an par le réseau</p></div>
+      <div><div class="num">&gt; 15 %</div><p>de réemploi, objectif REP 2028 : 16 %</p></div>
+      <div><div class="num"><span data-count="20">0</span> ans</div><p>d'éco-conception avec les constructeurs</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- Ce que la loi impose -->
+<section class="section">
+  <div class="container">
+    <div class="grid split-60 align-end mb-4">
+      <div><p class="eyebrow" data-reveal>Responsabilité élargie du producteur · loi AGEC</p><h2 class="display-2 split-words">Des objectifs chiffrés, un calendrier serré.</h2></div>
+      <p class="lead" data-reveal>L'arrêté du 20 novembre 2023 fixe le cahier des charges de la filière REP VHU. Les taux ci-dessous s'imposent à chaque système individuel ; le réseau INDRA les dépasse déjà.</p>
+    </div>
+    <div class="rep" data-reveal>
+      <div>
+        <div class="rep-track">
+          <div class="rep-years"><span>2024</span><span>2026</span><span>2028</span></div>
+          <div class="obj"><div class="obj__name">Taux de collecte<small>VHU collectés / véhicules sortis du parc</small></div><div class="obj__track"><div class="obj__seg" style="left:0;width:65%">65 %</div><div class="obj__seg" style="left:65%;width:5%;--d:0.3s"></div><div class="obj__indra" style="left:70%" data-l="cible 2028 : 70 %"></div></div><div class="obj__val">70 %</div></div>
+          <div class="obj"><div class="obj__name">Taux de réemploi<small>pièces revendues en l'état / masse VHU</small></div><div class="obj__track"><div class="obj__seg" style="left:0;width:8.5%;font-size:9px">8,5</div><div class="obj__seg" style="left:8.5%;width:1.5%;--d:0.2s"></div><div class="obj__seg" style="left:10%;width:6%;--d:0.4s">16 %</div><div class="obj__indra" style="left:15.4%" data-l="INDRA > 15 %"></div></div><div class="obj__val">16 %</div></div>
+          <div class="obj"><div class="obj__name">TRR<small>réutilisation + recyclage matière</small></div><div class="obj__track"><div class="obj__seg" style="left:0;width:85%">85 %</div><div class="obj__indra" style="left:86%" data-l="INDRA > 85 %"></div></div><div class="obj__val">85 %</div></div>
+          <div class="obj"><div class="obj__name">TRV<small>réutilisation + valorisation totale</small></div><div class="obj__track"><div class="obj__seg" style="left:0;width:95%">95 %</div><div class="obj__indra" style="left:96.8%" data-l="INDRA 96,8 %"></div></div><div class="obj__val">95 %</div></div>
+        </div>
+        <p class="small muted mt-2">Sources : arrêté du 20/11/2023 (cahier des charges REP VHU), registre SYDEREP (ADEME), déclarations du réseau INDRA.</p>
+      </div>
+      <div class="stack" style="--stack:16px">
+        <div class="card"><div class="card__num">Ce que vous devez organiser</div><p>Un réseau de centres agréés couvrant le territoire, la reprise gratuite de vos VHU (y compris incomplets, sous conditions), l'atteinte des taux de réemploi et de valorisation, la déclaration annuelle à l'ADEME et l'audit par un tiers.</p></div>
+        <div class="card card--green"><div class="card__num">Ce qu'INDRA prend en charge</div><p>Tout : la constitution et l'animation du réseau dédié à vos marques, la collecte, le traitement aux standards INDRA, la traçabilité et le reporting réglementaire consolidé. Vous gardez la maîtrise, sans monter votre propre organisation.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Guichet unique -->
+<section class="section section--dark-2" id="rep">
+  <div class="container">
+    <div class="sticky-layout">
+      <div class="sticky">
+        <p class="eyebrow" data-reveal>Prestataire de systèmes individuels</p>
+        <h2 class="display-2 split-words">Un guichet unique pour quinze marques.</h2>
+        <p class="lead mt-3" data-reveal>Renault, Dacia, Alpine, Mobilize, Nissan, Toyota, Lexus, Kia, Tesla, Jaguar, Land Rover, Iveco, Renault Trucks, Honda, Suzuki, Aixam, Piaggio : autant de systèmes individuels dont INDRA opère le réseau, la collecte et le reporting.</p>
+        <div class="chips mt-3" data-reveal>
+          <span class="chip chip--green">Renault</span><span class="chip">Dacia</span><span class="chip">Alpine</span><span class="chip">Mobilize</span><span class="chip">Nissan</span><span class="chip">Toyota</span><span class="chip">Lexus</span><span class="chip">Kia</span><span class="chip">Tesla</span><span class="chip">Jaguar</span><span class="chip">Land Rover</span><span class="chip">Iveco</span><span class="chip">Renault Trucks</span><span class="chip">Honda</span><span class="chip">Suzuki</span><span class="chip">Aixam</span><span class="chip">Piaggio</span>
+        </div>
+      </div>
+      <ol class="numlist" data-stagger="0.08">
+        <li><div><h4 class="h4">Un réseau agréé, dédié à vos marques</h4><p>Les centres VHU candidatent sur le portail CVHU aux réseaux des systèmes individuels confiés à INDRA. Chaque candidature est instruite, auditée et contractualisée ; plus de 430 centres agréés participent aujourd'hui aux réseaux élargis.</p></div></li>
+        <li><div><h4 class="h4">Collecte gratuite et reprise garantie</h4><p>Vos détenteurs (particuliers, concessions, loueurs, assureurs, fourrières) remettent leurs véhicules sans frais dans un centre du réseau. Goodbye Car oriente les particuliers ; Switch-Car répartit les flux professionnels.</p></div></li>
+        <li><div><h4 class="h4">Un traitement aux standards INDRA</h4><p>Dépollution, mise en sécurité, démontage ciblé, orientation des matières : le process INDRA, ses équipements Re-source et ses formations AURECA garantissent des taux de réemploi et de valorisation homogènes sur tout le territoire.</p></div></li>
+        <li><div><h4 class="h4">Traçabilité et reporting réglementaire consolidés</h4><p>Volumes collectés par marque et par département, certificats de destruction, taux de réemploi, TRR et TRV : INDRA consolide, contrôle et prépare vos déclarations annuelles à l'ADEME ainsi que les pièces pour l'audit tiers.</p></div></li>
+        <li><div><h4 class="h4">Une filière qui progresse avec vous</h4><p>Objectif de doubler le nombre de pièces démontées par véhicule, DMS commun avec Opisto en 2027, R&amp;D matières : vos taux futurs se préparent aujourd'hui.</p></div></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- Batteries 3D -->
+<section class="section grid-bg" id="batteries">
+  <div class="container">
+    <div class="grid split-40 align-center" id="battery-trigger">
+      <div class="viz-3d" id="battery-viz" data-cursor="drag">
+        <div class="viz-3d__hud"><span><b>PACK HT</b> · 8 modules · 96 cellules</span><span>Consignation → extraction → conditionnement → <b>transport ADR classe 9</b></span></div>
+      </div>
+      <div>
+        <p class="eyebrow" data-reveal>Batteries lithium-ion</p>
+        <h2 class="display-2 split-words">Extraire, sécuriser, transporter. Sans improvisation.</h2>
+        <p class="lead mt-3" data-reveal>Les véhicules électriques représentent moins de 1 % des VHU mais déjà près de 20 % des véhicules accidentés. Depuis 2024, INDRA a formalisé pour les constructeurs et les centres les procédures d'extraction, de sécurisation et de transport des batteries de véhicules accidentés ou immergés.</p>
+        <ul class="checklist mt-3" data-reveal>
+          <li><strong>Diagnostic et consignation</strong> par des équipes habilitées, sur véhicule roulant, accidenté ou immergé.</li>
+          <li><strong>Extraction et conditionnement</strong> dans des centres experts VE équipés (bacs, quarantaine, détection thermique).</li>
+          <li><strong>Transport ADR</strong> vers les filières de recyclage ou de seconde vie, avec la plateforme AutoLOOP de The Future Is NEUTRAL étendue à la collecte des batteries depuis avril 2026.</li>
+          <li><strong>Reporting batteries</strong> intégré à votre reporting REP : tonnages, destinations, taux de recyclage.</li>
+        </ul>
+        <p class="small muted mt-3" data-reveal>Faites défiler ou survolez la vue pour éclater le pack.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Éco-conception & R&D -->
+<section class="section section--light" id="ecoconception">
+  <div class="container">
+    <div class="grid split-60 align-end mb-3">
+      <div><p class="eyebrow" data-reveal>Éco-conception &amp; R&amp;D matières</p><h2 class="display-2 split-words">Concevoir aujourd'hui le véhicule qu'on démontera dans quinze ans.</h2></div>
+      <p class="lead" data-reveal>Depuis vingt ans, les ingénieurs d'INDRA conseillent les constructeurs et équipementiers en phase de conception : démontabilité, recyclabilité, homologation. Et ils prouvent, sur leurs propres sites, que la matière peut revenir dans le véhicule neuf.</p>
+    </div>
+    <div class="feature-row">
+      <div><span class="pill">Pilote 2025 · Saint-Gobain · Renault Group</span><h3 class="h3 mt-2">Le verre automobile en boucle fermée</h3><p class="mt-1 prose">Annoncé le 18 mars 2025, Journée mondiale du recyclage : les vitrages déposés dans les centres INDRA sont collectés, traités et refondus par Saint-Gobain Glass France et Saint-Gobain Sekurit en verre automobile neuf. Une première qui prépare le futur règlement européen VHU et ses obligations de contenu recyclé.</p></div>
+      <div class="media media--ratio media--chamfer" data-parallax="10"><img src="assets/img/tfin-tech-cap.jpg" alt="Technicien INDRA au pare-brise" loading="lazy"></div>
+    </div>
+    <div class="feature-row">
+      <div><span class="pill">Site de Pruniers-en-Sologne · 3 331 t 2020-2025</span><h3 class="h3 mt-2">Polypropylène et PMMA</h3><p class="mt-1 prose">15 à 20 kg de polypropylène extraits par véhicule (pare-chocs) et réinjectés dans des pièces neuves ; récupération du PMMA des feux arrière avec Reverplast ; tri optique développé avec Arkema et Paprec.</p></div>
+      <div class="media media--ratio media--chamfer" data-parallax="10"><img src="assets/img/mat-plastics.jpg" alt="Polypropylène broyé issu de pare-chocs" loading="lazy"></div>
+    </div>
+    <div class="feature-row">
+      <div><span class="pill">Brevet INDRA · 1 336 t de câbles 2020-2025</span><h3 class="h3 mt-2">Car Power Dismantler et cuivre</h3><p class="mt-1 prose">Un bras hydraulique breveté extrait le groupe motopropulseur et la planche de bord pour libérer les faisceaux : 9 kg de câbles cuivre par véhicule, une ressource stratégique pour l'électrification.</p></div>
+      <div class="media media--ratio media--chamfer" data-parallax="10"><img src="assets/img/mat-cables.jpg" alt="Faisceaux de câbles cuivre" loading="lazy"></div>
+    </div>
+    <div class="feature-row">
+      <div><span class="pill">Ingénierie · Re-source Engineering Solutions</span><h3 class="h3 mt-2">Études de recyclabilité et véhicules lourds</h3><p class="mt-1 prose">Études d'homologation recyclabilité, conseil en démontabilité, conception d'équipements de dépollution ; co-fondateur du CIDER, centre d'ingénierie de la déconstruction des équipements roulants (bus, camions, engins agricoles et de travaux publics, véhicules militaires).</p></div>
+      <div class="media media--ratio media--chamfer" data-parallax="10"><img src="assets/img/engine-tech.jpg" alt="Démontage d'un groupe motopropulseur" loading="lazy"></div>
+    </div>
+    <a class="btn btn--dark mt-4" href="innovation.html" data-reveal>Toute l'innovation INDRA <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+  </div>
+</section>
+
+<!-- Reporting -->
+<section class="section section--dark-3">
+  <div class="container">
+    <div class="grid split-40 align-center">
+      <div class="laptop" data-reveal="scale">
+        <div class="laptop__screen">
+          <div class="laptop__bar"><i></i><i></i><i></i><span>reporting REP — système individuel · exercice 2025</span></div>
+          <div class="laptop__ui" style="grid-template-columns:1fr">
+            <div class="dash">
+              <div><div class="num">28 412</div><p>VHU collectés</p></div><div><div class="num">68,4 %</div><p>taux de collecte</p></div><div><div class="num">15,2 %</div><p>réemploi</p></div>
+              <div><div class="num">87,1 %</div><p>TRR</p></div><div><div class="num">96,8 %</div><p>TRV</p></div><div><div class="num">28 412</div><p>certificats émis</p></div>
+              <div class="dash-bars"><i style="--h:40%;--i:0"></i><i style="--h:52%;--i:1"></i><i style="--h:48%;--i:2"></i><i style="--h:63%;--i:3"></i><i style="--h:58%;--i:4"></i><i style="--h:70%;--i:5"></i><i style="--h:66%;--i:6"></i><i style="--h:74%;--i:7"></i><i style="--h:80%;--i:8"></i><i style="--h:77%;--i:9"></i><i style="--h:88%;--i:10"></i><i style="--h:95%;--i:11"></i></div>
+            </div>
+          </div>
+        </div>
+        <div class="laptop__base"></div>
+      </div>
+      <div>
+        <p class="eyebrow" data-reveal>Reporting réglementaire</p>
+        <h2 class="display-3 split-words">Vos déclarations ADEME, prêtes à auditer.</h2>
+        <p class="lead mt-3" data-reveal>Chaque véhicule collecté au titre de votre système individuel est tracé du certificat de destruction jusqu'aux tonnages de matières. Vous recevez un tableau de bord consolidé par marque, par département et par centre, et les pièces justificatives pour le tiers certificateur.</p>
+        <p class="small muted mt-2" data-reveal>Données d'illustration.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section section--dark-2" id="contact-rep">
+  <div class="container">
+    <div class="grid split-40">
+      <div>
+        <p class="eyebrow" data-reveal>Prestation REP · systèmes individuels</p>
+        <h2 class="display-3 split-words">Confiez-nous votre système individuel.</h2>
+        <p class="lead mt-3" data-reveal>Nos équipes constructeurs vous présentent le dispositif, le réseau dédié, les indicateurs atteints par les quinze systèmes déjà opérés et une projection pour vos marques.</p>
+        <a class="btn btn--ghost mt-3" href="#" data-reveal>Télécharger la présentation (PDF) <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg></a>
+      </div>
+      <form class="form" data-demo data-reveal>
+        <div class="field"><label for="c-soc">Constructeur / groupe</label><input id="c-soc" type="text" placeholder="Nom du constructeur" required></div>
+        <div class="field"><label for="c-nom">Nom et fonction</label><input id="c-nom" type="text" placeholder="Prénom Nom, Direction après-vente / RSE" required></div>
+        <div class="field"><label for="c-mail">E-mail professionnel</label><input id="c-mail" type="email" required placeholder="prenom.nom@constructeur.com"></div>
+        <div class="field"><label for="c-marques">Marques concernées</label><input id="c-marques" type="text" placeholder="Ex. : 2 marques VP, 1 marque VUL"></div>
+        <div class="field full"><label>Sujets</label><div class="radio-row">
+          <label><input type="checkbox" checked><span>Système individuel REP</span></label><label><input type="checkbox"><span>Batteries VE</span></label><label><input type="checkbox"><span>Éco-conception</span></label><label><input type="checkbox"><span>R&amp;D matières</span></label><label><input type="checkbox"><span>International</span></label></div></div>
+        <div class="field full"><label for="c-msg">Votre contexte</label><textarea id="c-msg" placeholder="Parc en circulation, échéances, éco-organisme ou système individuel actuel"></textarea></div>
+        <div class="full flex between"><button class="btn" type="submit">Être rappelé <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button><span class="form-note">Données traitées par INDRA SAS pour répondre à votre demande.</span></div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="assets/js/main.js" defer></script>
+<script src="assets/js/battery.js" defer></script>
+<script>
+  document.addEventListener('indra:ready', function () {
+    if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
+    INDRA.initBattery(document.getElementById('battery-viz'), { trigger: document.getElementById('battery-trigger') });
+    var rep = document.querySelector('.rep'); if (rep) new IntersectionObserver(function (en) { if (en[0].isIntersecting) rep.classList.add('is-in'); }, { threshold: 0.3 }).observe(rep);
+  });
+</script>
+</body>
+</html>

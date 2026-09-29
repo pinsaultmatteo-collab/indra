@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pièces de réemploi (PIEC) — 420 000 pièces garanties, en ligne | INDRA</title>
+  <meta name="description" content="Le réseau INDRA produit 385 000 pièces issues de l'économie circulaire par an. Trois gammes garanties de 6 à 12 mois, disponibles sur Opisto, Precis et Digipiec. Une pièce réemployée évite 45 à 95 % des émissions d'une pièce neuve.">
+  <link rel="icon" href="assets/img/logo-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Raleway:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/main.css">
+  <style>
+    .gamme { position: relative; padding: 40px 34px; border: 1px solid var(--line); background: var(--bg-2); min-height: 420px; display: flex; flex-direction: column; transition: transform 0.6s var(--ease), border-color 0.4s; }
+    .gamme:hover { transform: translateY(-6px); border-color: rgba(160,191,56,0.5); }
+    .gamme--premium { background: linear-gradient(160deg, var(--bg-3), var(--bg-2)); border-color: rgba(160,191,56,0.4); }
+    .gamme__name { font-family: var(--font-display); font-weight: 700; font-size: 44px; letter-spacing: 0.02em; text-transform: uppercase; line-height: 1; }
+    .gamme__war { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--green); margin-top: 10px; }
+    .gamme p { color: var(--ink-2); margin-top: 22px; font-size: 15.5px; }
+    .gamme ul { margin-top: auto; padding-top: 26px; }
+    .gamme li { padding: 10px 0; border-top: 1px solid var(--line); font-size: 14px; color: var(--ink-2); display: flex; justify-content: space-between; gap: 12px; }
+    .gamme li b { color: var(--ink); font-weight: 600; }
+    .shop { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .shop a { border: 1px solid var(--light-line); background: #fff; padding: 34px 30px; display: flex; flex-direction: column; gap: 14px; min-height: 260px; transition: transform 0.5s var(--ease), border-color 0.3s; }
+    .shop a:hover { transform: translateY(-4px); border-color: var(--green-dark); }
+    .shop img { height: 44px; width: auto; align-self: flex-start; object-fit: contain; max-width: 180px; }
+    .shop b { font-size: 18px; }
+    .shop p { color: var(--light-ink-2); font-size: 14.5px; }
+    .shop .link-arrow { margin-top: auto; color: var(--green-dark); }
+    @media (max-width: 900px) { .shop { grid-template-columns: 1fr; } }
+    .acv { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+    .acv div { background: var(--bg); padding: 34px 30px; }
+    .acv .num { font-size: clamp(44px, 5vw, 72px); color: var(--green); }
+    .acv p { color: var(--ink-2); margin-top: 10px; font-size: 15px; }
+    @media (max-width: 800px) { .acv { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+<section class="page-hero">
+  <div class="page-hero__bg"><img src="assets/img/racks-doors.jpg" alt="Stock de portières de réemploi référencées"></div>
+  <div class="container">
+    <div class="crumbs"><a href="index.html">Accueil</a><span>Pièces de réemploi</span></div>
+    <h1 class="page-hero__title reveal-lines">420 000 pièces.<br><em>Garanties.</em><br>En ligne.</h1>
+    <p class="lead" data-reveal style="--d:0.4s">La pièce issue de l'économie circulaire n'est plus une pièce d'occasion : c'est une pièce tracée depuis le véhicule d'origine, contrôlée, classée, garantie et photographiée. Le réseau INDRA en produit 385 000 par an pour les carrossiers, les réparateurs et les assureurs.</p>
+    <div class="page-hero__meta" data-reveal style="--d:0.6s">
+      <div><div class="num"><span data-count="385000">0</span></div><p>pièces produites par an</p></div>
+      <div><div class="num"><span data-count="420000">0</span></div><p>pièces en stock sur les 9 sites</p></div>
+      <div><div class="num">3</div><p>gammes garanties de 6 à 12 mois</p></div>
+      <div><div class="num">24–48 h</div><p>d'expédition depuis nos sites</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- Gammes -->
+<section class="section" id="gammes">
+  <div class="container">
+    <div class="grid split-60 align-end mb-4">
+      <div><p class="eyebrow" data-reveal>Trois gammes, une garantie</p><h2 class="display-2 split-words">Choisir la pièce selon la réparation, pas selon le hasard.</h2></div>
+      <p class="lead" data-reveal>Chaque pièce démontée passe un contrôle qualité qui la classe dans l'une des trois gammes. Le prix, la garantie et l'usage recommandé sont explicites.</p>
+    </div>
+    <div class="grid grid-3" data-stagger="0.1">
+      <div class="gamme gamme--premium"><div class="gamme__name">Premium</div><div class="gamme__war">Garantie 12 mois</div><p>Pièces de carrosserie, optiques et éléments visibles en état proche du neuf, issues de véhicules récents et à faible kilométrage. La référence pour les sinistres assurés.</p><ul><li><span>Usage</span><b>Réparation collision</b></li><li><span>Contrôle</span><b>Visuel, dimensionnel, photo studio</b></li><li><span>Origine</span><b>Véhicules récents tracés</b></li></ul></div>
+      <div class="gamme"><div class="gamme__name">Médium</div><div class="gamme__war">Garantie 6 à 12 mois</div><p>Pièces mécaniques, électriques et électroniques testées et fonctionnelles : moteurs, boîtes, alternateurs, calculateurs, avec kilométrage d'origine documenté.</p><ul><li><span>Usage</span><b>Entretien et réparation mécanique</b></li><li><span>Contrôle</span><b>Test fonctionnel, kilométrage</b></li><li><span>Origine</span><b>Véhicules tracés</b></li></ul></div>
+      <div class="gamme"><div class="gamme__name">Eco</div><div class="gamme__war">Garantie 6 mois</div><p>Pièces d'usage présentant des traces d'utilisation sans incidence fonctionnelle. La solution la plus économique pour maintenir un véhicule ancien en circulation.</p><ul><li><span>Usage</span><b>Maintien en circulation</b></li><li><span>Contrôle</span><b>Fonctionnel</b></li><li><span>Origine</span><b>Véhicules tracés</b></li></ul></div>
+    </div>
+  </div>
+</section>
+
+<!-- Où acheter -->
+<section class="section section--light" id="acheter">
+  <div class="container">
+    <div class="grid split-60 align-end mb-4">
+      <div><p class="eyebrow" data-reveal>Où commander</p><h2 class="display-2 split-words">Trois canaux, un même stock.</h2></div>
+      <p class="lead" data-reveal>Marketplace, plateforme B2B intégrée aux logiciels de chiffrage, boutique en ligne : la pièce INDRA est disponible là où travaillent les professionnels de la réparation.</p>
+    </div>
+    <div class="shop" data-stagger="0.1">
+      <a href="https://www.opisto.fr" target="_blank" rel="noopener"><img src="assets/img/logos/opisto.svg" alt="Opisto"><b>Opisto · marketplace</b><p>Leader français de la vente en ligne de pièces de réemploi, dont INDRA détient 47 % depuis 2024. Recherche par immatriculation, disponibilité temps réel, livraison rapide. Le futur DMS commun des centres VHU naîtra ici en 2027.</p><span class="link-arrow">Commander sur Opisto <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span></a>
+      <a href="#" ><img src="assets/img/logos/precis.png" alt="PRECIS"><b>Precis · B2B intégré</b><p>Créé en 2013 avec Sidexa, Precis installe la pièce de réemploi dans le chiffrage des réparateurs et des experts : la pièce compatible apparaît directement dans le devis, avec son prix et sa garantie.</p><span class="link-arrow">Découvrir Precis <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span></a>
+      <a href="#"><img src="assets/img/logos/digipiec.png" alt="Digipiec"><b>Digipiec · boutique en ligne</b><p>Le site de vente des pièces produites sur les sites INDRA, pour les professionnels et les particuliers. Photos studio, fiche de traçabilité et garantie affichées sur chaque référence.</p><span class="link-arrow">Aller sur Digipiec <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span></a>
+    </div>
+  </div>
+</section>
+
+<!-- Studio & traçabilité -->
+<section class="section section--dark-2">
+  <div class="container">
+    <div class="grid split-60 align-center">
+      <div class="strip" data-stagger="0.1">
+        <div class="media" data-parallax="8"><img src="assets/img/studio-door.jpg" alt="Portière en studio photo" loading="lazy"></div>
+        <div class="media" data-parallax="8"><img src="assets/img/label-part.jpg" alt="Étiquette de traçabilité sur une pièce" loading="lazy"></div>
+        <div class="media" data-parallax="8"><img src="assets/img/scan-part.jpg" alt="Lecture du code-barres d'une pièce" loading="lazy"></div>
+      </div>
+      <div>
+        <p class="eyebrow" data-reveal>Traçabilité</p>
+        <h2 class="display-2 split-words">Chaque pièce a une histoire, et elle est écrite.</h2>
+        <p class="lead mt-3" data-reveal>Véhicule d'origine, kilométrage, date de démontage, contrôle, gamme, photos : la fiche de la pièce suit la pièce. Pour l'assureur, c'est la garantie qu'une PIEC posée sur un véhicule sinistré est conforme ; pour le carrossier, c'est zéro mauvaise surprise à la réception.</p>
+        <div class="tag-row mt-3" data-reveal><span>Référence constructeur</span><span>N° de traçabilité</span><span>Photos 360°</span><span>Kilométrage</span><span>Gamme et garantie</span><span>Site producteur</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Pourquoi la PIEC -->
+<section class="section grid-bg">
+  <div class="container">
+    <div class="grid split-60 align-end mb-4">
+      <div><p class="eyebrow" data-reveal>Pourquoi la pièce de réemploi</p><h2 class="display-2 split-words">Moins chère, moins carbonée, et désormais obligatoire à proposer.</h2></div>
+      <p class="lead" data-reveal>Depuis la loi de transition énergétique de 2017, les réparateurs doivent proposer la pièce de réemploi. Les assureurs la privilégient pour réduire le coût des sinistres. Le marché devrait doubler entre 2025 et 2030.</p>
+    </div>
+    <div class="acv" data-stagger="0.1">
+      <div><div class="num">−45 à −95 %</div><p>d'émissions de gaz à effet de serre pour une pièce de carrosserie réemployée par rapport à une pièce neuve (ACV simplifiée Quantis).</p></div>
+      <div><div class="num">95 à 100 %</div><p>de ressources vierges économisées par pièce réemployée.</p></div>
+      <div><div class="num">×2</div><p>de croissance attendue du marché de la PIEC entre 2025 et 2030, portée par les assureurs, la réglementation REP et l'électrification.</p></div>
+    </div>
+    <div class="grid grid-3 mt-4" data-stagger="0.1">
+      <div class="card"><div class="card__num">Pour les assureurs</div><h3 class="h4">Réduire le coût moyen du sinistre</h3><p>Une PIEC Premium garantie 12 mois coûte nettement moins qu'une pièce neuve à qualité de réparation équivalente. Intégrée au chiffrage via Precis, elle se propose sans friction.</p></div>
+      <div class="card"><div class="card__num">Pour les réparateurs</div><h3 class="h4">Disponibilité et délai</h3><p>420 000 pièces en stock, expédiées sous 24 à 48 h, avec photos et garantie. Le réparateur satisfait son obligation légale et sa marge.</p></div>
+      <div class="card"><div class="card__num">Pour la filière</div><h3 class="h4">Le taux de réemploi, KPI qui monte</h3><p>16 % de réemploi exigé en 2028 pour les constructeurs. Le réseau INDRA dépasse déjà 15 % et vise de doubler le nombre de pièces démontées par véhicule.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="cta-band__bg"><img src="assets/img/racks-bumpers.jpg" alt="" loading="lazy"></div>
+  <div class="container">
+    <p class="eyebrow" data-reveal>Grands comptes</p>
+    <h2 class="display-2 split-words">Un accord-cadre PIEC pour votre réseau de réparateurs.</h2>
+    <p class="lead mt-3 maxw" data-reveal>Assureurs, loueurs, flottes : nous construisons avec vous un accord de fourniture de pièces de réemploi, avec objectifs de taux d'intégration, reporting et garantie unifiée.</p>
+    <div class="flex mt-3" data-reveal><a class="btn btn--xl" href="contact.html">Parler à l'équipe PIEC <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a><a class="btn btn--xl btn--ghost" href="https://www.opisto.fr" target="_blank" rel="noopener">Commander sur Opisto</a></div>
+  </div>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+<script src="assets/js/main.js" defer></script>
+<script>document.addEventListener('indra:ready', function () { if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger); });</script>
+</body>
+</html>

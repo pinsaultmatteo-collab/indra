@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Le réseau INDRA — 350 centres VHU agréés, un seul standard | INDRA</title>
+  <meta name="description" content="Carte interactive des centres VHU agréés du réseau INDRA : tous les départements et cinq DROM, des standards communs, des audits, la formation AURECA et les outils Switch-Car, Precis, Opisto et SIRA. Comment rejoindre le 1er réseau français.">
+  <link rel="icon" href="assets/img/logo-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Raleway:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/main.css">
+  <style>
+    .map-layout { display: grid; grid-template-columns: 380px 1fr; gap: 48px; align-items: start; }
+    .map-layout .map-panel { position: sticky; top: calc(var(--header-h) + 24px); }
+    .map-big { position: relative; padding: 20px; border: 1px solid var(--line); background: radial-gradient(ellipse at 50% 40%, rgba(160,191,56,0.05), transparent 60%); }
+    @media (max-width: 1000px) { .map-layout { grid-template-columns: 1fr; } .map-layout .map-panel { position: static; } }
+    .std { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+    .std > div { background: var(--bg); padding: 34px 30px; min-height: 260px; transition: background 0.4s; }
+    .std > div:hover { background: var(--bg-3); }
+    .std .card__icon { margin-bottom: 30px; }
+    .std h3 { margin-bottom: 10px; }
+    .std p { color: var(--ink-2); font-size: 15px; }
+    @media (max-width: 900px) { .std { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 560px) { .std { grid-template-columns: 1fr; } }
+    .member { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--line); background: var(--bg-2); }
+    .member__img { min-height: 420px; }
+    .member__img img { width: 100%; height: 100%; object-fit: cover; }
+    .member__body { padding: clamp(28px, 4vw, 56px); display: flex; flex-direction: column; gap: 18px; }
+    .member__body dl { display: grid; grid-template-columns: auto 1fr; gap: 8px 20px; font-size: 14.5px; margin: 0; }
+    .member__body dt { font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); padding-top: 3px; }
+    .member__body dd { margin: 0; color: var(--ink-2); }
+    @media (max-width: 900px) { .member { grid-template-columns: 1fr; } .member__img { min-height: 280px; } }
+    .world { display: grid; grid-template-columns: repeat(6, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+    .world div { background: var(--bg-2); padding: 22px 20px; min-height: 130px; display: flex; flex-direction: column; justify-content: space-between; }
+    .world b { font-family: var(--font-display); font-size: 22px; letter-spacing: 0.04em; text-transform: uppercase; }
+    .world span { font-family: var(--font-mono); font-size: 11.5px; color: var(--ink-3); letter-spacing: 0.06em; }
+    @media (max-width: 900px) { .world { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 560px) { .world { grid-template-columns: repeat(2, 1fr); } }
+  </style>
+</head>
+<body>
+
+<section class="page-hero">
+  <div class="page-hero__bg"><img src="assets/img/aerial-cars.jpg" alt="Vue aérienne d'un parc de véhicules hors d'usage"></div>
+  <div class="container">
+    <div class="crumbs"><a href="index.html">Accueil</a><span>Le réseau</span></div>
+    <h1 class="page-hero__title reveal-lines">Plus de 350 centres.<br><em>Un seul standard.</em></h1>
+    <p class="lead" data-reveal style="--d:0.4s">Le réseau est l'actif n° 1 d'INDRA : le premier réseau français de centres VHU agréés, présent dans tous les départements métropolitains et dans cinq départements d'outre-mer, avec près de 40 % de part de marché. Mêmes audits, mêmes formations, mêmes outils, même reporting.</p>
+    <div class="page-hero__meta" data-reveal style="--d:0.6s">
+      <div><div class="num"><span data-count="350">0</span>+</div><p>centres agréés sous contrat, dont 9 détenus</p></div>
+      <div><div class="num"><span data-count="96">0</span></div><p>départements métropolitains + 5 DROM</p></div>
+      <div><div class="num"><span data-count="38.8" data-dec="1">0</span> %</div><p>de part de marché du traitement des VHU</p></div>
+      <div><div class="num">100 %</div><p>de centres agréés préfecture</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- Carte interactive -->
+<section class="section" id="carte">
+  <div class="container">
+    <div class="map-layout">
+      <div class="map-panel" id="map-panel">
+        <div>
+          <p class="eyebrow">Trouver un centre</p>
+          <h2 class="h2">Où que soit le véhicule, un centre INDRA est à portée.</h2>
+        </div>
+        <div class="map-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input type="search" placeholder="Ville, code postal, département…" aria-label="Rechercher un centre"></div>
+        <div class="map-count"></div>
+        <div class="map-results" data-lenis-prevent></div>
+        <div class="map-legend"><span><i></i>Centre agréé partenaire</span><span><i class="site"></i>Site détenu INDRA</span><span><i class="own"></i>Siège · Vaulx-Milieu</span></div>
+      </div>
+      <div class="map-big"><div class="map-wrap" id="big-map"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- Standards -->
+<section class="section section--dark-2" id="standards">
+  <div class="container">
+    <div class="grid split-60 align-end mb-4">
+      <div><p class="eyebrow" data-reveal>Ce qui rend le réseau uniforme</p><h2 class="display-2 split-words">Un réseau, ce n'est pas une liste d'adresses.</h2></div>
+      <p class="lead" data-reveal>Six mécanismes font qu'un assureur ou un constructeur obtient la même prestation à Forbach, à Colomiers ou à Saint-Denis de La Réunion.</p>
+    </div>
+    <div class="std" data-stagger="0.08">
+      <div><div class="card__icon"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M24 4l16 6v12c0 10-7 18-16 22C15 40 8 32 8 22V10z"/><path d="M16 24l6 6 10-12"/></svg></div><h3 class="h3">Agrément préfectoral obligatoire</h3><p>Aucun centre n'entre dans le réseau sans agrément VHU en cours de validité : surfaces étanches, traitement des eaux, installation de dépollution, système informatique relié au SIV.</p></div>
+      <div><div class="card__icon"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="6" y="8" width="36" height="28" rx="2"/><path d="M14 20h20M14 26h12M18 42h12"/></svg></div><h3 class="h3">Audits des conseillers réseau</h3><p>Des conseillers INDRA visitent chaque centre : audit qualité, sécurité et environnement, conseil, plan de progrès, vérification des habilitations et du reporting.</p></div>
+      <div><div class="card__icon"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 18l18-8 18 8-18 8z"/><path d="M12 22v10c0 3 6 6 12 6s12-3 12-6V22M42 18v12"/></svg></div><h3 class="h3">Formation AURECA</h3><p>Le seul centre de formation dédié aux métiers VHU forme les équipes du réseau : dépollution, véhicules électriques, réglementation, pièces de réemploi, sécurité. 967 stagiaires en 2025.</p></div>
+      <div><div class="card__icon"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="6" y="10" width="36" height="24" rx="2"/><path d="M6 18h36M14 26h8M16 40h16"/></svg></div><h3 class="h3">Des outils communs</h3><p>Switch-Car pour les flux de véhicules, Precis et Opisto pour les pièces, SIRA pour les assureurs, portail CVHU pour les systèmes individuels, et demain un DMS commun avec Opisto.</p></div>
+      <div><div class="card__icon"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="24" cy="24" r="16"/><path d="M24 12v12l8 5"/></svg></div><h3 class="h3">Des standards de process</h3><p>Le process INDRA en cinq étapes, 25 véhicules par jour et par équipe, des équipements Re-source Engineering Solutions : le même geste, la même sécurité, partout.</p></div>
+      <div><div class="card__icon"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 40V20M20 40V10M32 40V26M44 40V16"/><path d="M4 40h42"/></svg></div><h3 class="h3">Un reporting partagé</h3><p>Déclarations ADEME, indicateurs TRR/TRV/réemploi, délais, certificats : les données remontent, sont consolidées et publiées. Le réseau se pilote avec des chiffres.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- Rejoindre -->
+<section class="section" id="rejoindre">
+  <div class="container">
+    <div class="grid split-40 align-center">
+      <div class="media media--tall media--chamfer media__cap-bg" data-parallax="12" data-reveal="scale" style="max-height:640px"><img src="assets/img/engine-lift.jpg" alt="Technicien manipulant un moteur dans un centre INDRA" loading="lazy"><span class="media__cap">Site INDRA · démontage mécanique</span></div>
+      <div>
+        <p class="eyebrow" data-reveal>Rejoindre le réseau</p>
+        <h2 class="display-2 split-words">Ce que le réseau apporte à un centre.</h2>
+        <ul class="checklist mt-3" data-reveal>
+          <li><strong>Des flux de véhicules garantis</strong> par les contrats-cadres avec 39 groupes d'assurance et 15 constructeurs.</li>
+          <li><strong>L'accès aux réseaux REP</strong> des systèmes individuels confiés à INDRA, via le portail CVHU.</li>
+          <li><strong>Des outils digitaux</strong> : Switch-Car, Precis, Opisto, SIRA, et le futur DMS de référence des centres VHU.</li>
+          <li><strong>La formation AURECA</strong>, l'ingénierie et les équipements Re-source, l'accompagnement réglementaire.</li>
+          <li><strong>Un label reconnu</strong> par les assureurs et les constructeurs, et les réunions régionales annuelles du réseau.</li>
+        </ul>
+        <div class="mt-3" data-reveal>
+          <div class="divider-label mb-2">Le parcours d'intégration</div>
+          <div class="tag-row"><span>01 · Candidature</span><span>02 · Audit du site</span><span>03 · Plan de mise à niveau</span><span>04 · Contrat et outils</span><span>05 · Formation des équipes</span><span>06 · Ouverture des flux</span></div>
+        </div>
+        <div class="flex mt-3" data-reveal>
+          <a class="btn" href="contact.html?profil=centre">Candidater au réseau <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+          <a class="btn btn--ghost" href="https://reseau.goodbye-car.com/cvhu" target="_blank" rel="noopener">Réseaux constructeurs (portail CVHU) <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Un centre membre vu de l'intérieur -->
+<section class="section section--dark-3">
+  <div class="container">
+    <p class="eyebrow" data-reveal>Un centre membre, vu de l'intérieur</p>
+    <h2 class="display-3 split-words mb-4">Le réseau, à hauteur d'atelier.</h2>
+    <div class="member" data-reveal>
+      <div class="member__img"><img src="assets/img/door-removal.jpg" alt="Dépose d'une portière sur une ligne de déconstruction" loading="lazy"></div>
+      <div class="member__body">
+        <span class="pill">Membre du réseau · Occitanie</span>
+        <h3 class="h2" id="member-name">Cazenave Pièces Auto</h3>
+        <dl>
+          <dt>Adresse</dt><dd id="member-addr">Colomiers (31)</dd>
+          <dt>Statut</dt><dd>Centre VHU agréé préfecture · réseau INDRA</dd>
+          <dt>Standards</dt><dd>Process INDRA en 5 étapes, traçabilité code-barres, reporting ADEME</dd>
+          <dt>Compétences</dt><dd>Enlèvement, dépollution, déconstruction, pièces de réemploi</dd>
+        </dl>
+        <p class="muted">Chaque centre du réseau applique les mêmes standards, utilise les mêmes outils et remonte les mêmes indicateurs. C'est ce qui permet à un assureur national de confier ses sinistres sans distinction de département.</p>
+        <a class="link-arrow" href="#carte">Voir le centre sur la carte <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Réunions régionales -->
+<section class="section section--light">
+  <div class="container">
+    <div class="grid split-60 align-center">
+      <div>
+        <p class="eyebrow" data-reveal>L'animation du réseau</p>
+        <h2 class="display-2 split-words">Quatre dates, quatre régions, chaque mois de mars.</h2>
+        <p class="lead mt-3" data-reveal>Les réunions régionales rassemblent les dirigeants des centres membres autour des résultats de l'année, des évolutions réglementaires, des nouveaux outils et des retours d'expérience. Entre deux réunions, les conseillers réseau restent l'interlocuteur quotidien de chaque centre.</p>
+        <div class="grid grid-3 mt-3" data-stagger="0.1">
+          <div><div class="num" style="font-size:44px;color:var(--green-dark)">4</div><p class="small mt-1">réunions régionales réservées au réseau chaque année</p></div>
+          <div><div class="num" style="font-size:44px;color:var(--green-dark)">1</div><p class="small mt-1">conseiller réseau référent par centre</p></div>
+          <div><div class="num" style="font-size:44px;color:var(--green-dark)">30+</div><p class="small mt-1">modules de formation AURECA accessibles aux membres</p></div>
+        </div>
+      </div>
+      <div class="media media--ratio media--chamfer" data-parallax="10" data-reveal="scale"><img src="assets/img/training-hall.jpg" alt="Session de formation et d'échanges au sein du réseau INDRA" loading="lazy"></div>
+    </div>
+  </div>
+</section>
+
+<!-- International -->
+<section class="section grid-bg" id="international">
+  <div class="container">
+    <div class="grid split-60 align-end mb-4">
+      <div><p class="eyebrow" data-reveal>Au-delà de la France</p><h2 class="display-2 split-words">Construire des filières VHU, là où elles n'existent pas encore.</h2></div>
+      <p class="lead" data-reveal>Le département ingénierie et consulting d'INDRA a accompagné plus de 1 000 centres en France et en Europe, installé des unités de déconstruction clé en main et organisé la filière VHU d'un État.</p>
+    </div>
+    <div class="world" data-stagger="0.06">
+      <div><b>Maroc</b><span>Étude et organisation de la filière VHU nationale · depuis 2018</span></div>
+      <div><b>Royaume-Uni</b><span>Unité de déconstruction de Poole · 30 000 VHU/an</span></div>
+      <div><b>Belgique</b><span>Unité de déconstruction · Liège</span></div>
+      <div><b>Portugal</b><span>Unité de déconstruction · Amarante</span></div>
+      <div><b>Espagne</b><span>Unité de déconstruction · Pays basque</span></div>
+      <div><b>Suisse</b><span>Unité de déconstruction · Lausanne</span></div>
+    </div>
+    <p class="muted mt-3 maxw" data-reveal>Avec Opisto (47 %), Pollini Group en Italie et les entités de The Future Is NEUTRAL, INDRA affiche l'ambition de devenir la référence européenne du démantèlement et de la distribution de pièces de réemploi.</p>
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="cta-band__bg"><img src="assets/img/aerial-site.jpg" alt="" loading="lazy"></div>
+  <div class="container">
+    <p class="eyebrow" data-reveal>Le réseau en un rendez-vous</p>
+    <h2 class="display-2 split-words">Une cartographie de couverture pour votre portefeuille.</h2>
+    <p class="lead mt-3 maxw" data-reveal>Assureur ou constructeur, nous superposons vos volumes par département au réseau INDRA et vous montrons, centre par centre, qui prendra en charge vos véhicules.</p>
+    <div class="flex mt-3" data-reveal><a class="btn btn--xl" href="contact.html">Demander la cartographie <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></div>
+  </div>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+<script src="assets/data/france.js" defer></script>
+<script src="assets/data/reseau.js" defer></script>
+<script src="assets/js/main.js" defer></script>
+<script src="assets/js/map.js" defer></script>
+<script>
+  document.addEventListener('indra:ready', function () {
+    if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
+    INDRA.initMap(document.getElementById('big-map'), { compact: false, interactive: true, panel: '#map-panel' });
+    var c = (window.INDRA_CENTRES || []).find(function (x) { return /cazenave/i.test(x.n); });
+    if (c) { document.getElementById('member-name').textContent = c.n; document.getElementById('member-addr').textContent = c.a + ', ' + c.cp + ' ' + c.v; }
+  });
+</script>
+</body>
+</html>

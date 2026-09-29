@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>INDRA Automobile Recycling — Le 1er réseau français du recyclage automobile</title>
+  <meta name="description" content="Depuis 1985, INDRA structure la filière française des véhicules hors d'usage : 350 centres agréés, 425 000 VHU par an, 96,8 % de valorisation. Partenaire de 39 groupes d'assurance et de 15 constructeurs. Une entreprise de The Future Is NEUTRAL (Renault Group · Suez).">
+  <link rel="icon" href="assets/img/logo-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Raleway:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/main.css">
+  <style>
+    /* — spécifique accueil — */
+    .hero-pin .hero__content, .hero-pin .scroll-hint { transition: opacity 0.5s, transform 0.8s var(--ease); }
+    .hero-pin.is-exploded .hero__content { opacity: 0; transform: translateY(-40px); pointer-events: none; }
+    .hero-pin.is-exploded .scroll-hint { opacity: 0; }
+    .hero-pin.is-exploded .hero__vignette { opacity: 0.55; }
+    .hero__vignette { transition: opacity 0.8s; }
+    /* schéma du process */
+    .pv { --t: 0.8s var(--ease); }
+    .pv * { transition: opacity var(--t), transform var(--t), stroke var(--t), fill var(--t); transform-box: fill-box; transform-origin: center; }
+    .pv .body { fill: none; stroke: #b4bec5; stroke-width: 2.2; }
+    .pv .glass { fill: rgba(127,211,232,0.18); stroke: #7fd3e8; stroke-width: 1.2; }
+    .pv .wheel { fill: #0a0d0b; stroke: #6b767e; stroke-width: 6; }
+    .pv .rim { fill: none; stroke: #b4bec5; stroke-width: 1.5; }
+    .pv .part { fill: rgba(160,191,56,0.08); stroke: #a0bf38; stroke-width: 1.4; opacity: 0; }
+    .pv .airbag { fill: rgba(240,160,48,0.25); stroke: #f0a030; stroke-width: 1.4; opacity: 0; }
+    .pv .fluid { fill: #f0a030; opacity: 0; }
+    .pv .tank { fill: rgba(240,160,48,0.12); stroke: #f0a030; stroke-width: 1.2; opacity: 0; }
+    .pv .battery { fill: rgba(127,211,232,0.12); stroke: #7fd3e8; stroke-width: 1.4; opacity: 0; }
+    .pv .cat { fill: rgba(180,190,197,0.12); stroke: #b4bec5; stroke-width: 1.2; opacity: 0; }
+    .pv .tag { opacity: 0; }
+    .pv .lbl { font-family: var(--font-mono); font-size: 10.5px; fill: #848c82; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0; }
+    .pv .arrow { stroke: #a0bf38; stroke-width: 1.4; fill: none; opacity: 0; stroke-dasharray: 5 6; }
+    .pv .scan { stroke: #a0bf38; stroke-width: 1.2; opacity: 0; }
+    .pv .ground { stroke: rgba(255,255,255,0.14); stroke-width: 1; }
+    .pv .hex { stroke: rgba(160,191,56,0.5); fill: rgba(160,191,56,0.03); opacity: 0; }
+    .pv .crush { fill: none; stroke: #b4bec5; stroke-width: 1.4; opacity: 0; }
+    .pv .dim { opacity: 0.25; }
+    /* étape 0 : prise en charge */
+    .pv[data-step="0"] .tag, .pv[data-step="0"] .scan, .pv[data-step="0"] .lbl-0 { opacity: 1; }
+    .pv[data-step="0"] .scan { animation: scan 2.2s var(--ease-2) infinite; }
+    @keyframes scan { 0% { transform: translateY(-70px); } 100% { transform: translateY(70px); } }
+    /* étape 1 : mise en sécurité */
+    .pv[data-step="1"] .airbag, .pv[data-step="1"] .lbl-1 { opacity: 1; }
+    .pv[data-step="1"] .airbag { animation: bag 1.6s var(--ease) infinite alternate; }
+    @keyframes bag { from { transform: scale(0.75); } to { transform: scale(1.15); } }
+    /* étape 2 : dépollution */
+    .pv[data-step="2"] .tank, .pv[data-step="2"] .battery, .pv[data-step="2"] .cat, .pv[data-step="2"] .lbl-2 { opacity: 1; }
+    .pv[data-step="2"] .fluid { opacity: 1; animation: drip 1.4s ease-in infinite; }
+    .pv[data-step="2"] .fluid:nth-child(2) { animation-delay: 0.4s; } .pv[data-step="2"] .fluid:nth-child(3) { animation-delay: 0.9s; }
+    @keyframes drip { 0% { transform: translateY(0); opacity: 0; } 20% { opacity: 1; } 100% { transform: translateY(46px); opacity: 0; } }
+    /* étape 3 : déconstruction ciblée */
+    .pv[data-step="3"] .part, .pv[data-step="3"] .lbl-3, .pv[data-step="3"] .arrow { opacity: 1; }
+    .pv[data-step="3"] .p-door { transform: translate(0, 84px); }
+    .pv[data-step="3"] .p-hood { transform: translate(60px, -60px) rotate(12deg); }
+    .pv[data-step="3"] .p-bumper { transform: translate(52px, 10px); }
+    .pv[data-step="3"] .p-light { transform: translate(46px, -34px); }
+    .pv[data-step="3"] .p-rbumper { transform: translate(-52px, 10px); }
+    .pv[data-step="3"] .p-wheel { transform: translate(0, 70px); }
+    .pv[data-step="3"] .p-tail { transform: translate(-40px, -40px); }
+    /* étape 4 : commercialisation & broyeur */
+    .pv[data-step="4"] .body, .pv[data-step="4"] .glass, .pv[data-step="4"] .wheel, .pv[data-step="4"] .rim { opacity: 0.18; }
+    .pv[data-step="4"] .hex, .pv[data-step="4"] .lbl-4, .pv[data-step="4"] .crush, .pv[data-step="4"] .arrow-4 { opacity: 1; }
+    .pv[data-step="4"] .hex { animation: hexin 0.9s var(--ease) both; }
+    .pv[data-step="4"] .hex:nth-of-type(2) { animation-delay: 0.15s; } .pv[data-step="4"] .hex:nth-of-type(3) { animation-delay: 0.3s; } .pv[data-step="4"] .hex:nth-of-type(4) { animation-delay: 0.45s; }
+    @keyframes hexin { from { transform: scale(0.6); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    /* boucle TFIN */
+    .loop-node { transition: transform 0.5s var(--ease); }
+    .loop-node:hover { transform: scale(1.04); }
+    .loop-node text { font-family: var(--font-body); font-weight: 700; font-size: 13px; fill: #f2f4ef; }
+    .loop-node .sub { font-family: var(--font-mono); font-weight: 400; font-size: 9.5px; fill: #848c82; letter-spacing: 0.08em; }
+    .loop-node .box { fill: #171d19; stroke: rgba(255,255,255,0.14); }
+    .loop-node.is-indra .box { fill: #a0bf38; stroke: #a0bf38; }
+    .loop-node.is-indra text { fill: #2d3a06; } .loop-node.is-indra .sub { fill: #3f5010; }
+    .loop-path { fill: none; stroke: rgba(255,255,255,0.18); stroke-width: 1.4; }
+    .loop-flow { fill: none; stroke: #a0bf38; stroke-width: 1.6; stroke-dasharray: 4 10; animation: dash 1.4s linear infinite; }
+  </style>
+</head>
+<body>
+
+<!-- ===================== HERO 3D ===================== -->
+<section class="hero-pin" id="hero-pin">
+  <div class="hero">
+    <div class="hero__canvas" id="hero-canvas" aria-hidden="true"></div>
+    <div class="hero__vignette"></div>
+    <div class="compo" id="compo" aria-hidden="true">
+      <div class="compo__title">
+        <span class="eyebrow eyebrow--bare">Anatomie d'un véhicule hors d'usage</span>
+        <h2 class="h2">Six familles de matières. Un métier : les séparer, les tracer, les valoriser.</h2>
+        <p class="mono muted mt-1">Composition massique d'un véhicule récent · analyse Re-source Engineering Solutions</p>
+      </div>
+    </div>
+    <div class="hero__content">
+      <div>
+        <div class="ticker-line" data-reveal="fade">Depuis 1985 · Une entreprise de The Future Is NEUTRAL (Renault Group · Suez)</div>
+        <h1 class="hero__title mt-2 reveal-lines">Le 1<sup>er</sup> réseau français<br>du <em>recyclage</em><br><span class="thin">automobile.</span></h1>
+        <p class="lead hero__lead" data-reveal style="--d:0.5s">Industriel, tête de réseau, bureau d'études et organisme de formation : INDRA structure la filière des véhicules hors d'usage pour les assureurs et les constructeurs. Avec des standards uniformes, des équipes habilitées et des performances publiées.</p>
+        <div class="hero__ctas" data-reveal style="--d:0.7s">
+          <a class="btn" href="assureurs.html">Vous êtes assureur <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+          <a class="btn btn--ghost" href="constructeurs.html">Vous êtes constructeur <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+        </div>
+      </div>
+      <div class="hero__side" data-reveal="left" style="--d:0.9s">
+        <div class="hero__badges">
+          <div class="badge badge--40"><span class="num">40</span><span><b>ans</b> d'expertise<br>1985 → 2025</span></div>
+          <div class="badge"><img src="assets/img/logos/tfin.png" alt="The Future Is NEUTRAL" style="background:#fff;padding:3px 6px"><span>Écosystème <b>Renault Group · Suez</b></span></div>
+          <div class="badge"><span class="pill">ISO 9001 · 14001 · 45001</span><span>Sites certifiés SMI</span></div>
+        </div>
+        <p class="mono muted small">↓ Faites défiler : le véhicule se déconstruit</p>
+      </div>
+    </div>
+    <div class="scroll-hint"><i></i>Défiler</div>
+  </div>
+</section>
+
+<!-- ===================== CHIFFRES ===================== -->
+<section class="section section--tight kpi-band">
+  <div class="container">
+    <div class="kpi-grid" data-stagger="0.1">
+      <div class="kpi"><div class="kpi__num num"><span data-count="40">0</span><small>ans</small></div><div class="kpi__label">d'expertise de la filière VHU</div><div class="kpi__src">Créée en 1985 à Saint-Priest (69)</div></div>
+      <div class="kpi"><div class="kpi__num num"><span data-count="350">0</span><small>+</small></div><div class="kpi__label">centres VHU agréés, dont 9 sites détenus</div><div class="kpi__src">Tous départements + 5 DROM</div></div>
+      <div class="kpi"><div class="kpi__num num"><span data-count="425000">0</span></div><div class="kpi__label">véhicules hors d'usage traités par an</div><div class="kpi__src">≈ 40 % des VHU français</div></div>
+      <div class="kpi"><div class="kpi__num num"><span data-count="96.8" data-dec="1">0</span><small>%</small></div><div class="kpi__label">taux de réutilisation et de valorisation</div><div class="kpi__src">Objectif réglementaire : 95 %</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== STATEMENT ===================== -->
+<section class="section grid-bg">
+  <div class="container">
+    <p class="eyebrow" data-reveal>Notre conviction</p>
+    <p class="statement">Un véhicule hors d'usage n'est pas un déchet.* C'est 1,1 tonne de matières* et 20 à 30 pièces* à remettre dans la boucle. Avec des preuves,* partout en France, au même standard.*</p>
+    <div class="grid grid-3 mt-5" data-stagger="0.12">
+      <div><div class="divider-label">Industriel</div><p class="mt-2 muted">9 sites de déconstruction détenus, 420 000 pièces en stock, des procédés brevetés diffusés à tout le réseau.</p></div>
+      <div><div class="divider-label">Tête de réseau</div><p class="mt-2 muted">Des conseillers réseau qui auditent, forment et outillent chaque centre : mêmes standards, mêmes outils, même reporting.</p></div>
+      <div><div class="divider-label">Bureau d'études &amp; école</div><p class="mt-2 muted">Re-source Engineering Solutions conçoit les équipements et les filières ; AURECA forme les équipes, jusqu'aux pompiers.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== AUDIENCES ===================== -->
+<section class="section section--dark-2">
+  <div class="container">
+    <div class="grid split-60 align-end mb-4">
+      <div>
+        <p class="eyebrow" data-reveal>Une porte d'entrée par métier</p>
+        <h2 class="display-2 split-words">Ce qu'INDRA fait pour vous.</h2>
+      </div>
+      <p class="lead" data-reveal>Assureur, constructeur, centre VHU, réparateur, collectivité ou particulier : chacun trouve sa preuve et son interlocuteur en moins de dix secondes.</p>
+    </div>
+    <div class="grid grid-3" data-stagger="0.08">
+      <a class="aud" href="assureurs.html">
+        <div class="aud__img"><img src="assets/img/tfin-tag-hands.jpg" alt="Pièce tracée par étiquette dans un centre INDRA" loading="lazy"></div>
+        <div class="aud__tag">Assureurs · 39 groupes partenaires</div>
+        <h3 class="h3">Enlèvement partout, traçabilité sans faille</h3>
+        <p>Maillage national et ultramarin, certificats de destruction, désimmatriculation SIV, plateforme SIRA, pièces de réemploi garanties pour réduire le coût des sinistres.</p>
+        <span class="link-arrow">Découvrir <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+      </a>
+      <a class="aud" href="constructeurs.html">
+        <div class="aud__img"><img src="assets/img/ev-battery-bench.jpg" alt="Extraction d'une batterie de traction dans un centre expert VE" loading="lazy"></div>
+        <div class="aud__tag">Constructeurs · 15 systèmes individuels</div>
+        <h3 class="h3">Vos obligations REP, tenues clé en main</h3>
+        <p>Collecte gratuite, reprise, reporting réglementaire, batteries lithium-ion sécurisées, éco-conception et boucles matières fermées avec l'écosystème The Future Is NEUTRAL.</p>
+        <span class="link-arrow">Découvrir <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+      </a>
+      <a class="aud" href="reseau.html">
+        <div class="aud__img"><img src="assets/img/workshop-line.jpg" alt="Ligne de déconstruction d'un site INDRA" loading="lazy"></div>
+        <div class="aud__tag">Centres VHU · membres et candidats</div>
+        <h3 class="h3">Rejoindre le 1<sup>er</sup> réseau français</h3>
+        <p>Flux de véhicules garantis par les contrats assureurs et constructeurs, outils digitaux, formation AURECA, équipements Re-source, accompagnement réglementaire.</p>
+        <span class="link-arrow">Découvrir <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+      </a>
+      <a class="aud" href="pieces-reemploi.html">
+        <div class="aud__img"><img src="assets/img/racks-doors.jpg" alt="Stock de portières de réemploi" loading="lazy"></div>
+        <div class="aud__tag">Réparateurs · carrossiers</div>
+        <h3 class="h3">420 000 pièces de réemploi en stock</h3>
+        <p>Trois gammes garanties de 6 à 12 mois, commande en ligne via Opisto, Precis et Digipiec, livraison rapide depuis nos 9 sites.</p>
+        <span class="link-arrow">Découvrir <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+      </a>
+      <a class="aud" href="contact.html#collectivites">
+        <div class="aud__img"><img src="assets/img/aerial-site.jpg" alt="Vue aérienne d'un site de déconstruction" loading="lazy"></div>
+        <div class="aud__tag">Collectivités · fourrières · SDIS</div>
+        <h3 class="h3">Destruction conforme, marchés publics</h3>
+        <p>Certificats de destruction, traçabilité SIV, réponse aux appels d'offres, véhicules mis à disposition pour les exercices de secours.</p>
+        <span class="link-arrow">Découvrir <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+      </a>
+      <a class="aud" href="particuliers.html">
+        <div class="aud__img"><img src="assets/img/clio-lift.jpg" alt="Véhicule pris en charge dans un centre agréé" loading="lazy"></div>
+        <div class="aud__tag">Particuliers · Goodbye Car</div>
+        <h3 class="h3">Se séparer de sa voiture, gratuitement et légalement</h3>
+        <p>Reprise 100 % dématérialisée, enlèvement sur rendez-vous, certificat de destruction délivré par un centre agréé.</p>
+        <span class="link-arrow">Découvrir <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PROCESS 5 ÉTAPES (pinned) ===================== -->
+<section class="process" id="process" style="height:520vh">
+  <div class="process__sticky container">
+    <div class="process__steps">
+      <div class="step is-active">
+        <div class="step__idx">01</div>
+        <h3 class="h2">Prise en charge et expertise</h3>
+        <p>Enregistrement réglementaire sur le livre de police, identification et traçabilité par code-barres dès l'entrée du véhicule. Le certificat de destruction et la désimmatriculation SIV sont générés dans la foulée.</p>
+        <div class="step__tags"><span>Livre de police</span><span>Code-barres</span><span>SIV</span><span>Certificat de destruction</span></div>
+      </div>
+      <div class="step">
+        <div class="step__idx">02</div>
+        <h3 class="h2">Mise en sécurité</h3>
+        <p>Neutralisation des éléments pyrotechniques (airbags, prétensionneurs) et consignation électrique. Sur les véhicules électrifiés, seules des équipes habilitées interviennent, selon les procédures INDRA.</p>
+        <div class="step__tags"><span>Airbags</span><span>Pyrotechnie</span><span>Habilitation VE</span></div>
+      </div>
+      <div class="step">
+        <div class="step__idx">03</div>
+        <h3 class="h2">Dépollution</h3>
+        <p>Extraction de tous les fluides (huiles, carburants, liquides de frein et de refroidissement, fluides frigorigènes), des batteries, des pots catalytiques et des filtres à particules, sur des équipements conçus par Re-source Engineering Solutions.</p>
+        <div class="step__tags"><span>Fluides</span><span>Batteries</span><span>Pots catalytiques · FAP</span></div>
+      </div>
+      <div class="step">
+        <div class="step__idx">04</div>
+        <h3 class="h2">Déconstruction ciblée</h3>
+        <p>Démontage de 20 à 30 pièces par véhicule selon la demande du marché : carrosserie, optiques, mécanique. Puis extraction des matières à forte valeur : faisceaux cuivre, pare-chocs polypropylène, verre.</p>
+        <div class="step__tags"><span>20–30 pièces / VHU</span><span>9 kg de câbles</span><span>15–20 kg de PP</span></div>
+      </div>
+      <div class="step">
+        <div class="step__idx">05</div>
+        <h3 class="h2">Commercialisation et valorisation</h3>
+        <p>Les pièces rejoignent les stocks PIEC (Opisto, Precis, Digipiec), les matières partent vers leurs filières de recyclage, la carcasse vers le broyeur. Chaque flux est déclaré à l'ADEME et audité.</p>
+        <div class="step__tags"><span>PIEC</span><span>Matières</span><span>Broyeur</span><span>Registre SYDEREP</span></div>
+      </div>
+      <div class="process__progress"><b>Étape 01 / 05</b><span></span><span></span><span></span><span></span><span></span></div>
+    </div>
+    <div class="process__viz">
+      <svg class="pv" viewBox="0 0 620 360" data-step="0" aria-label="Schéma animé des cinq étapes de traitement d'un véhicule hors d'usage">
+        <line class="ground" x1="20" y1="266" x2="600" y2="266"/>
+        <!-- carrosserie -->
+        <path class="body" d="M62,236 L62,196 Q72,158 132,146 L204,104 Q244,84 322,84 L404,88 Q456,94 506,146 L546,156 Q566,166 566,204 L566,236 Z"/>
+        <path class="glass" d="M214,110 L248,92 L320,92 L322,146 L214,146 Z"/>
+        <path class="glass" d="M332,92 L398,96 Q440,100 478,142 L332,146 Z"/>
+        <!-- roues -->
+        <g class="p-wheel part-wheel"><circle class="wheel" cx="152" cy="236" r="32"/><circle class="rim" cx="152" cy="236" r="14"/></g>
+        <circle class="wheel" cx="470" cy="236" r="32"/><circle class="rim" cx="470" cy="236" r="14"/>
+        <!-- étape 0 : étiquette & scan -->
+        <g class="tag"><rect x="262" y="176" width="78" height="30" fill="#0a0d0b" stroke="#a0bf38" stroke-width="1.2"/>
+          <g fill="#a0bf38"><rect x="270" y="182" width="2" height="18"/><rect x="275" y="182" width="1.2" height="18"/><rect x="279" y="182" width="3" height="18"/><rect x="285" y="182" width="1.5" height="18"/><rect x="290" y="182" width="2.4" height="18"/><rect x="296" y="182" width="1" height="18"/><rect x="300" y="182" width="3" height="18"/><rect x="306" y="182" width="1.5" height="18"/><rect x="311" y="182" width="2" height="18"/><rect x="317" y="182" width="1" height="18"/><rect x="321" y="182" width="2.6" height="18"/><rect x="327" y="182" width="1.4" height="18"/></g></g>
+        <line class="scan" x1="40" y1="176" x2="590" y2="176"/>
+        <text class="lbl lbl-0" x="62" y="300">Enregistrement · livre de police · SIV</text>
+        <!-- étape 1 : airbags -->
+        <circle class="airbag" cx="392" cy="150" r="22"/><circle class="airbag" cx="436" cy="136" r="16"/><circle class="airbag" cx="262" cy="150" r="14"/>
+        <text class="lbl lbl-1" x="62" y="300">Neutralisation pyrotechnique · consignation</text>
+        <!-- étape 2 : fluides, batterie, catalyseur -->
+        <rect class="tank" x="250" y="222" width="70" height="20" rx="4"/>
+        <rect class="tank" x="480" y="196" width="52" height="28" rx="3"/>
+        <rect class="battery" x="196" y="246" width="230" height="14" rx="2"/>
+        <rect class="cat" x="342" y="248" width="52" height="16" rx="8"/>
+        <g><ellipse class="fluid" cx="285" cy="250" rx="3.5" ry="5"/><ellipse class="fluid" cx="506" cy="232" rx="3.5" ry="5"/><ellipse class="fluid" cx="368" cy="272" rx="3.5" ry="5"/></g>
+        <text class="lbl lbl-2" x="62" y="300">Fluides · batteries · pots catalytiques · FAP</text>
+        <!-- étape 3 : pièces -->
+        <path class="part p-door" d="M258,120 L328,100 L330,232 L258,232 Z"/>
+        <path class="part p-hood" d="M404,88 Q456,94 506,146 L404,146 Z"/>
+        <path class="part p-bumper" d="M546,196 L570,196 L570,236 L546,236 Z"/>
+        <ellipse class="part p-light" cx="522" cy="158" rx="16" ry="9"/>
+        <path class="part p-rbumper" d="M58,196 L82,196 L82,236 L58,236 Z"/>
+        <ellipse class="part p-tail" cx="86" cy="170" rx="9" ry="12"/>
+        <path class="arrow" d="M330,250 L330,318 L470,318"/><text class="lbl lbl-3" x="478" y="322">Stock PIEC</text>
+        <text class="lbl lbl-3" x="62" y="300">20 à 30 pièces · faisceaux · pare-chocs · verre</text>
+        <!-- étape 4 : flux de valorisation -->
+        <g class="crush"><path d="M200,236 L420,236 M186,214 L436,214 M172,196 L450,196"/></g>
+        <g class="hex-g">
+          <polygon class="hex" points="120,300 134,292 148,300 148,316 134,324 120,316"/>
+          <polygon class="hex" points="256,300 270,292 284,300 284,316 270,324 256,316"/>
+          <polygon class="hex" points="392,300 406,292 420,300 420,316 406,324 392,316"/>
+          <polygon class="hex" points="528,300 542,292 556,300 556,316 542,324 528,316"/>
+        </g>
+        <text class="lbl lbl-4" x="112" y="344">Pièces</text><text class="lbl lbl-4" x="244" y="344">Matières</text><text class="lbl lbl-4" x="380" y="344">Pneus</text><text class="lbl lbl-4" x="506" y="344">Broyeur</text>
+        <path class="arrow arrow-4" d="M310,240 L310,280 M134,280 L542,280 M134,280 L134,292 M270,280 L270,292 M406,280 L406,292 M542,280 L542,292"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PERFORMANCE ===================== -->
+<section class="section section--light" id="performance">
+  <div class="container">
+    <div class="grid split-60 align-end mb-4">
+      <div>
+        <p class="eyebrow" data-reveal>Des performances mesurées et publiées</p>
+        <h2 class="display-2 split-words">Au-dessus des objectifs de la filière. Chaque année, audité.</h2>
+      </div>
+      <p class="lead" data-reveal>Les taux de réutilisation, de recyclage et de valorisation sont déclarés à l'ADEME par chaque centre et vérifiés par un tiers certificateur. Le réseau INDRA ne se contente pas d'être conforme.</p>
+    </div>
+    <div class="grid grid-3 align-center">
+      <div data-reveal="scale">
+        <div class="gauge" style="--c:754;--v:0.968">
+          <svg viewBox="0 0 260 260"><circle class="gauge__bg" cx="130" cy="130" r="120"/><circle class="gauge__obj" cx="130" cy="130" r="120" style="stroke-dasharray:716 38"/><circle class="gauge__val" cx="130" cy="130" r="120"/></svg>
+          <div class="gauge__center"><div><div class="num"><span data-count="96.8" data-dec="1">0</span><small>%</small></div><p>TRV réseau · objectif 95 %</p></div></div>
+        </div>
+      </div>
+      <div class="bars" style="grid-column: span 2">
+        <div class="bar"><span class="bar__label">Réemploi INDRA</span><div class="bar__track"><div class="bar__fill" style="--v:0.9375"></div></div><span class="bar__val">&gt; 15 %</span></div>
+        <div class="bar"><span class="bar__label">Objectif REP 2028</span><div class="bar__track"><div class="bar__fill bar__fill--obj" style="--v:1;--d:0.15s"></div></div><span class="bar__val">16 %</span></div>
+        <div class="bar"><span class="bar__label">Objectif REP 2026</span><div class="bar__track"><div class="bar__fill bar__fill--obj" style="--v:0.625;--d:0.3s"></div></div><span class="bar__val">10 %</span></div>
+        <div class="bar"><span class="bar__label">Objectif REP 2024</span><div class="bar__track"><div class="bar__fill bar__fill--obj" style="--v:0.531;--d:0.45s"></div></div><span class="bar__val">8,5 %</span></div>
+        <p class="small muted mt-2">Taux de réemploi : masse des pièces démontées et revendues en l'état (PIEC) rapportée à la masse des VHU. Le réseau INDRA se situe déjà au niveau de l'objectif 2028 du cahier des charges REP VHU. TRR &gt; 85 % (objectif 85 %).</p>
+      </div>
+    </div>
+    <div class="mt-5">
+      <div class="divider-label mb-3">Ce que 400 000 véhicules deviennent en une année · 440 000 tonnes de matières réutilisées ou recyclées, soit plus de 45 tours Eiffel</div>
+      <div class="matter-grid">
+        <div class="matter"><div class="matter__img"><img src="assets/img/mat-shred.jpg" alt="" loading="lazy"></div><div class="num"><span data-count="300000">0</span><small>t</small></div><p>d'acier recyclé</p><i style="--v:1"></i></div>
+        <div class="matter"><div class="matter__img"><img src="assets/img/racks-bumpers.jpg" alt="" loading="lazy"></div><div class="num"><span data-count="70000">0</span><small>t</small></div><p>de pièces de réemploi, soit plus de 4 millions de pièces</p><i style="--v:0.23;--d:0.1s"></i></div>
+        <div class="matter"><div class="matter__img"><img src="assets/img/engine-lift.jpg" alt="" loading="lazy"></div><div class="num"><span data-count="19500">0</span><small>t</small></div><p>d'aluminium</p><i style="--v:0.065;--d:0.2s"></i></div>
+        <div class="matter"><div class="matter__img"><img src="assets/img/mat-plastics.jpg" alt="" loading="lazy"></div><div class="num"><span data-count="9700">0</span><small>t</small></div><p>de polypropylène réinjecté dans des pièces neuves</p><i style="--v:0.032;--d:0.3s"></i></div>
+        <div class="matter"><div class="matter__img"><img src="assets/img/ev-module.jpg" alt="" loading="lazy"></div><div class="num"><span data-count="5800">0</span><small>t</small></div><p>de batteries collectées et orientées vers le recyclage</p><i style="--v:0.019;--d:0.4s"></i></div>
+        <div class="matter"><div class="matter__img"><img src="assets/img/mat-cables.jpg" alt="" loading="lazy"></div><div class="num"><span data-count="4850">0</span><small>t</small></div><p>de cuivre, 9 kg de faisceaux par véhicule</p><i style="--v:0.016;--d:0.5s"></i></div>
+        <div class="matter"><div class="matter__img"><img src="assets/img/mat-catalysts.jpg" alt="" loading="lazy"></div><div class="num"><span data-count="290000">0</span></div><p>pots catalytiques et filtres à particules valorisés</p><i style="--v:0.5;--d:0.6s"></i></div>
+        <div class="matter"><div class="matter__img"><img src="assets/img/tfin-tech-cap.jpg" alt="" loading="lazy"></div><div class="num">−45 <small>à</small> −95<small>%</small></div><p>d'émissions de GES pour une pièce de carrosserie réemployée, contre une pièce neuve (ACV Quantis)</p><i style="--v:0.95;--d:0.7s"></i></div>
+      </div>
+      <p class="small muted mt-2">Année de référence 2023 · sources : INDRA, The Future Is NEUTRAL, registre SYDEREP (ADEME).</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== RÉSEAU ===================== -->
+<section class="section grid-bg" id="reseau">
+  <div class="container">
+    <div class="grid split-40 align-center">
+      <div>
+        <p class="eyebrow" data-reveal>Le réseau · actif n° 1</p>
+        <h2 class="display-2 split-words">Un maillage national, un seul standard.</h2>
+        <p class="lead mt-3" data-reveal>Tous les départements métropolitains et cinq départements d'outre-mer. Chaque centre est agréé par la préfecture, audité par un conseiller réseau INDRA, formé chez AURECA et équipé des mêmes outils : Switch-Car pour les flux, Precis et Opisto pour les pièces, SIRA pour les assureurs.</p>
+        <div class="coverage mt-3" data-reveal>
+          <div><div class="num"><span data-count="96">0</span></div><p>départements couverts</p></div>
+          <div><div class="num"><span data-count="5">0</span></div><p>DROM : Guadeloupe, Martinique, Guyane, Réunion, Mayotte</p></div>
+          <div><div class="num"><span data-count="100">0</span><small style="font-size:0.5em;color:var(--green)">%</small></div><p>de centres agréés préfecture</p></div>
+        </div>
+        <div class="flex mt-3" data-reveal>
+          <a class="btn" href="reseau.html">Explorer la carte <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+          <a class="link-arrow" href="reseau.html#rejoindre">Rejoindre le réseau <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+        </div>
+      </div>
+      <div class="map-wrap" id="home-map" data-reveal="scale"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CONFIANCE ===================== -->
+<section class="section section--dark-2">
+  <div class="container">
+    <div class="grid grid-2 align-end mb-4">
+      <div>
+        <p class="eyebrow" data-reveal>Ils nous font confiance</p>
+        <h2 class="display-3 split-words">39 groupes d'assurance. 15 constructeurs. Une filière.</h2>
+      </div>
+      <p class="lead" data-reveal>Les assureurs confient à INDRA l'enlèvement et la destruction tracée de leurs véhicules sinistrés. Les constructeurs lui délèguent leurs obligations de responsabilité élargie du producteur.</p>
+    </div>
+    <div class="grid grid-2">
+      <div class="card card--green" data-reveal>
+        <div class="card__num">Assurance</div>
+        <div class="num" style="font-size:72px;line-height:0.9"><span data-count="39">0</span></div>
+        <h3 class="h3 mt-2">groupes d'assurance et mutuelles partenaires</h3>
+        <p>Contrats-cadres nationaux, appels d'offres via Switch-Car, visualisation des réseaux dédiés sur SIRA, reporting des délais et des certificats.</p>
+        <a class="link-arrow mt-2" style="color:var(--green-ink)" href="assureurs.html">L'offre assureurs <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+      </div>
+      <div class="card" data-reveal style="--d:0.1s">
+        <div class="card__num">Constructeurs · systèmes individuels REP</div>
+        <div class="chips">
+          <span class="chip">Renault</span><span class="chip">Dacia</span><span class="chip">Alpine</span><span class="chip">Mobilize</span><span class="chip">Nissan</span><span class="chip">Toyota</span><span class="chip">Lexus</span><span class="chip">Kia</span><span class="chip">Tesla</span><span class="chip">Jaguar</span><span class="chip">Land Rover</span><span class="chip">Iveco</span><span class="chip">Renault Trucks</span><span class="chip">Honda</span><span class="chip">Suzuki</span><span class="chip">Aixam</span><span class="chip">Piaggio</span>
+        </div>
+        <p class="mt-2">INDRA est le prestataire des systèmes individuels de 15 constructeurs : collecte gratuite, reprise et reporting réglementaire des véhicules hors d'usage de leurs marques.</p>
+        <a class="link-arrow mt-2" href="constructeurs.html">L'offre constructeurs <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+      </div>
+    </div>
+    <div class="mt-4" data-reveal>
+      <div class="divider-label mb-2">Certifications et labels</div>
+      <div class="logo-wall">
+        <div><img src="assets/img/logos/iso.png" alt="ISO 9001, 14001, 45001 — Bureau Veritas Certification"></div>
+        <div><img src="assets/img/logos/qualiopi.png" alt="Qualiopi — organisme de formation certifié"></div>
+        <div><img src="assets/img/logos/gptw.png" alt="Great Place To Work 2022"></div>
+        <div><img src="assets/img/logos/egapro.png" alt="Index égalité professionnelle 97/100"></div>
+        <div><img src="assets/img/logos/tfin.png" alt="The Future Is NEUTRAL"></div>
+        <div><img src="assets/img/logos/renault-suez.png" alt="Renault Group · Suez"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== INNOVATION ===================== -->
+<section class="section">
+  <div class="container">
+    <div class="grid split-60 align-end mb-4">
+      <div>
+        <p class="eyebrow" data-reveal>Innovation &amp; R&amp;D</p>
+        <h2 class="display-2 split-words">Un industriel qui invente les procédés, puis les diffuse à son réseau.</h2>
+      </div>
+      <p class="lead" data-reveal>Quinze ans de recherche chez Re-source Engineering Solutions, vingt ans d'éco-conception avec les constructeurs. Le verre, les batteries, le polypropylène, le cuivre : chaque matière a son programme.</p>
+    </div>
+    <div class="grid grid-3" data-stagger="0.1">
+      <a class="card card--flat" href="innovation.html#verre" style="padding:0;background:transparent;border:0">
+        <div class="media media--ratio media--chamfer media__cap-bg" data-parallax="10"><img src="assets/img/tfin-tech-cap.jpg" alt="Technicien INDRA au pare-brise d'un véhicule" loading="lazy"><span class="figure-num">R&amp;D 01</span><span class="media__cap">Verre automobile en boucle fermée</span></div>
+        <h3 class="h3 mt-3">Le verre des VHU redevient du verre automobile</h3>
+        <p class="mt-1">Pilote lancé le 18 mars 2025 avec Saint-Gobain Glass France, Saint-Gobain Sekurit et Renault Group : les vitrages déposés dans les centres INDRA sont traités et refondus en vitrages neufs.</p>
+      </a>
+      <a class="card card--flat" href="innovation.html#batteries" style="padding:0;background:transparent;border:0">
+        <div class="media media--ratio media--chamfer media__cap-bg" data-parallax="10"><img src="assets/img/ev-module.jpg" alt="Module de batterie lithium-ion extrait" loading="lazy"><span class="figure-num">R&amp;D 02</span><span class="media__cap">Batteries lithium-ion</span></div>
+        <h3 class="h3 mt-3">Extraire, sécuriser, transporter les batteries de traction</h3>
+        <p class="mt-1">Procédures d'extraction sur véhicules accidentés ou immergés, transport ADR, centres experts VE, formation des équipes et des sapeurs-pompiers aux risques électriques.</p>
+      </a>
+      <a class="card card--flat" href="innovation.html#matieres" style="padding:0;background:transparent;border:0">
+        <div class="media media--ratio media--chamfer media__cap-bg" data-parallax="10"><img src="assets/img/mat-cables.jpg" alt="Faisceaux électriques extraits pour le cuivre" loading="lazy"><span class="figure-num">R&amp;D 03</span><span class="media__cap">Plastiques &amp; cuivre</span></div>
+        <h3 class="h3 mt-3">Car Power Dismantler et polypropylène en boucle</h3>
+        <p class="mt-1">Bras hydraulique breveté qui extrait le groupe motopropulseur et la planche de bord pour récupérer 9 kg de câbles par véhicule. 15 à 20 kg de polypropylène réinjectés dans des pièces neuves.</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== BOUCLE TFIN ===================== -->
+<section class="section section--dark-3 grid-bg">
+  <div class="container">
+    <div class="grid split-40 align-center">
+      <div class="flow" data-reveal="scale">
+        <svg viewBox="0 0 560 520" aria-label="La boucle d'économie circulaire The Future Is NEUTRAL">
+          <defs><marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#a0bf38"/></marker></defs>
+          <circle cx="280" cy="260" r="180" class="loop-path"/>
+          <circle cx="280" cy="260" r="180" class="loop-flow"/>
+          <g class="loop-node is-indra" transform="translate(280 80)"><rect class="box" x="-92" y="-30" width="184" height="60" rx="2"/><text text-anchor="middle" y="-4">INDRA</text><text class="sub" text-anchor="middle" y="14">COLLECTE · DÉPOLLUTION · DÉMANTÈLEMENT</text></g>
+          <g class="loop-node" transform="translate(452 190)"><rect class="box" x="-80" y="-30" width="160" height="60" rx="2"/><text text-anchor="middle" y="-4">The Remakers</text><text class="sub" text-anchor="middle" y="14">REMANUFACTURING</text></g>
+          <g class="loop-node" transform="translate(420 380)"><rect class="box" x="-80" y="-30" width="160" height="60" rx="2"/><text text-anchor="middle" y="-4">GAIA</text><text class="sub" text-anchor="middle" y="14">MATIÈRES · BATTERIES</text></g>
+          <g class="loop-node" transform="translate(140 380)"><rect class="box" x="-84" y="-30" width="168" height="60" rx="2"/><text text-anchor="middle" y="-4">Boone Comenor</text><text class="sub" text-anchor="middle" y="14">MÉTAUX · 47 SITES</text></g>
+          <g class="loop-node" transform="translate(108 190)"><rect class="box" x="-80" y="-30" width="160" height="60" rx="2"/><text text-anchor="middle" y="-4">Renault Group</text><text class="sub" text-anchor="middle" y="14">ÉCO-CONCEPTION · VÉHICULES NEUFS</text></g>
+          <g class="loop-node" transform="translate(280 260)"><text text-anchor="middle" y="-10" style="font-family:var(--font-display);font-size:26px;font-weight:700;letter-spacing:0.04em">THE FUTURE</text><text text-anchor="middle" y="20" style="font-family:var(--font-display);font-size:26px;font-weight:700;letter-spacing:0.04em">IS NEUTRAL</text><text class="sub" text-anchor="middle" y="44">RENAULT GROUP · SUEZ</text></g>
+          <path d="M280,110 L280,225" class="loop-path" marker-end="url(#arr)" stroke-dasharray="3 5"/>
+        </svg>
+      </div>
+      <div>
+        <p class="eyebrow" data-reveal>Un écosystème, pas une casse</p>
+        <h2 class="display-2 split-words">L'entité démantèlement de The Future Is NEUTRAL.</h2>
+        <p class="lead mt-3" data-reveal>Détenue à 100 % depuis 2024 par la holding d'économie circulaire de Renault Group et Suez, INDRA travaille en boucle fermée avec ses entités sœurs : les pièces à rénover partent chez The Remakers, les matières et batteries chez GAIA, les métaux chez Boone Comenor, les enseignements d'éco-conception chez les constructeurs.</p>
+        <ul class="checklist mt-3" data-reveal>
+          <li><strong>Un accès direct au constructeur</strong> pour l'éco-conception, les batteries et le verre, tout en restant ouvert à toutes les marques et tous les assureurs.</li>
+          <li><strong>La solidité d'un groupe industriel</strong> : 79 M€ de chiffre d'affaires en 2024, 360 salariés, programme d'acquisitions de centres depuis 2023.</li>
+          <li><strong>Une ambition européenne</strong> : Opisto (47 %), Pollini Group en Italie, unités de déconstruction au Royaume-Uni, en Belgique, au Portugal, en Espagne et en Suisse.</li>
+        </ul>
+        <a class="btn btn--ghost mt-3" href="a-propos.html" data-reveal>Découvrir INDRA <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== MARQUEE ===================== -->
+<div class="marquee marquee--big" aria-hidden="true">
+  <div class="marquee__track" style="--speed:60s">
+    <span class="marquee__item">Collecte</span><span class="marquee__item">Dépollution</span><span class="marquee__item">Démantèlement</span><span class="marquee__item">Pièces de réemploi</span><span class="marquee__item">Matières</span><span class="marquee__item">Formation</span><span class="marquee__item">Ingénierie</span><span class="marquee__item">Traçabilité</span>
+  </div>
+</div>
+
+<!-- ===================== ACTUALITÉS ===================== -->
+<section class="section">
+  <div class="container">
+    <div class="flex between align-end mb-3">
+      <div><p class="eyebrow" data-reveal>Actualités</p><h2 class="display-3 split-words">Ce qui bouge chez INDRA.</h2></div>
+      <a class="link-arrow" href="actualites.html" data-reveal>Toutes les actualités <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+    </div>
+    <div class="news" data-stagger="0.08">
+      <a class="news-item" href="actualites.html#kaufman"><time>06 · 02 · 2026</time><div><h3>Xavier Kaufman nommé président-directeur général d'INDRA</h3><p>Il succède à Florence Bailleul avec une feuille de route claire : consolidation du réseau, DMS commun avec Opisto en 2027, montée en valeur de la pièce de réemploi. « Le marché sera sans pitié avec les recycleurs qui ne s'adaptent pas. »</p></div><span class="tag">Gouvernance</span></a>
+      <a class="news-item" href="actualites.html#40ans"><time>12 · 12 · 2025</time><div><h3>40 ans d'innovation et de valorisation des véhicules hors d'usage</h3><p>Célébrés simultanément sur les sept sites français : des portières recyclées transformées en œuvres collectives, et un bilan 2020-2025 de 3 331 tonnes de polypropylène et 1 336 tonnes de câbles cuivre recyclés.</p></div><span class="tag">Groupe</span></a>
+      <a class="news-item" href="actualites.html#sira"><time>01 · 10 · 2025</time><div><h3>SIRA : les réseaux dédiés aux assureurs, visibles en un clic</h3><p>Le Site Internet Réseaux Assurance, développé par INDRA, permet à chaque compagnie de visualiser les centres dédiés à ses besoins : enlèvement, expertise, pièces de réemploi, véhicules électriques.</p></div><span class="tag">Assureurs</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CTA ===================== -->
+<section class="cta-band">
+  <div class="cta-band__bg"><img src="assets/img/aerial-yard.jpg" alt="" loading="lazy"></div>
+  <div class="container">
+    <p class="eyebrow" data-reveal>Parlons de vos flux</p>
+    <h2 class="display-2 split-words">Un rendez-vous grands comptes, une réponse sous 48 h.</h2>
+    <p class="lead mt-3 maxw" data-reveal>Sinistres à enlever partout en France, obligations REP à tenir, batteries à sécuriser, projet de filière à l'international : nos équipes grands comptes vous répondent avec des chiffres, pas des promesses.</p>
+    <div class="flex mt-3" data-reveal>
+      <a class="btn btn--xl" href="contact.html?profil=assureur">Assureurs : prendre rendez-vous <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+      <a class="btn btn--xl btn--ghost" href="contact.html?profil=constructeur">Constructeurs : prestation REP <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+    </div>
+  </div>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="assets/data/france.js" defer></script>
+<script src="assets/data/reseau.js" defer></script>
+<script src="assets/js/main.js" defer></script>
+<script src="assets/js/hero.js" defer></script>
+<script src="assets/js/map.js" defer></script>
+<script>
+  document.addEventListener('indra:ready', function () {
+    if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
+    var api = INDRA.initHero(document.getElementById('hero-canvas'));
+    INDRA.bindHeroScroll(api, document.getElementById('hero-pin'), document.getElementById('compo'));
+    INDRA.initMap(document.getElementById('home-map'), { compact: true, interactive: true });
+    // Le pin du hero ajoute 160 % de hauteur : on trie les triggers pour que les sections suivantes en tiennent compte.
+    if (window.ScrollTrigger) { ScrollTrigger.sort(); ScrollTrigger.refresh(); setTimeout(function () { ScrollTrigger.sort(); ScrollTrigger.refresh(); }, 900); }
+  });
+</script>
+</body>
+</html>
