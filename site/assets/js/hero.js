@@ -268,7 +268,7 @@
     // Mise en scène : au repos, le véhicule occupe l'espace libre en haut à droite ;
     // au défilement, les colonnes viennent se recentrer à l'écran.
     const POSE = {
-      desktop: { rest: { x: 2.25, y: 1.6, s: 0.85 }, exploded: { x: 0, y: 0.95, s: 1 } },
+      desktop: { rest: { x: 0, y: 2.05, s: 0.68 }, exploded: { x: 0, y: 0.95, s: 1 } },
       mobile: { rest: { x: 0, y: 1.35, s: 1 }, exploded: { x: 0, y: 2.45, s: 0.7 } }
     };
 
@@ -309,9 +309,8 @@
       const w = wrap.clientWidth, h = wrap.clientHeight;
       renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix();
       isMobile = w < 800; camera.position.z = isMobile ? 15.5 : 8.4;
-      // au repos, le véhicule reste entièrement visible à droite quel que soit le ratio de l'écran
-      const halfW = Math.tan(camera.fov * Math.PI / 360) * camera.position.z * camera.aspect;
-      POSE.desktop.rest.x = Math.max(0.6, Math.min(2.25, halfW - 2.15));
+      // au repos, le véhicule est centré ; sur les écrans peu hauts on le réduit pour laisser place au titre
+      POSE.desktop.rest.s = h < 760 ? 0.58 : 0.68;
     }
     window.addEventListener('resize', resize); resize();
     window.addEventListener('mousemove', e => { mouseX = (e.clientX / innerWidth - 0.5); mouseY = (e.clientY / innerHeight - 0.5); }, { passive: true });
