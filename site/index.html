@@ -21,13 +21,24 @@
     .compo__title { transition: opacity 0.45s, transform 0.6s var(--ease); }
     .compo.is-exiting .compo__title { opacity: 0 !important; transform: translate(-50%, -24px); }
     @media (max-width: 700px) { .compo.is-exiting .compo__label { opacity: 0 !important; } }
-    /* schéma du process */
+    /* schéma du process : animations continues + états par étape */
     .pv { --t: 0.9s cubic-bezier(0.4, 0, 0.2, 1); }
     .pv * { transition: opacity var(--t), transform var(--t), stroke var(--t), fill var(--t); transform-box: fill-box; transform-origin: center; }
-    .pv .body { fill: none; stroke: #b4bec5; stroke-width: 2.2; }
+    .pv .body { fill: rgba(180,190,197,0.04); stroke: #b4bec5; stroke-width: 2.2; }
     .pv .glass { fill: rgba(127,211,232,0.18); stroke: #7fd3e8; stroke-width: 1.2; }
+    .pv .seam { stroke: rgba(180,190,197,0.35); stroke-width: 1; }
+    .pv .light { fill: rgba(255,255,255,0.12); stroke: #b4bec5; stroke-width: 1; }
+    .pv .light--rear { fill: rgba(240,80,60,0.25); stroke: rgba(240,120,100,0.8); }
     .pv .wheel { fill: #0a0d0b; stroke: #6b767e; stroke-width: 6; }
     .pv .rim { fill: none; stroke: #b4bec5; stroke-width: 1.5; }
+    .pv .spokes line { stroke: #8d99a2; stroke-width: 1.4; }
+    .pv .wheel-g { animation: pv-spin 7s linear infinite; }
+    .pv .car-x { transform: translateX(calc((0.5 - var(--pos, 0.5)) * 12px)); transition: transform 0.35s linear; }
+    .pv .car-float { animation: pv-float 5.5s ease-in-out infinite; }
+    .pv .belt { stroke: rgba(160,191,56,0.45); stroke-width: 1.2; stroke-dasharray: 8 14; animation: pv-belt 1.6s linear infinite; }
+    .pv .ground { stroke: rgba(255,255,255,0.16); stroke-width: 1; }
+    .pv .lift rect { fill: #3a444b; transform-origin: center bottom; transform: scaleY(0); }
+    .pv .lift .lift-base { transform: none; fill: #2b3338; opacity: 0.9; }
     .pv .part { fill: rgba(160,191,56,0.08); stroke: #a0bf38; stroke-width: 1.4; opacity: 0; }
     .pv .airbag { fill: rgba(240,160,48,0.25); stroke: #f0a030; stroke-width: 1.4; opacity: 0; }
     .pv .fluid { fill: #f0a030; opacity: 0; }
@@ -38,38 +49,53 @@
     .pv .lbl { font-family: var(--font-mono); font-size: 10.5px; fill: #848c82; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0; }
     .pv .arrow { stroke: #a0bf38; stroke-width: 1.4; fill: none; opacity: 0; stroke-dasharray: 5 6; }
     .pv .scan { stroke: #a0bf38; stroke-width: 1.2; opacity: 0; }
-    .pv .ground { stroke: rgba(255,255,255,0.14); stroke-width: 1; }
     .pv .hex { stroke: rgba(160,191,56,0.5); fill: rgba(160,191,56,0.03); opacity: 0; }
     .pv .crush { fill: none; stroke: #b4bec5; stroke-width: 1.4; opacity: 0; }
-    .pv .dim { opacity: 0.25; }
-    /* étape 0 : prise en charge */
+    @keyframes pv-spin { to { transform: rotate(360deg); } }
+    @keyframes pv-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+    @keyframes pv-belt { to { stroke-dashoffset: -22; } }
+    @keyframes pv-shake { 0%, 100% { transform: rotate(0deg); } 25% { transform: rotate(0.5deg); } 75% { transform: rotate(-0.5deg); } }
+    @keyframes pv-hover { 0%, 100% { translate: 0 0; } 50% { translate: 0 -5px; } }
+    @keyframes pv-glow { 0%, 100% { opacity: 0.55; } 50% { opacity: 1; } }
+    /* étape 1 : prise en charge — le véhicule arrive, scan et étiquette */
     .pv[data-step="0"] .tag, .pv[data-step="0"] .scan, .pv[data-step="0"] .lbl-0 { opacity: 1; }
-    .pv[data-step="0"] .scan { animation: scan 2.2s var(--ease-2) infinite; }
-    @keyframes scan { 0% { transform: translateY(-70px); } 100% { transform: translateY(70px); } }
-    /* étape 1 : mise en sécurité */
+    .pv[data-step="0"] .scan { animation: pv-scan 2.2s var(--ease-2) infinite; }
+    .pv[data-step="0"] .light { animation: pv-glow 1.8s ease-in-out infinite; }
+    @keyframes pv-scan { 0% { transform: translateY(-70px); } 100% { transform: translateY(70px); } }
+    /* étape 2 : mise en sécurité — airbags, léger tremblement */
     .pv[data-step="1"] .airbag, .pv[data-step="1"] .lbl-1 { opacity: 1; }
-    .pv[data-step="1"] .airbag { animation: bag 1.6s var(--ease) infinite alternate; }
-    @keyframes bag { from { transform: scale(0.75); } to { transform: scale(1.15); } }
-    /* étape 2 : dépollution */
+    .pv[data-step="1"] .airbag { animation: pv-bag 1.6s var(--ease) infinite alternate; }
+    .pv[data-step="1"] .car-y { animation: pv-shake 0.9s ease-in-out infinite; }
+    .pv[data-step="1"] .wheel-g { animation-play-state: paused; }
+    @keyframes pv-bag { from { transform: scale(0.75); } to { transform: scale(1.15); } }
+    /* étape 3 : dépollution — montée sur pont, fluides qui s'écoulent */
+    .pv[data-step="2"] .car-y, .pv[data-step="3"] .car-y { transform: translateY(-28px); }
+    .pv[data-step="2"] .lift rect, .pv[data-step="3"] .lift rect { transform: scaleY(1); }
+    .pv[data-step="2"] .wheel-g, .pv[data-step="3"] .wheel-g { animation-play-state: paused; }
     .pv[data-step="2"] .tank, .pv[data-step="2"] .battery, .pv[data-step="2"] .cat, .pv[data-step="2"] .lbl-2 { opacity: 1; }
-    .pv[data-step="2"] .fluid { opacity: 1; animation: drip 1.4s ease-in infinite; }
+    .pv[data-step="2"] .fluid { opacity: 1; animation: pv-drip 1.4s ease-in infinite; }
     .pv[data-step="2"] .fluid:nth-child(2) { animation-delay: 0.4s; } .pv[data-step="2"] .fluid:nth-child(3) { animation-delay: 0.9s; }
-    @keyframes drip { 0% { transform: translateY(0); opacity: 0; } 20% { opacity: 1; } 100% { transform: translateY(46px); opacity: 0; } }
-    /* étape 3 : déconstruction ciblée */
-    .pv[data-step="3"] .part, .pv[data-step="3"] .lbl-3, .pv[data-step="3"] .arrow { opacity: 1; }
+    @keyframes pv-drip { 0% { transform: translateY(0); opacity: 0; } 20% { opacity: 1; } 100% { transform: translateY(46px); opacity: 0; } }
+    /* étape 4 : déconstruction ciblée — pièces déposées, en suspension */
+    .pv[data-step="3"] .part, .pv[data-step="3"] .lbl-3, .pv[data-step="3"] .arrow:not(.arrow-4) { opacity: 1; }
+    .pv[data-step="3"] .arrow { animation: dash 1.4s linear infinite; }
+    .pv[data-step="3"] .part { animation: pv-hover 3.2s ease-in-out infinite; }
     .pv[data-step="3"] .p-door { transform: translate(0, 84px); }
-    .pv[data-step="3"] .p-hood { transform: translate(60px, -60px) rotate(12deg); }
-    .pv[data-step="3"] .p-bumper { transform: translate(52px, 10px); }
-    .pv[data-step="3"] .p-light { transform: translate(46px, -34px); }
-    .pv[data-step="3"] .p-rbumper { transform: translate(-52px, 10px); }
+    .pv[data-step="3"] .p-hood { transform: translate(60px, -60px) rotate(12deg); animation-delay: 0.4s; }
+    .pv[data-step="3"] .p-bumper { transform: translate(52px, 10px); animation-delay: 0.8s; }
+    .pv[data-step="3"] .p-light { transform: translate(46px, -34px); animation-delay: 1.2s; }
+    .pv[data-step="3"] .p-rbumper { transform: translate(-52px, 10px); animation-delay: 1.6s; }
+    .pv[data-step="3"] .p-tail { transform: translate(-40px, -40px); animation-delay: 2s; }
     .pv[data-step="3"] .p-wheel { transform: translate(0, 70px); }
-    .pv[data-step="3"] .p-tail { transform: translate(-40px, -40px); }
-    /* étape 4 : commercialisation & broyeur */
-    .pv[data-step="4"] .body, .pv[data-step="4"] .glass, .pv[data-step="4"] .wheel, .pv[data-step="4"] .rim { opacity: 0.18; }
+    /* étape 5 : commercialisation — la carcasse s'efface, les flux partent vers les filières */
+    .pv[data-step="4"] .body, .pv[data-step="4"] .glass, .pv[data-step="4"] .wheel, .pv[data-step="4"] .rim, .pv[data-step="4"] .spokes, .pv[data-step="4"] .seam, .pv[data-step="4"] .light { opacity: 0.18; }
     .pv[data-step="4"] .hex, .pv[data-step="4"] .lbl-4, .pv[data-step="4"] .crush, .pv[data-step="4"] .arrow-4 { opacity: 1; }
-    .pv[data-step="4"] .hex { animation: hexin 0.9s var(--ease) both; }
-    .pv[data-step="4"] .hex:nth-of-type(2) { animation-delay: 0.15s; } .pv[data-step="4"] .hex:nth-of-type(3) { animation-delay: 0.3s; } .pv[data-step="4"] .hex:nth-of-type(4) { animation-delay: 0.45s; }
-    @keyframes hexin { from { transform: scale(0.6); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    .pv[data-step="4"] .arrow-4 { animation: dash 1.2s linear infinite; }
+    .pv[data-step="4"] .hex { animation: pv-hexin 0.9s var(--ease) both, pv-glow 2.4s ease-in-out 0.9s infinite; }
+    .pv[data-step="4"] .hex:nth-of-type(2) { animation-delay: 0.15s, 1.05s; } .pv[data-step="4"] .hex:nth-of-type(3) { animation-delay: 0.3s, 1.2s; } .pv[data-step="4"] .hex:nth-of-type(4) { animation-delay: 0.45s, 1.35s; }
+    .pv[data-step="4"] .belt { animation-duration: 0.9s; }
+    @keyframes pv-hexin { from { transform: scale(0.6); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    @media (prefers-reduced-motion: reduce) { .pv * { animation: none !important; } }
     /* boucle TFIN 3D */
     .loop-3d { position: relative; aspect-ratio: 1; max-height: 640px; }
     .loop-3d canvas { position: absolute; inset: 0; width: 100% !important; height: 100% !important; }
@@ -240,41 +266,49 @@
       <div class="process__progress"><b>Étape 01 / 05</b><span></span><span></span><span></span><span></span><span></span></div>
     </div>
     <div class="process__viz">
-      <svg class="pv" viewBox="0 0 620 360" data-step="0" aria-label="Schéma animé des cinq étapes de traitement d'un véhicule hors d'usage">
-        <line class="ground" x1="20" y1="266" x2="600" y2="266"/>
-        <!-- carrosserie -->
-        <path class="body" d="M62,236 L62,196 Q72,158 132,146 L204,104 Q244,84 322,84 L404,88 Q456,94 506,146 L546,156 Q566,166 566,204 L566,236 Z"/>
-        <path class="glass" d="M214,110 L248,92 L320,92 L322,146 L214,146 Z"/>
-        <path class="glass" d="M332,92 L398,96 Q440,100 478,142 L332,146 Z"/>
-        <!-- roues -->
-        <g class="p-wheel part-wheel"><circle class="wheel" cx="152" cy="236" r="32"/><circle class="rim" cx="152" cy="236" r="14"/></g>
-        <circle class="wheel" cx="470" cy="236" r="32"/><circle class="rim" cx="470" cy="236" r="14"/>
-        <!-- étape 0 : étiquette & scan -->
-        <g class="tag"><rect x="262" y="176" width="78" height="30" fill="#0a0d0b" stroke="#a0bf38" stroke-width="1.2"/>
-          <g fill="#a0bf38"><rect x="270" y="182" width="2" height="18"/><rect x="275" y="182" width="1.2" height="18"/><rect x="279" y="182" width="3" height="18"/><rect x="285" y="182" width="1.5" height="18"/><rect x="290" y="182" width="2.4" height="18"/><rect x="296" y="182" width="1" height="18"/><rect x="300" y="182" width="3" height="18"/><rect x="306" y="182" width="1.5" height="18"/><rect x="311" y="182" width="2" height="18"/><rect x="317" y="182" width="1" height="18"/><rect x="321" y="182" width="2.6" height="18"/><rect x="327" y="182" width="1.4" height="18"/></g></g>
+      <svg class="pv" viewBox="0 0 620 360" data-step="0" style="--pos:0.5" aria-label="Schéma animé des cinq étapes de traitement d'un véhicule hors d'usage">
+        <!-- sol et convoyeur -->
+        <line class="ground" x1="20" y1="268" x2="600" y2="268"/>
+        <line class="belt" x1="20" y1="273" x2="600" y2="273"/>
+        <g class="ticks" fill="none" stroke="rgba(255,255,255,0.1)"><path d="M60,268v6M140,268v6M220,268v6M300,268v6M380,268v6M460,268v6M540,268v6"/></g>
+        <!-- ponts élévateurs -->
+        <g class="lift"><rect x="246" y="210" width="9" height="58"/><rect x="366" y="210" width="9" height="58"/><rect class="lift-base" x="236" y="262" width="29" height="6"/><rect class="lift-base" x="356" y="262" width="29" height="6"/></g>
+        <!-- véhicule : avance avec le défilement (car-x), flotte (car-float), monte sur le pont (car-y) -->
+        <g class="car-x"><g class="car-float"><g class="car-y">
+          <path class="body" d="M62,236 L62,196 Q72,158 132,146 L204,104 Q244,84 322,84 L404,88 Q456,94 506,146 L546,156 Q566,166 566,204 L566,236 Z"/>
+          <path class="glass" d="M214,110 L248,92 L320,92 L322,146 L214,146 Z"/>
+          <path class="glass" d="M332,92 L398,96 Q440,100 478,142 L332,146 Z"/>
+          <line class="seam" x1="330" y1="150" x2="330" y2="232"/>
+          <ellipse class="light" cx="522" cy="158" rx="16" ry="9"/>
+          <ellipse class="light light--rear" cx="86" cy="170" rx="9" ry="12"/>
+          <!-- roues (jante à cinq branches qui tourne) -->
+          <g class="p-wheel"><g class="wheel-g"><circle class="wheel" cx="152" cy="236" r="32"/><circle class="rim" cx="152" cy="236" r="14"/><g class="spokes"><line x1="152" y1="236" x2="152" y2="208"/><line x1="152" y1="236" x2="178.6" y2="227.3"/><line x1="152" y1="236" x2="168.5" y2="258.7"/><line x1="152" y1="236" x2="135.5" y2="258.7"/><line x1="152" y1="236" x2="125.4" y2="227.3"/></g></g></g>
+          <g class="wheel-g"><circle class="wheel" cx="470" cy="236" r="32"/><circle class="rim" cx="470" cy="236" r="14"/><g class="spokes"><line x1="470" y1="236" x2="470" y2="208"/><line x1="470" y1="236" x2="496.6" y2="227.3"/><line x1="470" y1="236" x2="486.5" y2="258.7"/><line x1="470" y1="236" x2="453.5" y2="258.7"/><line x1="470" y1="236" x2="443.4" y2="227.3"/></g></g>
+          <!-- étape 1 : étiquette code-barres -->
+          <g class="tag"><rect x="262" y="176" width="78" height="30" fill="#0a0d0b" stroke="#a0bf38" stroke-width="1.2"/>
+            <g fill="#a0bf38"><rect x="270" y="182" width="2" height="18"/><rect x="275" y="182" width="1.2" height="18"/><rect x="279" y="182" width="3" height="18"/><rect x="285" y="182" width="1.5" height="18"/><rect x="290" y="182" width="2.4" height="18"/><rect x="296" y="182" width="1" height="18"/><rect x="300" y="182" width="3" height="18"/><rect x="306" y="182" width="1.5" height="18"/><rect x="311" y="182" width="2" height="18"/><rect x="317" y="182" width="1" height="18"/><rect x="321" y="182" width="2.6" height="18"/><rect x="327" y="182" width="1.4" height="18"/></g></g>
+          <!-- étape 2 : airbags -->
+          <circle class="airbag" cx="392" cy="150" r="22"/><circle class="airbag" cx="436" cy="136" r="16"/><circle class="airbag" cx="262" cy="150" r="14"/>
+          <!-- étape 3 : fluides, batterie, catalyseur -->
+          <rect class="tank" x="250" y="222" width="70" height="20" rx="4"/>
+          <rect class="tank" x="480" y="196" width="52" height="28" rx="3"/>
+          <rect class="battery" x="196" y="246" width="230" height="14" rx="2"/>
+          <rect class="cat" x="342" y="248" width="52" height="16" rx="8"/>
+          <g><ellipse class="fluid" cx="285" cy="250" rx="3.5" ry="5"/><ellipse class="fluid" cx="506" cy="232" rx="3.5" ry="5"/><ellipse class="fluid" cx="368" cy="272" rx="3.5" ry="5"/></g>
+          <!-- étape 4 : pièces déposées -->
+          <path class="part p-door" d="M258,120 L328,100 L330,232 L258,232 Z"/>
+          <path class="part p-hood" d="M404,88 Q456,94 506,146 L404,146 Z"/>
+          <path class="part p-bumper" d="M546,196 L570,196 L570,236 L546,236 Z"/>
+          <ellipse class="part p-light" cx="522" cy="158" rx="16" ry="9"/>
+          <path class="part p-rbumper" d="M58,196 L82,196 L82,236 L58,236 Z"/>
+          <ellipse class="part p-tail" cx="86" cy="170" rx="9" ry="12"/>
+          <g class="crush"><path d="M200,236 L420,236 M186,214 L436,214 M172,196 L450,196"/></g>
+        </g></g></g>
+        <!-- balayage du scan (étape 1) -->
         <line class="scan" x1="40" y1="176" x2="590" y2="176"/>
-        <text class="lbl lbl-0" x="62" y="300">Enregistrement · livre de police · SIV</text>
-        <!-- étape 1 : airbags -->
-        <circle class="airbag" cx="392" cy="150" r="22"/><circle class="airbag" cx="436" cy="136" r="16"/><circle class="airbag" cx="262" cy="150" r="14"/>
-        <text class="lbl lbl-1" x="62" y="300">Neutralisation pyrotechnique · consignation</text>
-        <!-- étape 2 : fluides, batterie, catalyseur -->
-        <rect class="tank" x="250" y="222" width="70" height="20" rx="4"/>
-        <rect class="tank" x="480" y="196" width="52" height="28" rx="3"/>
-        <rect class="battery" x="196" y="246" width="230" height="14" rx="2"/>
-        <rect class="cat" x="342" y="248" width="52" height="16" rx="8"/>
-        <g><ellipse class="fluid" cx="285" cy="250" rx="3.5" ry="5"/><ellipse class="fluid" cx="506" cy="232" rx="3.5" ry="5"/><ellipse class="fluid" cx="368" cy="272" rx="3.5" ry="5"/></g>
-        <text class="lbl lbl-2" x="62" y="300">Fluides · batteries · pots catalytiques · FAP</text>
-        <!-- étape 3 : pièces -->
-        <path class="part p-door" d="M258,120 L328,100 L330,232 L258,232 Z"/>
-        <path class="part p-hood" d="M404,88 Q456,94 506,146 L404,146 Z"/>
-        <path class="part p-bumper" d="M546,196 L570,196 L570,236 L546,236 Z"/>
-        <ellipse class="part p-light" cx="522" cy="158" rx="16" ry="9"/>
-        <path class="part p-rbumper" d="M58,196 L82,196 L82,236 L58,236 Z"/>
-        <ellipse class="part p-tail" cx="86" cy="170" rx="9" ry="12"/>
+        <!-- étape 4 : flux vers le stock -->
         <path class="arrow" d="M330,250 L330,318 L470,318"/><text class="lbl lbl-3" x="478" y="322">Stock PIEC</text>
-        <text class="lbl lbl-3" x="62" y="300">20 à 30 pièces · faisceaux · pare-chocs · verre</text>
-        <!-- étape 4 : flux de valorisation -->
-        <g class="crush"><path d="M200,236 L420,236 M186,214 L436,214 M172,196 L450,196"/></g>
+        <!-- étape 5 : filières -->
         <g class="hex-g">
           <polygon class="hex" points="120,300 134,292 148,300 148,316 134,324 120,316"/>
           <polygon class="hex" points="256,300 270,292 284,300 284,316 270,324 256,316"/>
@@ -283,6 +317,11 @@
         </g>
         <text class="lbl lbl-4" x="112" y="344">Pièces</text><text class="lbl lbl-4" x="244" y="344">Matières</text><text class="lbl lbl-4" x="380" y="344">Pneus</text><text class="lbl lbl-4" x="506" y="344">Broyeur</text>
         <path class="arrow arrow-4" d="M310,240 L310,280 M134,280 L542,280 M134,280 L134,292 M270,280 L270,292 M406,280 L406,292 M542,280 L542,292"/>
+        <!-- légendes d'étape -->
+        <text class="lbl lbl-0" x="62" y="300">Enregistrement · livre de police · SIV</text>
+        <text class="lbl lbl-1" x="62" y="300">Neutralisation pyrotechnique · consignation</text>
+        <text class="lbl lbl-2" x="62" y="300">Fluides · batteries · pots catalytiques · FAP</text>
+        <text class="lbl lbl-3" x="62" y="300">20 à 30 pièces · faisceaux · pare-chocs · verre</text>
       </svg>
     </div>
   </div>

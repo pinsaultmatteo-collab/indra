@@ -357,7 +357,7 @@
       bars.forEach((b, k) => b.style.setProperty('--p', k < i ? 1 : k === i ? frac : 0));
       const cur = Math.min(n - 1, Math.max(0, Math.round(p - 0.5)));
       if (label) label.textContent = `Étape ${String(cur + 1).padStart(2, '0')} / ${String(n).padStart(2, '0')}`;
-      if (svg) svg.setAttribute('data-step', cur);
+      if (svg) { svg.setAttribute('data-step', cur); svg.style.setProperty('--pos', p.toFixed(3)); }
     };
     setPos(0.5);
     if (reduced || !window.gsap || !window.ScrollTrigger) return;
