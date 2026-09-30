@@ -356,7 +356,7 @@
   /* ---------------- Init ---------------- */
   function init() {
     renderHeader(); renderFooter(); marquees();
-    smooth(); preloader(); reveals(); counters(); statements(); parallax(); cursor(); timelines(); accordions(); switches(); forms(); processSection();
+    smooth(); preloader(); reveals(); counters(); statements(); parallax(); timelines(); accordions(); switches(); forms(); processSection();
     document.dispatchEvent(new CustomEvent('indra:ready'));
   }
   // Les scripts sont chargés en defer : DOMContentLoaded n'est émis qu'après leur exécution (hero.js, map.js…).

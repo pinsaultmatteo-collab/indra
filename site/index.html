@@ -18,7 +18,7 @@
     .hero-pin.is-exploded .hero__vignette { opacity: 0.55; }
     .hero__vignette { transition: opacity 0.8s; }
     /* schéma du process */
-    .pv { --t: 0.8s var(--ease); }
+    .pv { --t: 0.45s var(--ease); }
     .pv * { transition: opacity var(--t), transform var(--t), stroke var(--t), fill var(--t); transform-box: fill-box; transform-origin: center; }
     .pv .body { fill: none; stroke: #b4bec5; stroke-width: 2.2; }
     .pv .glass { fill: rgba(127,211,232,0.18); stroke: #7fd3e8; stroke-width: 1.2; }
@@ -66,16 +66,17 @@
     .pv[data-step="4"] .hex { animation: hexin 0.9s var(--ease) both; }
     .pv[data-step="4"] .hex:nth-of-type(2) { animation-delay: 0.15s; } .pv[data-step="4"] .hex:nth-of-type(3) { animation-delay: 0.3s; } .pv[data-step="4"] .hex:nth-of-type(4) { animation-delay: 0.45s; }
     @keyframes hexin { from { transform: scale(0.6); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-    /* boucle TFIN */
-    .loop-node { transition: transform 0.5s var(--ease); }
-    .loop-node:hover { transform: scale(1.04); }
-    .loop-node text { font-family: var(--font-body); font-weight: 700; font-size: 13px; fill: #f2f4ef; }
-    .loop-node .sub { font-family: var(--font-mono); font-weight: 400; font-size: 9.5px; fill: #848c82; letter-spacing: 0.08em; }
-    .loop-node .box { fill: #171d19; stroke: rgba(255,255,255,0.14); }
-    .loop-node.is-indra .box { fill: #a0bf38; stroke: #a0bf38; }
-    .loop-node.is-indra text { fill: #2d3a06; } .loop-node.is-indra .sub { fill: #3f5010; }
-    .loop-path { fill: none; stroke: rgba(255,255,255,0.18); stroke-width: 1.4; }
-    .loop-flow { fill: none; stroke: #a0bf38; stroke-width: 1.6; stroke-dasharray: 4 10; animation: dash 1.4s linear infinite; }
+    /* boucle TFIN 3D */
+    .loop-3d { position: relative; aspect-ratio: 1; max-height: 640px; }
+    .loop-3d canvas { position: absolute; inset: 0; width: 100% !important; height: 100% !important; }
+    .loop-3d__center { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); text-align: center; pointer-events: none; }
+    .loop-3d__center b { display: block; font-family: var(--font-display); font-weight: 700; font-size: clamp(18px, 1.9vw, 26px); letter-spacing: 0.06em; text-transform: uppercase; line-height: 1.05; }
+    .loop-3d__center span { display: block; margin-top: 6px; font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); }
+    .loop-label { position: absolute; pointer-events: none; text-align: center; white-space: nowrap; padding: 7px 10px; background: rgba(16,21,18,0.82); border: 1px solid var(--line-2); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); will-change: transform, opacity; }
+    .loop-label b { display: block; font-size: 12.5px; font-weight: 700; line-height: 1.1; }
+    .loop-label span { display: block; font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); margin-top: 2px; }
+    .loop-label.is-indra { background: var(--green); border-color: var(--green); color: var(--green-ink); }
+    .loop-label.is-indra span { color: var(--green-ink); opacity: 0.8; }
   </style>
 </head>
 <body>
@@ -198,7 +199,7 @@
 </section>
 
 <!-- ===================== PROCESS 5 ÉTAPES (pinned) ===================== -->
-<section class="process" id="process" style="height:520vh">
+<section class="process" id="process" style="height:330vh">
   <div class="process__sticky container">
     <div class="process__steps">
       <div class="step is-active">
@@ -389,7 +390,7 @@
 </section>
 
 <!-- ===================== INNOVATION ===================== -->
-<section class="section">
+<section class="section section--light">
   <div class="container">
     <div class="grid split-60 align-end mb-4">
       <div>
@@ -421,20 +422,9 @@
 <!-- ===================== BOUCLE TFIN ===================== -->
 <section class="section section--dark-3 grid-bg">
   <div class="container">
-    <div class="grid split-40 align-center">
-      <div class="flow" data-reveal="scale">
-        <svg viewBox="0 0 560 520" aria-label="La boucle d'économie circulaire The Future Is NEUTRAL">
-          <defs><marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#a0bf38"/></marker></defs>
-          <circle cx="280" cy="260" r="180" class="loop-path"/>
-          <circle cx="280" cy="260" r="180" class="loop-flow"/>
-          <g class="loop-node is-indra" transform="translate(280 80)"><rect class="box" x="-92" y="-30" width="184" height="60" rx="2"/><text text-anchor="middle" y="-4">INDRA</text><text class="sub" text-anchor="middle" y="14">COLLECTE · DÉPOLLUTION · DÉMANTÈLEMENT</text></g>
-          <g class="loop-node" transform="translate(452 190)"><rect class="box" x="-80" y="-30" width="160" height="60" rx="2"/><text text-anchor="middle" y="-4">The Remakers</text><text class="sub" text-anchor="middle" y="14">REMANUFACTURING</text></g>
-          <g class="loop-node" transform="translate(420 380)"><rect class="box" x="-80" y="-30" width="160" height="60" rx="2"/><text text-anchor="middle" y="-4">GAIA</text><text class="sub" text-anchor="middle" y="14">MATIÈRES · BATTERIES</text></g>
-          <g class="loop-node" transform="translate(140 380)"><rect class="box" x="-84" y="-30" width="168" height="60" rx="2"/><text text-anchor="middle" y="-4">Boone Comenor</text><text class="sub" text-anchor="middle" y="14">MÉTAUX · 47 SITES</text></g>
-          <g class="loop-node" transform="translate(108 190)"><rect class="box" x="-80" y="-30" width="160" height="60" rx="2"/><text text-anchor="middle" y="-4">Renault Group</text><text class="sub" text-anchor="middle" y="14">ÉCO-CONCEPTION · VÉHICULES NEUFS</text></g>
-          <g class="loop-node" transform="translate(280 260)"><text text-anchor="middle" y="-10" style="font-family:var(--font-display);font-size:26px;font-weight:700;letter-spacing:0.04em">THE FUTURE</text><text text-anchor="middle" y="20" style="font-family:var(--font-display);font-size:26px;font-weight:700;letter-spacing:0.04em">IS NEUTRAL</text><text class="sub" text-anchor="middle" y="44">RENAULT GROUP · SUEZ</text></g>
-          <path d="M280,110 L280,225" class="loop-path" marker-end="url(#arr)" stroke-dasharray="3 5"/>
-        </svg>
+    <div class="grid split-60 align-center">
+      <div class="loop-3d" id="tfin-loop" data-reveal="scale" aria-label="La boucle d'économie circulaire The Future Is NEUTRAL en 3D">
+        <div class="loop-3d__center"><b>The Future<br>is Neutral</b><span>Renault Group · Suez</span></div>
       </div>
       <div>
         <p class="eyebrow" data-reveal>Un écosystème, pas une casse</p>
@@ -496,12 +486,14 @@
 <script src="assets/js/main.js" defer></script>
 <script src="assets/js/hero.js" defer></script>
 <script src="assets/js/map.js" defer></script>
+<script src="assets/js/loop.js" defer></script>
 <script>
   document.addEventListener('indra:ready', function () {
     if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
     var api = INDRA.initHero(document.getElementById('hero-canvas'));
     INDRA.bindHeroScroll(api, document.getElementById('hero-pin'), document.getElementById('compo'));
     INDRA.initMap(document.getElementById('home-map'), { compact: true, interactive: true });
+    INDRA.initLoop(document.getElementById('tfin-loop'));
     // Le pin du hero ajoute 160 % de hauteur : on trie les triggers pour que les sections suivantes en tiennent compte.
     if (window.ScrollTrigger) { ScrollTrigger.sort(); ScrollTrigger.refresh(); setTimeout(function () { ScrollTrigger.sort(); ScrollTrigger.refresh(); }, 900); }
   });
