@@ -46,42 +46,99 @@
   const rnd = (a, b) => a + Math.random() * (b - a);
   const ease = k => k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;
 
+  // Échantillonnage uniforme le long du périmètre d'un polygone
+  function perimeterSamples(poly, count) {
+    const segs = []; let total = 0;
+    for (let i = 0; i < poly.length; i++) {
+      const a = poly[i], b = poly[(i + 1) % poly.length]; const L = Math.hypot(b[0] - a[0], b[1] - a[1]);
+      segs.push({ a, b, L, c: total }); total += L;
+    }
+    const out = [];
+    for (let k = 0; k < count; k++) {
+      const d = Math.random() * total; let sg = segs[segs.length - 1];
+      for (const g of segs) if (d >= g.c && d < g.c + g.L) { sg = g; break; }
+      const t = (d - sg.c) / sg.L; out.push([sg.a[0] + (sg.b[0] - sg.a[0]) * t, sg.a[1] + (sg.b[1] - sg.a[1]) * t]);
+    }
+    return out;
+  }
+  // Bornes du profil : y min/max pour un x donné, x min/max pour un y donné
+  function yRange(x) {
+    let lo = Infinity, hi = -Infinity;
+    for (let i = 0; i < BODY.length; i++) {
+      const a = BODY[i], b = BODY[(i + 1) % BODY.length];
+      if ((a[0] - x) * (b[0] - x) <= 0 && a[0] !== b[0]) { const y = a[1] + (x - a[0]) / (b[0] - a[0]) * (b[1] - a[1]); lo = Math.min(lo, y); hi = Math.max(hi, y); }
+    }
+    return [lo, hi];
+  }
+  function xRange(y) {
+    let lo = Infinity, hi = -Infinity;
+    for (let i = 0; i < BODY.length; i++) {
+      const a = BODY[i], b = BODY[(i + 1) % BODY.length];
+      if ((a[1] - y) * (b[1] - y) <= 0 && a[1] !== b[1]) { const x = a[0] + (y - a[1]) / (b[1] - a[1]) * (b[0] - a[0]); lo = Math.min(lo, x); hi = Math.max(hi, x); }
+    }
+    return [lo, hi];
+  }
+
+  // Construction du véhicule : surfaces + arêtes + roues + habitacle.
+  // Chaque point : position, catégorie de matière, taille, ton (1 = arête accentuée).
   function buildCar(N) {
     const pts = [];
     const half = 0.92;
-    let guard = 0;
-    while (pts.length < N * 0.86 && guard++ < N * 40) {
-      const x = rnd(-2.32, 2.32), y = rnd(0.14, 1.48);
-      if (!inPoly([x, y], BODY)) continue;
-      let skip = false;
-      for (const [wx, wy, wr] of WHEELS) if (Math.hypot(x - wx, y - wy) < wr + 0.05) skip = true;
-      if (skip) continue;
-      const roof = y > 0.95;
-      const w = roof ? half * (0.78 - (y - 0.95) * 0.35) : half;
-      const shell = Math.random() < 0.7;
-      const z = shell ? (Math.random() < 0.5 ? -w : w) * rnd(0.86, 1) : rnd(-w, w);
-      let cat = 0;
-      if (roof && WINDOWS.some(p => inPoly([x, y], p)) && Math.abs(z) > w * 0.7) cat = 4;
-      else if (Math.abs(x) > 1.95 && y < 0.8) cat = 1;
-      else if (!shell && y < 0.9 && Math.abs(x) < 1.0) cat = Math.random() < 0.6 ? 1 : 0;
-      else if (!shell && x > 1.1 && y < 0.85) cat = Math.random() < 0.45 ? 3 : 0;
-      else if (!shell && Math.random() < 0.1) cat = 5;
-      pts.push({ x, y, z, cat });
+    // demi-largeur de la caisse selon la hauteur (section arrondie, pavillon plus étroit)
+    const zmax = y => y < 0.95 ? half * (0.96 + 0.04 * Math.min(1, Math.max(0, (y - 0.14) / 0.81))) : half * (1 - Math.min(1, (y - 0.95) / 0.51) * 0.3);
+    const push = (x, y, z, cat, size, tone) => pts.push({ x, y, z, cat, size, tone: tone || 0 });
+    const inWindow = (x, y) => WINDOWS.some(w => inPoly([x, y], w));
+    const nearWheel = (x, y, m) => WHEELS.some(([wx, wy, wr]) => Math.hypot(x - wx, y - wy) < wr + m);
+    const side = () => (Math.random() < 0.5 ? -1 : 1);
+    let n, guard;
+
+    // 1. Flancs : tôle (métaux), vitrages clairsemés (verre), bas de caisse et boucliers (polymères)
+    n = Math.round(N * 0.30); guard = 0;
+    while (n > 0 && guard++ < N * 60) {
+      const x = rnd(-2.3, 2.3), y = rnd(0.14, 1.47);
+      if (!inPoly([x, y], BODY) || nearWheel(x, y, 0.08)) continue;
+      const glass = inWindow(x, y);
+      if (glass && Math.random() < 0.62) continue;
+      const z = side() * zmax(y) * rnd(0.985, 1);
+      const cat = glass ? 4 : (y < 0.36 || (Math.abs(x) > 1.95 && y < 0.8)) ? 1 : 0;
+      push(x, y, z, cat, glass ? rnd(0.6, 0.9) : rnd(0.5, 0.9)); n--;
     }
-    const perWheel = Math.floor(N * 0.07);
-    for (const [wx, wy, wr] of WHEELS) for (const side of [-1, 1]) for (let i = 0; i < perWheel / 2; i++) {
-      const a = rnd(0, Math.PI * 2); const tyre = Math.random() < 0.6;
-      const r = tyre ? rnd(wr * 0.74, wr) : rnd(wr * 0.2, wr * 0.7);
-      pts.push({ x: wx + Math.cos(a) * r, y: wy + Math.sin(a) * r, z: side * (half - 0.06) + rnd(-0.05, 0.05), cat: tyre ? 2 : 0 });
+    // 2. Surface supérieure : capot, pare-brise, pavillon, lunette, malle (galbée sur les bords)
+    n = Math.round(N * 0.19); guard = 0;
+    while (n > 0 && guard++ < N * 60) {
+      const x = rnd(-2.28, 2.28); const hi = yRange(x)[1]; if (!isFinite(hi)) continue;
+      const zm = zmax(hi); const z = rnd(-zm, zm) * 0.97; const y = hi - 0.07 * Math.pow(Math.abs(z) / zm, 3);
+      const glass = (x > 1.0 && x < 1.6) || (x > -1.45 && x < -1.05);
+      if (glass && Math.random() < 0.55) continue;
+      push(x, y, z, glass ? 4 : 0, rnd(0.5, 0.85)); n--;
     }
-    // équilibrage aux pourcentages réels
-    const total = pts.length; const target = CATS.map(c => Math.round(total * c.pct / 100));
-    const count = CATS.map(() => 0); pts.forEach(p => count[p.cat]++);
-    for (let c = 1; c < CATS.length; c++) {
-      let diff = count[c] - target[c];
-      for (let i = 0; i < pts.length && diff > 0; i++) if (pts[i].cat === c && Math.random() < 0.5) { pts[i].cat = 0; diff--; }
-      for (let i = 0; i < pts.length && diff < 0; i++) if (pts[i].cat === 0 && Math.random() < 0.15) { pts[i].cat = c; diff++; }
+    // 3. Faces avant et arrière : calandre, hayon, pare-chocs (polymères)
+    n = Math.round(N * 0.07); guard = 0;
+    while (n > 0 && guard++ < N * 60) {
+      const y = rnd(0.28, 0.9); const [lo, hi] = xRange(y); if (!isFinite(hi)) continue;
+      const front = Math.random() < 0.5; const zm = zmax(y); const z = rnd(-zm, zm) * 0.96;
+      const x = (front ? hi : lo) - (front ? 1 : -1) * 0.06 * Math.pow(Math.abs(z) / zm, 3);
+      push(x, y, z, y < 0.62 ? 1 : 0, rnd(0.55, 0.9)); n--;
     }
+    // 4. Arêtes accentuées : silhouette, encadrements de vitres
+    perimeterSamples(BODY, Math.round(N * 0.10)).forEach(([x, y]) => push(x, y, side() * (zmax(y) + 0.012), 0, rnd(1.3, 1.9), 1));
+    WINDOWS.forEach(w => perimeterSamples(w, Math.round(N * 0.018)).forEach(([x, y]) => push(x, y, side() * (zmax(y) + 0.012), 0, rnd(1.2, 1.7), 1)));
+    // passages de roue, lignes de portes, ceinture de caisse
+    WHEELS.forEach(([wx, wy, wr]) => { for (let k = 0; k < N * 0.012; k++) { const a = rnd(0.12, 0.88) * Math.PI; const x = wx + Math.cos(a) * (wr + 0.1), y = wy + Math.sin(a) * (wr + 0.1); push(x, y, side() * (zmax(y) + 0.012), 0, rnd(1.2, 1.7), 1); } });
+    [1.42, 0.3, -0.95].forEach(x => { for (let k = 0; k < N * 0.004; k++) { const y = rnd(0.3, 0.955); push(x, y, side() * (zmax(y) + 0.012), 0, rnd(1.1, 1.5), 1); } });
+    for (let k = 0; k < N * 0.006; k++) { const x = rnd(-1.42, 1.42); push(x, 0.955, side() * (zmax(0.955) + 0.012), 0, rnd(1.0, 1.4), 1); }
+    // 5. Roues : bande de roulement (élastomères), flanc, jante à cinq branches et moyeu (métal)
+    WHEELS.forEach(([wx, wy, wr]) => [-1, 1].forEach(sd => {
+      const zc = sd * (half - 0.05);
+      for (let k = 0; k < N * 0.014; k++) { const a = rnd(0, TAU); const r = rnd(wr * 0.8, wr); push(wx + Math.cos(a) * r, wy + Math.sin(a) * r, zc + sd * rnd(-0.14, 0.02), 2, rnd(0.8, 1.2)); }
+      for (let k = 0; k < N * 0.004; k++) { const a = rnd(0, TAU); const r = rnd(wr * 0.16, wr * 0.26); push(wx + Math.cos(a) * r, wy + Math.sin(a) * r, zc, 0, rnd(0.9, 1.3), 1); }
+      for (let sp = 0; sp < 5; sp++) for (let k = 0; k < N * 0.0025; k++) { const a = sp * TAU / 5 + rnd(-0.08, 0.08); const r = rnd(wr * 0.26, wr * 0.78); push(wx + Math.cos(a) * r, wy + Math.sin(a) * r, zc, 0, rnd(0.9, 1.3), 1); }
+    }));
+    // 6. Habitacle et compartiment moteur : fluides (moteur) et matières naturelles (sièges)
+    for (let k = 0; k < N * 0.023; k++) push(rnd(1.15, 2.0), rnd(0.36, 0.82), rnd(-0.55, 0.55), 3, rnd(0.7, 1.1));
+    for (let k = 0; k < N * 0.015; k++) { const s2 = side(); const seat = Math.random() < 0.5 ? rnd(-0.85, -0.4) : rnd(0.05, 0.5); push(seat, rnd(0.36, 0.92), s2 * rnd(0.25, 0.58), 5, rnd(0.7, 1.0)); }
+    // 7. Optiques avant et arrière
+    for (let k = 0; k < N * 0.008; k++) { const front = Math.random() < 0.5; const x = front ? rnd(2.05, 2.26) : rnd(-2.26, -2.05); const y = rnd(0.7, 0.86); const zm = zmax(y); push(x, y, side() * rnd(zm * 0.6, zm), 4, rnd(1.0, 1.4), 1); }
     return pts;
   }
 
@@ -123,8 +180,9 @@
     const size = new Float32Array(pts.length);
     const seed = new Float32Array(pts.length);
     pts.forEach((p, i) => {
-      const c = CATS[p.cat].color; col[i * 3] = c[0]; col[i * 3 + 1] = c[1]; col[i * 3 + 2] = c[2];
-      size[i] = rnd(0.7, 1.6) * (p.cat === 0 ? 1 : 1.25); seed[i] = Math.random();
+      const c = CATS[p.cat].color; const tone = p.tone ? 1.22 : 1; // arêtes plus lumineuses
+      col[i * 3] = Math.min(1, c[0] * tone); col[i * 3 + 1] = Math.min(1, c[1] * tone); col[i * 3 + 2] = Math.min(1, c[2] * tone);
+      size[i] = p.size * (p.cat === 0 ? 1 : 1.15); seed[i] = Math.random();
     });
     const geo = new THREE.BufferGeometry();
     geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
@@ -175,7 +233,7 @@
     // Mise en scène : au repos, la voiture occupe l'espace libre en haut à droite ;
     // au défilement, les colonnes viennent se recentrer à l'écran.
     const POSE = {
-      desktop: { rest: { x: 2.25, y: 1.9, s: 0.85 }, exploded: { x: 0, y: 0.95, s: 1 } },
+      desktop: { rest: { x: 2.25, y: 1.6, s: 0.85 }, exploded: { x: 0, y: 0.95, s: 1 } },
       mobile: { rest: { x: 0, y: 1.35, s: 1 }, exploded: { x: 0, y: 2.45, s: 0.7 } }
     };
     let progress = 0, target = 0, mouseX = 0, mouseY = 0, isMobile = false, rotY = 0.35, lastNow = 0;
