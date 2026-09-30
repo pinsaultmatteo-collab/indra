@@ -10,6 +10,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Raleway:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/main.css">
   <style>
+    .page-hero__title--wide { max-width: 22ch; font-size: clamp(40px, 5.8vw, 86px); }
+    @media (max-width: 700px) { .page-hero__title--wide .nowrap { white-space: normal; } }
     .rep { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
     .rep-track { position: relative; padding-top: 34px; }
     .rep-track::before { content: ""; position: absolute; left: 0; right: 0; top: 14px; height: 1px; background: var(--line-2); }
@@ -41,7 +43,7 @@
   <div class="page-hero__bg"><img src="assets/img/ev-battery-bench.jpg" alt="Extraction d'une batterie de traction dans un centre expert VE INDRA"></div>
   <div class="container">
     <div class="crumbs"><a href="index.html">Accueil</a><span>Constructeurs</span></div>
-    <h1 class="page-hero__title reveal-lines">Vos obligations REP,<br><em>tenues clé en main</em>.<br>Vos batteries, sécurisées.</h1>
+    <h1 class="page-hero__title page-hero__title--wide reveal-lines"><span class="nowrap">Vos obligations REP,</span><br><em class="nowrap">tenues clé en main</em>.<br>Vos batteries, sécurisées.</h1>
     <p class="lead" data-reveal style="--d:0.4s">Depuis le 1<sup>er</sup> janvier 2024, chaque constructeur doit organiser et financer la collecte gratuite et le traitement de ses véhicules hors d'usage. Quinze marques ont choisi INDRA comme prestataire de leur système individuel : un réseau agréé, un reporting consolidé, une expertise batteries et vingt ans d'éco-conception.</p>
     <div class="page-hero__meta" data-reveal style="--d:0.6s">
       <div><div class="num"><span data-count="15">0</span></div><p>constructeurs · systèmes individuels REP</p></div>
