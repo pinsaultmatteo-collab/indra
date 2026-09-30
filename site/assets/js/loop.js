@@ -88,7 +88,7 @@
         o.group.getWorldPosition(v); v.y += o.def.indra ? 0.46 : 0.34; v.project(camera);
         const el = labels[i]; const depth = (v.z + 1) / 2; // 0 proche → 1 lointain
         el.style.left = (v.x + 1) / 2 * 100 + '%'; el.style.top = (1 - v.y) / 2 * 100 + '%';
-        el.style.opacity = String(1.15 - depth * 0.9); el.style.transform = `translate(-50%, -100%) scale(${1.08 - depth * 0.3})`;
+        el.style.opacity = String(Math.min(1, 1.12 - depth * 0.42)); el.style.transform = `translate(-50%, -100%) scale(${1.06 - depth * 0.18})`;
         el.style.zIndex = String(Math.round((1 - depth) * 10));
       });
     }

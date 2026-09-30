@@ -72,10 +72,11 @@
     .loop-3d__center { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); text-align: center; pointer-events: none; }
     .loop-3d__center b { display: block; font-family: var(--font-display); font-weight: 700; font-size: clamp(18px, 1.9vw, 26px); letter-spacing: 0.06em; text-transform: uppercase; line-height: 1.05; }
     .loop-3d__center span { display: block; margin-top: 6px; font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); }
-    .loop-label { position: absolute; pointer-events: none; text-align: center; white-space: nowrap; padding: 7px 10px; background: rgba(16,21,18,0.82); border: 1px solid var(--line-2); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); will-change: transform, opacity; }
-    .loop-label b { display: block; font-size: 12.5px; font-weight: 700; line-height: 1.1; }
-    .loop-label span { display: block; font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); margin-top: 2px; }
-    .loop-label.is-indra { background: var(--green); border-color: var(--green); color: var(--green-ink); }
+    .loop-label { position: absolute; pointer-events: none; text-align: center; white-space: nowrap; padding: 8px 12px; background: rgba(10,13,11,0.94); border: 1px solid rgba(201,228,92,0.5); will-change: transform, opacity; }
+    .loop-label b { display: block; font-size: 14px; font-weight: 700; line-height: 1.1; color: var(--green-2); letter-spacing: 0.01em; }
+    .loop-label span { display: block; font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-2); margin-top: 3px; }
+    .loop-label.is-indra { background: var(--green); border-color: var(--green); }
+    .loop-label.is-indra b { color: var(--green-ink); font-size: 15px; }
     .loop-label.is-indra span { color: var(--green-ink); opacity: 0.8; }
   </style>
 </head>
@@ -449,16 +450,16 @@
 </div>
 
 <!-- ===================== ACTUALITÉS ===================== -->
-<section class="section">
+<section class="section section--light">
   <div class="container">
     <div class="flex between align-end mb-3">
       <div><p class="eyebrow" data-reveal>Actualités</p><h2 class="display-3 split-words">Ce qui bouge chez INDRA.</h2></div>
       <a class="link-arrow" href="actualites.html" data-reveal>Toutes les actualités <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
     </div>
-    <div class="news" data-stagger="0.08">
-      <a class="news-item" href="actualites.html#kaufman"><time>06 · 02 · 2026</time><div><h3>Xavier Kaufman nommé président-directeur général d'INDRA</h3><p>Il succède à Florence Bailleul avec une feuille de route claire : consolidation du réseau, DMS commun avec Opisto en 2027, montée en valeur de la pièce de réemploi. « Le marché sera sans pitié avec les recycleurs qui ne s'adaptent pas. »</p></div><span class="tag">Gouvernance</span></a>
-      <a class="news-item" href="actualites.html#40ans"><time>12 · 12 · 2025</time><div><h3>40 ans d'innovation et de valorisation des véhicules hors d'usage</h3><p>Célébrés simultanément sur les sept sites français : des portières recyclées transformées en œuvres collectives, et un bilan 2020-2025 de 3 331 tonnes de polypropylène et 1 336 tonnes de câbles cuivre recyclés.</p></div><span class="tag">Groupe</span></a>
-      <a class="news-item" href="actualites.html#sira"><time>01 · 10 · 2025</time><div><h3>SIRA : les réseaux dédiés aux assureurs, visibles en un clic</h3><p>Le Site Internet Réseaux Assurance, développé par INDRA, permet à chaque compagnie de visualiser les centres dédiés à ses besoins : enlèvement, expertise, pièces de réemploi, véhicules électriques.</p></div><span class="tag">Assureurs</span></a>
+    <div class="news news--thumbs" data-stagger="0.08">
+      <a class="news-item" href="actualites.html#kaufman"><time>06 · 02 · 2026</time><div class="news-item__thumb"><img src="assets/img/kaufman.jpg" alt="Xavier Kaufman" loading="lazy" style="object-position:top"></div><div><h3>Xavier Kaufman nommé président-directeur général d'INDRA</h3><p>Il succède à Florence Bailleul avec une feuille de route claire : consolidation du réseau, DMS commun avec Opisto en 2027, montée en valeur de la pièce de réemploi. « Le marché sera sans pitié avec les recycleurs qui ne s'adaptent pas. »</p></div><span class="tag">Gouvernance</span></a>
+      <a class="news-item" href="actualites.html#40ans"><time>12 · 12 · 2025</time><div class="news-item__thumb"><img src="assets/img/team-40ans.jpg" alt="Les équipes INDRA lors des 40 ans" loading="lazy"></div><div><h3>40 ans d'innovation et de valorisation des véhicules hors d'usage</h3><p>Célébrés simultanément sur les sept sites français : des portières recyclées transformées en œuvres collectives, et un bilan 2020-2025 de 3 331 tonnes de polypropylène et 1 336 tonnes de câbles cuivre recyclés.</p></div><span class="tag">Groupe</span></a>
+      <a class="news-item" href="actualites.html#sira"><time>01 · 10 · 2025</time><div class="news-item__thumb"><img src="assets/img/aerial-cars.jpg" alt="Vue aérienne d'un centre du réseau" loading="lazy"></div><div><h3>SIRA : les réseaux dédiés aux assureurs, visibles en un clic</h3><p>Le Site Internet Réseaux Assurance, développé par INDRA, permet à chaque compagnie de visualiser les centres dédiés à ses besoins : enlèvement, expertise, pièces de réemploi, véhicules électriques.</p></div><span class="tag">Assureurs</span></a>
     </div>
   </div>
 </section>
