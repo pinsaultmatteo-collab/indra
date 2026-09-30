@@ -268,7 +268,7 @@
     // Mise en scène : au repos, le véhicule occupe l'espace libre en haut à droite ;
     // au défilement, les colonnes viennent se recentrer à l'écran.
     const POSE = {
-      desktop: { rest: { x: 0, y: 2.05, s: 0.68 }, exploded: { x: 0, y: 0.95, s: 1 } },
+      desktop: { rest: { x: 0, y: 1.1, s: 1.02 }, exploded: { x: 0, y: 0.95, s: 1 } },
       mobile: { rest: { x: 0, y: 1.35, s: 1 }, exploded: { x: 0, y: 2.45, s: 0.7 } }
     };
 
@@ -309,8 +309,8 @@
       const w = wrap.clientWidth, h = wrap.clientHeight;
       renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix();
       isMobile = w < 800; camera.position.z = isMobile ? 15.5 : 8.4;
-      // au repos, le véhicule est centré ; sur les écrans peu hauts on le réduit pour laisser place au titre
-      POSE.desktop.rest.s = h < 760 ? 0.58 : 0.68;
+      // au repos, le véhicule est centré en arrière-plan du texte ; un peu plus petit sur les écrans peu hauts
+      POSE.desktop.rest.s = h < 760 ? 0.9 : 1.02;
     }
     window.addEventListener('resize', resize); resize();
     window.addEventListener('mousemove', e => { mouseX = (e.clientX / innerWidth - 0.5); mouseY = (e.clientY / innerHeight - 0.5); }, { passive: true });
@@ -362,6 +362,8 @@
       group.scale.setScalar(s);
       grid.position.y = group.position.y + BASE_Y * s - 0.03;
       grid.material.opacity = 0.45 * e * (1 - exit);
+      // au repos la voiture est un décor derrière le texte : intensité réduite, pleine à la déconstruction
+      mat.uniforms.uAlpha.value = (S.mode === 'image' ? 0.95 : 1) * (isMobile ? 0.85 : 0.72 + 0.28 * e);
 
       group.updateMatrixWorld();
       if (hooks.onFrame) hooks.onFrame(progress, exit);

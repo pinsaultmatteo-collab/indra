@@ -415,8 +415,8 @@ body.cursor-drag .cursor__ring::after { content: "GLISSER"; position: absolute; 
 .hero__canvas { position: absolute; inset: 0; z-index: 0; }
 .hero__canvas canvas { width: 100% !important; height: 100% !important; }
 .hero__vignette { position: absolute; inset: 0; z-index: 1; pointer-events: none;
-  background: radial-gradient(ellipse 64% 60% at 50% 34%, transparent 36%, rgba(10,13,11,0.55) 78%, var(--bg) 100%),
-              linear-gradient(to top, var(--bg) 0%, rgba(10,13,11,0.6) 22%, transparent 45%); }
+  background: radial-gradient(ellipse 64% 60% at 50% 44%, transparent 36%, rgba(10,13,11,0.55) 78%, var(--bg) 100%),
+              linear-gradient(to top, var(--bg) 0%, rgba(10,13,11,0.7) 26%, rgba(10,13,11,0.25) 52%, transparent 66%); }
 .hero__content { position: relative; z-index: 2; width: min(var(--container), 100% - 2 * var(--gutter)); margin: 0 auto; padding: calc(var(--header-h) + 40px) 0 64px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 0.8fr); gap: 48px; align-items: end; }
 .hero__kicker { position: absolute; z-index: 2; left: 50%; transform: translateX(-50%); width: min(var(--container), 100% - 2 * var(--gutter)); top: calc(var(--header-h) + 16px); }
 .hero__title { font-size: clamp(46px, 6.8vw, 104px); font-weight: 800; letter-spacing: -0.04em; line-height: 0.92; margin-top: 0 !important; }
