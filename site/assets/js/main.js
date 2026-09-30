@@ -130,6 +130,7 @@
         <div class="footer__bottom">
           <span>© ${new Date().getFullYear()} INDRA SAS · ZAC Business Airport, 80 av. Condorcet, 38090 Vaulx-Milieu · RCS Vienne 400 641 296</span>
           <span><a href="#">Mentions légales</a> · <a href="#">Données personnelles</a> · <a href="https://www.linkedin.com/company/indra-sas" target="_blank" rel="noopener">LinkedIn</a></span>
+          <span class="footer__credit">Visuel d'accueil : Renault Clio III, photo <a href="https://commons.wikimedia.org/wiki/File:Renault_Clio_3_-_Phase_2_2009_-_Rot_-_1.5dci.png" target="_blank" rel="noopener">Daddi09</a>, <a href="https://creativecommons.org/licenses/by-sa/3.0/deed.fr" target="_blank" rel="noopener">CC BY-SA 3.0</a>, via Wikimedia Commons, détourée</span>
         </div>
       </div>
       <div class="footer__big" aria-hidden="true">INDRA</div>

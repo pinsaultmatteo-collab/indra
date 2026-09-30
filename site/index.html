@@ -491,7 +491,8 @@
 <script>
   document.addEventListener('indra:ready', function () {
     if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
-    var api = INDRA.initHero(document.getElementById('hero-canvas'), { image: 'assets/img/hero-car.png' });
+    // Renault Clio III (photo Daddi09, CC BY-SA 3.0, Wikimedia Commons, détourée). Repères en fractions de la boîte englobante.
+    var api = INDRA.initHero(document.getElementById('hero-canvas'), { image: 'assets/img/hero-car.webp', cfg: { wheels: [{ u: 0.75, v: 0.76, r: 0.09 }, { u: 0.12, v: 0.86, r: 0.06 }], windowMaxV: 0.42, windowU: [0.25, 0.98], bumperMinV: 0.62, lightsU: [0.28, 0.6] } });
     INDRA.bindHeroScroll(api, document.getElementById('hero-pin'), document.getElementById('compo'));
     INDRA.initMap(document.getElementById('home-map'), { compact: true, interactive: true });
     INDRA.initLoop(document.getElementById('tfin-loop'));

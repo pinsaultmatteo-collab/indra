@@ -175,7 +175,8 @@
 
   // Nuage de points à partir d'une photo détourée : chaque pixel opaque devient une particule
   // qui garde sa couleur au repos. Les familles de matières sont déduites de la position et de la teinte.
-  function buildFromImage(img, N) {
+  function buildFromImage(img, N, cfg) {
+    cfg = Object.assign({ wheels: [{ u: 0.32, v: 0.70, r: 0.11 }, { u: 0.045, v: 0.53, r: 0.085 }], windowMaxV: 0.48, windowU: [0.16, 0.7], bumperMinV: 0.6, lightsU: null }, cfg || {});
     const W = 420, H = Math.round(W * img.naturalHeight / img.naturalWidth);
     const c = document.createElement('canvas'); c.width = W; c.height = H;
     const g = c.getContext('2d', { willReadFrequently: true }); g.drawImage(img, 0, 0, W, H);
@@ -187,7 +188,7 @@
     if (count < 500) throw new Error('image sans pixels opaques');
     const bw = maxx - minx + 1, bh = maxy - miny + 1; const keep = Math.min(1, N / count); const scale = 4.5 / bw;
     // repères en fractions de la boîte englobante (vue trois quarts avant) : roues avant et arrière
-    const wheels = [{ u: 0.32, v: 0.70, r: 0.11 }, { u: 0.045, v: 0.53, r: 0.085 }];
+    const wheels = cfg.wheels;
     const pts = [];
     for (let y = miny; y <= maxy; y++) for (let x = minx; x <= maxx; x++) {
       const i = (y * W + x) * 4; if (d[i + 3] <= 110 || Math.random() > keep) continue;
@@ -195,10 +196,10 @@
       const u = (x - minx) / bw, v = (y - miny) / bh;
       const inWheel = wheels.some(w => Math.hypot((u - w.u) * bw, (v - w.v) * bh) < w.r * bw);
       let cat = 0;
-      if (inWheel && lum < 0.42) cat = 2;                                  // pneus
-      else if (r > 0.55 && gg < 0.35 && b < 0.35) cat = 3;                 // rouges (étriers, surpiqûres) → fluides
-      else if (lum < 0.36 && v < 0.48 && u > 0.16 && u < 0.7) cat = 4;     // vitrages
-      else if (!inWheel && (v > 0.6 || (lum < 0.3 && v >= 0.48))) cat = 1; // bouclier, bas de caisse, grilles, rétroviseurs
+      if (inWheel && lum < 0.42) cat = 2;                                                            // pneus
+      else if (lum < 0.36 && v < cfg.windowMaxV && u > cfg.windowU[0] && u < cfg.windowU[1]) cat = 4; // vitrages
+      else if (cfg.lightsU && lum > 0.82 && u > cfg.lightsU[0] && u < cfg.lightsU[1] && v > 0.4 && v < 0.62) cat = 4; // optiques
+      else if (!inWheel && (v > cfg.bumperMinV || (lum < 0.3 && v >= cfg.windowMaxV))) cat = 1;     // bouclier, bas de caisse, grilles
       const px = (x - (minx + bw / 2)) * scale, py = ((miny + bh / 2) - y) * scale;
       const z = (lum - 0.5) * 0.45 + rnd(-0.05, 0.05);
       pts.push({ x: px, y: py, z, cat, size: rnd(0.85, 1.25), tone: 0, rgb: [Math.min(1, r * 1.08), Math.min(1, gg * 1.08), Math.min(1, b * 1.08)] });
@@ -208,7 +209,7 @@
   }
 
   INDRA.initHero = function (wrap, opts) {
-    opts = Object.assign({ image: null }, opts || {});
+    opts = Object.assign({ image: null, cfg: null }, opts || {});
     if (!wrap || typeof THREE === 'undefined') return null;
     const canvas = document.createElement('canvas'); wrap.appendChild(canvas);
     let renderer;
@@ -232,7 +233,13 @@
         void main(){
           vColor = mix(color, aColor2, smoothstep(0.12, 0.6, uProgress));
           vec3 p = position;
-          p.y += sin(uTime*1.3 + aSeed*40.0)*0.012;
+          // au repos : flottement lent et organique (dérive individuelle + houle traversant la carrosserie)
+          float rest = 1.0 - smoothstep(0.0, 0.5, uProgress);
+          float ph = aSeed * 6.2831;
+          p.x += rest * (sin(uTime*0.9 + ph) * 0.028 + sin(uTime*0.35 + position.y*2.0) * 0.02);
+          p.y += rest * (cos(uTime*1.1 + ph*1.7) * 0.028 + sin(uTime*0.5 + position.x*1.3) * 0.022)
+               + (1.0 - rest) * sin(uTime*1.3 + aSeed*40.0) * 0.012;
+          p.z += rest * sin(uTime*0.8 + ph*2.3) * 0.06;
           vec4 mv = modelViewMatrix * vec4(p,1.0);
           float s = aSize * (1.0 + uProgress*0.35);
           gl_PointSize = s * uPix * (26.0 / -mv.z);
@@ -289,7 +296,7 @@
     }
     if (opts.image) {
       const img = new Image(); img.crossOrigin = 'anonymous';
-      img.onload = () => { try { build(buildFromImage(img, N), 'image'); } catch (e) { build(buildCar(N), 'model'); } };
+      img.onload = () => { try { build(buildFromImage(img, N, opts.cfg), 'image'); } catch (e) { build(buildCar(N), 'model'); } };
       img.onerror = () => build(buildCar(N), 'model');
       img.src = opts.image;
     } else build(buildCar(N), 'model');

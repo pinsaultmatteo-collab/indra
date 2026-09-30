@@ -35,6 +35,7 @@ Les bibliothèques (GSAP, Lenis, Three.js) et les polices Google sont chargées 
 - Couleurs : vert INDRA `#a0bf38`, vert profond `#566d0f`, anthracite `#0a0d0b`, acier `#b4bec5`.
 - Typographies : Raleway (police de la charte actuelle), Barlow Condensed (chiffres et labels), IBM Plex Mono (données techniques).
 - Photos : sélection de la médiathèque indra.fr (77 médias) et des visuels The Future Is NEUTRAL (portrait Xavier Kaufman, 40 ans, atelier). Retaillées à 1800 px.
+- Véhicule du hero (`assets/img/hero-car.webp`) : Renault Clio III, photo Daddi09, CC BY-SA 3.0, Wikimedia Commons, détourée (dérivé sous la même licence, crédit affiché dans le pied de page). Toute image PNG détourée peut la remplacer ; les repères de roues et vitrages se règlent dans `index.html` (option `cfg` de `INDRA.initHero`).
 
 ## Chiffres affichés — à valider avec INDRA avant mise en ligne
 
