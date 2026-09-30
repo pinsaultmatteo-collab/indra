@@ -176,7 +176,7 @@
   // Nuage de points à partir d'une photo détourée : chaque pixel opaque devient une particule
   // qui garde sa couleur au repos. Les familles de matières sont déduites de la position et de la teinte.
   function buildFromImage(img, N, cfg) {
-    cfg = Object.assign({ wheels: [{ u: 0.32, v: 0.70, r: 0.11 }, { u: 0.045, v: 0.53, r: 0.085 }], windowMaxV: 0.48, windowU: [0.16, 0.7], bumperMinV: 0.6, lightsU: null }, cfg || {});
+    cfg = Object.assign({ wheels: [{ u: 0.32, v: 0.70, r: 0.11 }, { u: 0.045, v: 0.53, r: 0.085 }], windowMaxV: 0.48, windowU: [0.16, 0.7], bumperMinV: 0.6, lightsU: null, greyRed: false }, cfg || {});
     const W = 420, H = Math.round(W * img.naturalHeight / img.naturalWidth);
     const c = document.createElement('canvas'); c.width = W; c.height = H;
     const g = c.getContext('2d', { willReadFrequently: true }); g.drawImage(img, 0, 0, W, H);
@@ -202,7 +202,9 @@
       else if (!inWheel && (v > cfg.bumperMinV || (lum < 0.3 && v >= cfg.windowMaxV))) cat = 1;     // bouclier, bas de caisse, grilles
       const px = (x - (minx + bw / 2)) * scale, py = ((miny + bh / 2) - y) * scale;
       const z = (lum - 0.5) * 0.45 + rnd(-0.05, 0.05);
-      pts.push({ x: px, y: py, z, cat, size: rnd(0.85, 1.25), tone: 0, rgb: [Math.min(1, r * 1.08), Math.min(1, gg * 1.08), Math.min(1, b * 1.08)] });
+      let R = r, G = gg, B = b;
+      if (cfg.greyRed && r > gg * 1.12 && r > b * 1.12) { const l = Math.min(1, lum * 1.2 + 0.14); R = l * 0.86; G = l * 0.92; B = l * 0.98; } // carrosserie rouge → nuances de gris acier
+      pts.push({ x: px, y: py, z, cat, size: rnd(0.85, 1.25), tone: 0, rgb: [Math.min(1, R * 1.08), Math.min(1, G * 1.08), Math.min(1, B * 1.08)] });
     }
     rebalance(pts);
     return pts;
