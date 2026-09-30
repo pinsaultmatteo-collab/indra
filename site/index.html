@@ -26,7 +26,12 @@
     .pv * { transition: opacity var(--t), transform var(--t), stroke var(--t), fill var(--t); transform-box: fill-box; transform-origin: center; }
     .pv .body { fill: rgba(180,190,197,0.04); stroke: #b4bec5; stroke-width: 2.2; }
     .pv .glass { fill: rgba(127,211,232,0.18); stroke: #7fd3e8; stroke-width: 1.2; }
-    .pv .seam { stroke: rgba(180,190,197,0.35); stroke-width: 1; }
+    .pv .seams path { fill: none; stroke: rgba(180,190,197,0.32); stroke-width: 1; }
+    .pv .line { fill: none; stroke: rgba(255,255,255,0.14); stroke-width: 1; }
+    .pv .handles rect { fill: rgba(180,190,197,0.5); }
+    .pv .mirror { fill: rgba(180,190,197,0.1); stroke: #b4bec5; stroke-width: 1.2; }
+    .pv .grille { fill: rgba(0,0,0,0.6); stroke: rgba(180,190,197,0.5); stroke-width: 1; }
+    .pv .fog { fill: rgba(255,255,255,0.35); }
     .pv .light { fill: rgba(255,255,255,0.12); stroke: #b4bec5; stroke-width: 1; }
     .pv .light--rear { fill: rgba(240,80,60,0.25); stroke: rgba(240,120,100,0.8); }
     .pv .wheel { fill: #0a0d0b; stroke: #6b767e; stroke-width: 6; }
@@ -88,7 +93,7 @@
     .pv[data-step="3"] .p-tail { transform: translate(-40px, -40px); animation-delay: 2s; }
     .pv[data-step="3"] .p-wheel { transform: translate(0, 70px); }
     /* étape 5 : commercialisation — la carcasse s'efface, les flux partent vers les filières */
-    .pv[data-step="4"] .body, .pv[data-step="4"] .glass, .pv[data-step="4"] .wheel, .pv[data-step="4"] .rim, .pv[data-step="4"] .spokes, .pv[data-step="4"] .seam, .pv[data-step="4"] .light { opacity: 0.18; }
+    .pv[data-step="4"] .body, .pv[data-step="4"] .glass, .pv[data-step="4"] .wheel, .pv[data-step="4"] .rim, .pv[data-step="4"] .spokes, .pv[data-step="4"] .seams, .pv[data-step="4"] .line, .pv[data-step="4"] .handles, .pv[data-step="4"] .mirror, .pv[data-step="4"] .grille, .pv[data-step="4"] .fog, .pv[data-step="4"] .light { opacity: 0.18; }
     .pv[data-step="4"] .hex, .pv[data-step="4"] .lbl-4, .pv[data-step="4"] .crush, .pv[data-step="4"] .arrow-4 { opacity: 1; }
     .pv[data-step="4"] .arrow-4 { animation: dash 1.2s linear infinite; }
     .pv[data-step="4"] .hex { animation: pv-hexin 0.9s var(--ease) both, pv-glow 2.4s ease-in-out 0.9s infinite; }
@@ -275,12 +280,23 @@
         <g class="lift"><rect x="246" y="210" width="9" height="58"/><rect x="366" y="210" width="9" height="58"/><rect class="lift-base" x="236" y="262" width="29" height="6"/><rect class="lift-base" x="356" y="262" width="29" height="6"/></g>
         <!-- véhicule : avance avec le défilement (car-x), flotte (car-float), monte sur le pont (car-y) -->
         <g class="car-x"><g class="car-float"><g class="car-y">
-          <path class="body" d="M62,236 L62,196 Q72,158 132,146 L204,104 Q244,84 322,84 L404,88 Q456,94 506,146 L546,156 Q566,166 566,204 L566,236 Z"/>
-          <path class="glass" d="M214,110 L248,92 L320,92 L322,146 L214,146 Z"/>
-          <path class="glass" d="M332,92 L398,96 Q440,100 478,142 L332,146 Z"/>
-          <line class="seam" x1="330" y1="150" x2="330" y2="232"/>
-          <ellipse class="light" cx="522" cy="158" rx="16" ry="9"/>
-          <ellipse class="light light--rear" cx="86" cy="170" rx="9" ry="12"/>
+          <!-- carrosserie : compacte, profil avant à droite -->
+          <path class="body" d="M84,240 C72,240 60,232 58,218 L60,190 C61,172 68,160 82,148 L100,126 C118,104 140,92 172,90 L318,84 C372,86 418,102 462,128 L506,140 C544,146 568,158 576,180 C582,198 580,220 570,232 C564,240 552,241 540,240 L514,240 A44,44 0 0 0 426,240 L196,240 A44,44 0 0 0 108,240 Z"/>
+          <path class="line" d="M100,150 C220,152 380,152 520,160"/>
+          <!-- vitrages : lunette, portes arrière et avant, pare-brise -->
+          <path class="glass" d="M106,128 L126,106 C138,96 152,92 172,92 L180,128 Z"/>
+          <path class="glass" d="M190,128 L190,94 L268,92 L272,128 Z"/>
+          <path class="glass" d="M284,128 L284,92 L332,90 L378,128 Z"/>
+          <path class="glass" d="M392,130 C378,110 360,96 344,90 C392,94 430,108 460,130 Z"/>
+          <!-- montants, seuils de portes, poignées, rétroviseur -->
+          <g class="seams"><path d="M186,132 L186,236 M278,96 L278,236 M384,132 L384,236"/></g>
+          <g class="handles"><rect x="228" y="160" width="20" height="5" rx="2.5"/><rect x="326" y="160" width="20" height="5" rx="2.5"/></g>
+          <path class="mirror" d="M392,120 C402,116 412,120 412,128 C412,134 400,136 392,132 Z"/>
+          <!-- optiques, calandre, antibrouillard -->
+          <path class="light" d="M522,148 L566,166 L560,176 L516,160 Z"/>
+          <path class="light light--rear" d="M62,158 L82,150 L86,180 L64,188 Z"/>
+          <rect class="grille" x="550" y="206" width="24" height="12" rx="2"/>
+          <circle class="fog" cx="560" cy="226" r="3"/>
           <!-- roues (jante à cinq branches qui tourne) -->
           <g class="p-wheel"><g class="wheel-g"><circle class="wheel" cx="152" cy="236" r="32"/><circle class="rim" cx="152" cy="236" r="14"/><g class="spokes"><line x1="152" y1="236" x2="152" y2="208"/><line x1="152" y1="236" x2="178.6" y2="227.3"/><line x1="152" y1="236" x2="168.5" y2="258.7"/><line x1="152" y1="236" x2="135.5" y2="258.7"/><line x1="152" y1="236" x2="125.4" y2="227.3"/></g></g></g>
           <g class="wheel-g"><circle class="wheel" cx="470" cy="236" r="32"/><circle class="rim" cx="470" cy="236" r="14"/><g class="spokes"><line x1="470" y1="236" x2="470" y2="208"/><line x1="470" y1="236" x2="496.6" y2="227.3"/><line x1="470" y1="236" x2="486.5" y2="258.7"/><line x1="470" y1="236" x2="453.5" y2="258.7"/><line x1="470" y1="236" x2="443.4" y2="227.3"/></g></g>
@@ -288,7 +304,7 @@
           <g class="tag"><rect x="262" y="176" width="78" height="30" fill="#0a0d0b" stroke="#a0bf38" stroke-width="1.2"/>
             <g fill="#a0bf38"><rect x="270" y="182" width="2" height="18"/><rect x="275" y="182" width="1.2" height="18"/><rect x="279" y="182" width="3" height="18"/><rect x="285" y="182" width="1.5" height="18"/><rect x="290" y="182" width="2.4" height="18"/><rect x="296" y="182" width="1" height="18"/><rect x="300" y="182" width="3" height="18"/><rect x="306" y="182" width="1.5" height="18"/><rect x="311" y="182" width="2" height="18"/><rect x="317" y="182" width="1" height="18"/><rect x="321" y="182" width="2.6" height="18"/><rect x="327" y="182" width="1.4" height="18"/></g></g>
           <!-- étape 2 : airbags -->
-          <circle class="airbag" cx="392" cy="150" r="22"/><circle class="airbag" cx="436" cy="136" r="16"/><circle class="airbag" cx="262" cy="150" r="14"/>
+          <circle class="airbag" cx="398" cy="156" r="22"/><circle class="airbag" cx="440" cy="142" r="15"/><circle class="airbag" cx="236" cy="150" r="14"/>
           <!-- étape 3 : fluides, batterie, catalyseur -->
           <rect class="tank" x="250" y="222" width="70" height="20" rx="4"/>
           <rect class="tank" x="480" y="196" width="52" height="28" rx="3"/>
@@ -296,12 +312,12 @@
           <rect class="cat" x="342" y="248" width="52" height="16" rx="8"/>
           <g><ellipse class="fluid" cx="285" cy="250" rx="3.5" ry="5"/><ellipse class="fluid" cx="506" cy="232" rx="3.5" ry="5"/><ellipse class="fluid" cx="368" cy="272" rx="3.5" ry="5"/></g>
           <!-- étape 4 : pièces déposées -->
-          <path class="part p-door" d="M258,120 L328,100 L330,232 L258,232 Z"/>
-          <path class="part p-hood" d="M404,88 Q456,94 506,146 L404,146 Z"/>
-          <path class="part p-bumper" d="M546,196 L570,196 L570,236 L546,236 Z"/>
-          <ellipse class="part p-light" cx="522" cy="158" rx="16" ry="9"/>
-          <path class="part p-rbumper" d="M58,196 L82,196 L82,236 L58,236 Z"/>
-          <ellipse class="part p-tail" cx="86" cy="170" rx="9" ry="12"/>
+          <path class="part p-door" d="M280,132 L384,132 L384,236 L280,236 Z"/>
+          <path class="part p-hood" d="M462,128 L506,140 C544,146 568,158 576,180 L470,152 Z"/>
+          <path class="part p-bumper" d="M576,180 C582,198 580,220 570,232 C564,240 552,241 540,240 L544,186 Z"/>
+          <path class="part p-light" d="M522,148 L566,166 L560,176 L516,160 Z"/>
+          <path class="part p-rbumper" d="M84,240 C72,240 60,232 58,218 L60,190 L86,192 L86,240 Z"/>
+          <path class="part p-tail" d="M62,158 L82,150 L86,180 L64,188 Z"/>
           <g class="crush"><path d="M200,236 L420,236 M186,214 L436,214 M172,196 L450,196"/></g>
         </g></g></g>
         <!-- balayage du scan (étape 1) -->
