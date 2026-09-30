@@ -723,6 +723,10 @@ body.cursor-drag .cursor__ring::after { content: "GLISSER"; position: absolute; 
 .cta-band::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(to right, rgba(10,13,11,0.92) 30%, rgba(10,13,11,0.5)); }
 .cta-band .container { padding-block: clamp(80px, 10vw, 140px); }
 .cta-band .display-2 { max-width: 16ch; }
+.cta-band--center .container { text-align: center; display: flex; flex-direction: column; align-items: center; }
+.cta-band--center .display-2, .cta-band--center .maxw { margin-inline: auto; }
+.cta-band--center .flex { justify-content: center; }
+.cta-band--center::after { background: linear-gradient(to bottom, rgba(10,13,11,0.72), rgba(10,13,11,0.88)); }
 
 /* ---------- Big statement ---------- */
 .statement { font-size: clamp(30px, 4.6vw, 68px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.05; text-wrap: balance; }
