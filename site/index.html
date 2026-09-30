@@ -17,6 +17,10 @@
     .hero-pin.is-exploded .scroll-hint { opacity: 0; }
     .hero-pin.is-exploded .hero__vignette { opacity: 0.55; }
     .hero__vignette { transition: opacity 0.8s; }
+    /* sortie de la composition : le titre s'efface, la légende mobile aussi */
+    .compo__title { transition: opacity 0.45s, transform 0.6s var(--ease); }
+    .compo.is-exiting .compo__title { opacity: 0 !important; transform: translate(-50%, -24px); }
+    @media (max-width: 700px) { .compo.is-exiting .compo__label { opacity: 0 !important; } }
     /* schéma du process */
     .pv { --t: 0.45s var(--ease); }
     .pv * { transition: opacity var(--t), transform var(--t), stroke var(--t), fill var(--t); transform-box: fill-box; transform-origin: center; }
@@ -494,6 +498,7 @@
     // Renault Clio III (photo Daddi09, CC BY-SA 3.0, Wikimedia Commons, détourée). Repères en fractions de la boîte englobante.
     var api = INDRA.initHero(document.getElementById('hero-canvas'), { image: 'assets/img/hero-car.webp', cfg: { wheels: [{ u: 0.75, v: 0.76, r: 0.09 }, { u: 0.12, v: 0.86, r: 0.06 }], windowMaxV: 0.42, windowU: [0.25, 0.98], bumperMinV: 0.62, lightsU: [0.28, 0.6], greyRed: true } });
     INDRA.bindHeroScroll(api, document.getElementById('hero-pin'), document.getElementById('compo'));
+    window.__heroApi = api; // diagnostic
     INDRA.initMap(document.getElementById('home-map'), { compact: true, interactive: true });
     INDRA.initLoop(document.getElementById('tfin-loop'));
     // Le pin du hero ajoute 160 % de hauteur : on trie les triggers pour que les sections suivantes en tiennent compte.

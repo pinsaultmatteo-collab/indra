@@ -262,7 +262,8 @@
     // État de la scène
     const N = opts.image ? (window.innerWidth < 800 ? 8000 : 19000) : (window.innerWidth < 800 ? 6500 : 12500);
     const S = { built: false, mode: 'model', pts: [], car: null, tgt: null, geo: null, stagger: [] };
-    let progress = 0, target = 0, mouseX = 0, mouseY = 0, isMobile = false, lastNow = 0;
+    let progress = 0, target = 0, exit = 0, exitTarget = 0, mouseX = 0, mouseY = 0, isMobile = false, lastNow = 0;
+    const EXIT_DIST = 11; // distance de fuite des colonnes vers la gauche (unités scène)
     const hooks = { onFrame: null };
     // Mise en scène : au repos, le véhicule occupe l'espace libre en haut à droite ;
     // au défilement, les colonnes viennent se recentrer à l'écran.
@@ -293,6 +294,7 @@
       group.add(new THREE.Points(geo, mat));
       mat.uniforms.uAlpha.value = mode === 'image' ? 0.95 : 1;
       S.car = car; S.geo = geo; S.tgt = buildTargets(pts); S.stagger = pts.map(p => (p.x + 2.4) / 4.8);
+      S.cat = Uint8Array.from(pts.map(p => p.cat)); S.seed = seed; S.xoff = new Float32Array(CATS.length); S.kexit = new Float32Array(CATS.length);
       api.heights = S.tgt.heights; api.x0 = S.tgt.x0; api.colW = S.tgt.colW; api.gap = S.tgt.gap; api.ready = true;
       S.built = true;
     }
@@ -323,17 +325,27 @@
       const t = now * 0.001;
       progress += (target - progress) * 0.08;
       if (Math.abs(target - progress) < 0.0005) progress = target;
+      exit += (exitTarget - exit) * 0.1;
+      if (Math.abs(exitTarget - exit) < 0.0005) exit = exitTarget;
       const e = ease(progress);
+      // sortie : chaque colonne quitte l'écran vers la gauche avec un léger décalage (de gauche à droite)
+      if (S.built) for (let c = 0; c < CATS.length; c++) { const k = Math.min(1, Math.max(0, exit * 1.6 - c * 0.11)); const ke = k * k * (3 - 2 * k); S.kexit[c] = ke; S.xoff[c] = -ke * ke * EXIT_DIST; }
       mat.uniforms.uTime.value = t; mat.uniforms.uProgress.value = progress;
 
       if (S.built) {
-        const p = S.geo.attributes.position.array, car = S.car, tgt = S.tgt.arr, n = S.pts.length;
+        const p = S.geo.attributes.position.array, car = S.car, tgt = S.tgt.arr, n = S.pts.length, exiting = exit > 0.0005;
         for (let i = 0; i < n; i++) {
           const local = Math.min(1, Math.max(0, (progress * 1.5 - S.stagger[i] * 0.5)));
           const k = ease(local);
           const arc = Math.sin(k * Math.PI) * 0.9;
-          p[i * 3] = car[i * 3] + (tgt[i * 3] - car[i * 3]) * k;
-          p[i * 3 + 1] = car[i * 3 + 1] + (tgt[i * 3 + 1] - car[i * 3 + 1]) * k + arc;
+          let x = car[i * 3] + (tgt[i * 3] - car[i * 3]) * k;
+          let y = car[i * 3 + 1] + (tgt[i * 3 + 1] - car[i * 3 + 1]) * k + arc;
+          if (exiting) { // fuite vers la gauche : vitesse propre à chaque particule (traînées) et dispersion verticale en vol
+            const c = S.cat[i], sd = S.seed[i], ke = S.kexit[c];
+            x += S.xoff[c] * (1 + (sd - 0.5) * 0.45);
+            y += (sd - 0.5) * 0.9 * ke * (1 - ke) * 4 * (0.5 + sd * 0.5);
+          }
+          p[i * 3] = x; p[i * 3 + 1] = y;
           p[i * 3 + 2] = car[i * 3 + 2] + (tgt[i * 3 + 2] - car[i * 3 + 2]) * k;
         }
         S.geo.attributes.position.needsUpdate = true;
@@ -350,10 +362,10 @@
       const s = pose.rest.s + (pose.exploded.s - pose.rest.s) * e;
       group.scale.setScalar(s);
       grid.position.y = group.position.y + BASE_Y * s - 0.03;
-      grid.material.opacity = 0.45 * e;
+      grid.material.opacity = 0.45 * e * (1 - exit);
 
       group.updateMatrixWorld();
-      if (hooks.onFrame) hooks.onFrame(progress);
+      if (hooks.onFrame) hooks.onFrame(progress, exit);
       renderer.render(scene, camera);
     }
     requestAnimationFrame(frame);
@@ -361,7 +373,12 @@
     const api = {
       ready: false,
       setProgress(v) { target = Math.min(1, Math.max(0, v)); },
+      setExit(v) { exitTarget = Math.min(1, Math.max(0, v)); },
       get progress() { return progress; },
+      get exit() { return exit; },
+      get debug() { return { target, exitTarget, visible, built: S.built, mode: S.mode, n: S.pts.length }; },
+      colOffset(i) { return S.xoff ? S.xoff[i] : 0; },
+      colExit(i) { return S.kexit ? S.kexit[i] : 0; },
       heights: null, x0: 0, colW: 0, gap: 0, camera, group, hooks,
       project(x, y, z) { // repère du groupe -> % du conteneur
         const v = new THREE.Vector3(x, y, z).applyMatrix4(group.matrixWorld).project(camera);
@@ -383,19 +400,24 @@
     const place = () => {
       if (mobile() || !api.ready) return; // sur mobile, la légende est une grille statique (CSS)
       labels.forEach((el, i) => {
-        const cx = api.x0 + i * (api.colW + api.gap);
+        const cx = api.x0 + i * (api.colW + api.gap) + api.colOffset(i);
         const pr = api.project(cx, BASE_Y - 0.12, 0.32);
         el.style.left = pr.x + '%'; el.style.top = pr.y + '%';
+        const ke = api.colExit(i); el.style.opacity = ke > 0.001 ? String(Math.max(0, 1 - ke * 1.6)) : '';
       });
     };
-    api.hooks.onFrame = progress => { if (progress > 0.4) place(); };
+    api.hooks.onFrame = (progress, exit) => { if (progress > 0.4 || exit > 0) place(); };
     if (reduced || !window.gsap || !window.ScrollTrigger) { api.setProgress(0); return; }
     ScrollTrigger.create({
-      trigger: pinEl, start: 'top top', end: '+=160%', pin: true, scrub: 0.4, anticipatePin: 1, refreshPriority: 10,
+      trigger: pinEl, start: 'top top', end: '+=250%', pin: true, scrub: 0.4, anticipatePin: 1, refreshPriority: 10,
       onUpdate: self => {
-        api.setProgress(self.progress);
-        compoEl.classList.toggle('is-on', self.progress > 0.62);
-        pinEl.classList.toggle('is-exploded', self.progress > 0.25);
+        // 0 → 0,66 : déconstruction ; 0,66 → 0,72 : colonnes stables ; 0,72 → 1 : sortie vers la gauche
+        const P = self.progress;
+        const build = Math.min(1, P / 0.66), exitP = Math.max(0, (P - 0.72) / 0.28);
+        api.setProgress(build); api.setExit(exitP);
+        compoEl.classList.toggle('is-on', build > 0.62);
+        compoEl.classList.toggle('is-exiting', exitP > 0.04);
+        pinEl.classList.toggle('is-exploded', build > 0.25);
       }
     });
   };
