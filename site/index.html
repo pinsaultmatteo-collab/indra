@@ -22,7 +22,7 @@
     .compo.is-exiting .compo__title { opacity: 0 !important; transform: translate(-50%, -24px); }
     @media (max-width: 700px) { .compo.is-exiting .compo__label { opacity: 0 !important; } }
     /* schéma du process */
-    .pv { --t: 0.45s var(--ease); }
+    .pv { --t: 0.9s cubic-bezier(0.4, 0, 0.2, 1); }
     .pv * { transition: opacity var(--t), transform var(--t), stroke var(--t), fill var(--t); transform-box: fill-box; transform-origin: center; }
     .pv .body { fill: none; stroke: #b4bec5; stroke-width: 2.2; }
     .pv .glass { fill: rgba(127,211,232,0.18); stroke: #7fd3e8; stroke-width: 1.2; }

@@ -339,18 +339,31 @@
   function processSection() {
     const proc = $('.process'); if (!proc) return;
     const steps = $$('.step', proc); const bars = $$('.process__progress span', proc); const label = $('.process__progress b', proc);
-    const svg = $('.process__viz svg', proc);
-    const setStep = (i, frac) => {
-      steps.forEach((s, k) => s.classList.toggle('is-active', k === i));
+    const svg = $('.process__viz svg', proc); const n = steps.length;
+    const smooth = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
+    steps.forEach(st => { st.style.transition = 'none'; st.style.willChange = 'opacity, transform'; });
+    // p ∈ [0, n] : position continue dans la séquence. Chaque étape est pleine autour de son centre
+    // et se fond avec la suivante autour de la frontière, en glissant vers le haut (fondu enchaîné).
+    const setPos = p => {
+      steps.forEach((st, k) => {
+        const d = p - (k + 0.5);
+        const w = 1 - smooth(0.28, 0.62, Math.abs(d));
+        st.style.opacity = w.toFixed(3);
+        st.style.transform = `translateY(${((d < 0 ? 1 : -1) * (1 - w) * 34).toFixed(1)}px)`;
+        st.classList.toggle('is-active', w > 0.5);
+        st.style.pointerEvents = w > 0.5 ? 'auto' : 'none';
+      });
+      const i = Math.min(n - 1, Math.max(0, Math.floor(p))); const frac = Math.min(1, Math.max(0, p - i));
       bars.forEach((b, k) => b.style.setProperty('--p', k < i ? 1 : k === i ? frac : 0));
-      if (label) label.textContent = `Étape ${String(i + 1).padStart(2, '0')} / ${String(steps.length).padStart(2, '0')}`;
-      if (svg) svg.setAttribute('data-step', i);
+      const cur = Math.min(n - 1, Math.max(0, Math.round(p - 0.5)));
+      if (label) label.textContent = `Étape ${String(cur + 1).padStart(2, '0')} / ${String(n).padStart(2, '0')}`;
+      if (svg) svg.setAttribute('data-step', cur);
     };
-    setStep(0, 0);
+    setPos(0.5);
     if (reduced || !window.gsap || !window.ScrollTrigger) return;
     ScrollTrigger.create({
-      trigger: proc, start: 'top top', end: 'bottom bottom', scrub: true,
-      onUpdate: self => { const p = self.progress * steps.length; const i = Math.min(steps.length - 1, Math.floor(p)); setStep(i, p - i); }
+      trigger: proc, start: 'top top', end: 'bottom bottom', scrub: 0.9,
+      onUpdate: self => setPos(self.progress * n)
     });
   }
 
