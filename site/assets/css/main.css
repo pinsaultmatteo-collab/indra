@@ -453,14 +453,14 @@ body.cursor-drag .cursor__ring::after { content: "GLISSER"; position: absolute; 
 /* Hero pin stage : composition labels */
 .hero-pin { position: relative; }
 .compo { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
-.compo__label { position: absolute; transform: translate(-50%, 0); text-align: center; opacity: 0; transition: opacity 0.5s; width: 160px; pointer-events: none; }
+.compo__label { position: absolute; left: -1000px; top: 0; transform: translate(-50%, 0); text-align: center; opacity: 0; transition: opacity 0.5s; width: 160px; pointer-events: none; }
 .compo__label .num { font-size: clamp(22px, 2.6vw, 40px); color: var(--ink); }
 .compo__label .num small { font-size: 0.5em; color: var(--green); }
 .compo__label p { font-family: var(--font-display); font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-2); margin-top: 6px; }
 .compo__label i { display: block; width: 1px; height: 30px; margin: 0 auto 8px; background: linear-gradient(to top, var(--ink-3), transparent); }
-.compo__title { position: absolute; left: 50%; top: 11%; transform: translate(-50%, 0); text-align: center; opacity: 0; transition: opacity 0.5s; width: min(90%, 720px); }
+.compo__title { position: absolute; left: 50%; top: 11%; transform: translate(-50%, 0); text-align: center; opacity: 0; transition: opacity 0.5s; width: min(94%, 980px); }
 .compo__title .eyebrow { justify-content: center; margin-bottom: 12px; }
-.compo__title .h2 { font-size: clamp(24px, 2.6vw, 38px); }
+.compo__title .h2 { font-size: clamp(22px, 2.35vw, 34px); line-height: 1.12; }
 .compo.is-on .compo__label, .compo.is-on .compo__title { opacity: 1; }
 @media (max-width: 700px) {
   .compo { display: grid; grid-template-columns: repeat(3, 1fr); align-content: end; gap: 14px 8px; padding: 0 20px 56px; }

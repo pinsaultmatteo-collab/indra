@@ -409,15 +409,12 @@
     api.hooks.onFrame = (progress, exit) => { if (progress > 0.4 || exit > 0) place(); };
     if (reduced || !window.gsap || !window.ScrollTrigger) { api.setProgress(0); return; }
     ScrollTrigger.create({
-      trigger: pinEl, start: 'top top', end: '+=250%', pin: true, scrub: 0.4, anticipatePin: 1, refreshPriority: 10,
+      trigger: pinEl, start: 'top top', end: '+=160%', pin: true, scrub: 0.4, anticipatePin: 1, refreshPriority: 10,
       onUpdate: self => {
-        // 0 → 0,66 : déconstruction ; 0,66 → 0,72 : colonnes stables ; 0,72 → 1 : sortie vers la gauche
         const P = self.progress;
-        const build = Math.min(1, P / 0.66), exitP = Math.max(0, (P - 0.72) / 0.28);
-        api.setProgress(build); api.setExit(exitP);
-        compoEl.classList.toggle('is-on', build > 0.62);
-        compoEl.classList.toggle('is-exiting', exitP > 0.04);
-        pinEl.classList.toggle('is-exploded', build > 0.25);
+        api.setProgress(P); api.setExit(0); // pas de phase de sortie : les colonnes restent en place
+        compoEl.classList.toggle('is-on', P > 0.62);
+        pinEl.classList.toggle('is-exploded', P > 0.25);
       }
     });
   };
