@@ -445,7 +445,8 @@ body.cursor-drag .cursor__ring::after { content: "GLISSER"; position: absolute; 
   .hero__lead { margin-top: 4px; font-size: 16px; line-height: 1.45; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
   .hero__ctas { margin-top: 0; gap: 10px; }
   .hero__ctas .btn { width: 100%; justify-content: space-between; padding-block: 14px; }
-  .hero__side { justify-self: start; max-width: none; gap: 14px; }
+  .hero__side { justify-self: start; max-width: none; gap: 14px; align-items: stretch; width: 100%; }
+  .hero__lead, .hero__ctas { width: 100%; max-width: none; }
   .hero__badges { flex-direction: row; flex-wrap: wrap; gap: 8px; }
   .hero__badges .badge:not(.badge--40) { display: none; }
   .badge--40 { padding: 6px 12px 6px 10px; font-size: 12px; } .badge--40 .num { font-size: 24px; }
