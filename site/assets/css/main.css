@@ -417,16 +417,14 @@ body.cursor-drag .cursor__ring::after { content: "GLISSER"; position: absolute; 
 .hero__vignette { position: absolute; inset: 0; z-index: 1; pointer-events: none;
   background: radial-gradient(ellipse 64% 60% at 50% 44%, transparent 36%, rgba(10,13,11,0.55) 78%, var(--bg) 100%),
               linear-gradient(to top, var(--bg) 0%, rgba(10,13,11,0.7) 26%, rgba(10,13,11,0.25) 52%, transparent 66%); }
-.hero__content { position: relative; z-index: 2; width: min(var(--container), 100% - 2 * var(--gutter)); margin: 0 auto; padding: calc(var(--header-h) + 40px) 0 64px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 0.8fr); gap: 48px; align-items: end; }
-.hero__kicker { position: absolute; z-index: 2; left: 50%; transform: translateX(-50%); width: min(var(--container), 100% - 2 * var(--gutter)); top: calc(var(--header-h) + 16px); }
-.hero__title { font-size: clamp(46px, 6.8vw, 104px); font-weight: 800; letter-spacing: -0.04em; line-height: 0.92; margin-top: 0 !important; }
+.hero__content { position: relative; z-index: 2; width: min(var(--container), 100% - 2 * var(--gutter)); margin: 0 auto; padding: calc(var(--header-h) + 40px) 0 72px; display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); gap: 40px; align-items: end; }
+.hero__title { font-size: clamp(46px, 7.4vw, 118px); font-weight: 800; letter-spacing: -0.04em; line-height: 0.92; }
 .hero__title em { font-style: normal; color: var(--green); }
 .hero__title .thin { font-weight: 300; letter-spacing: -0.03em; }
-.hero__lead { max-width: 46ch; margin-top: 0; font-size: clamp(15px, 1.15vw, 17px); line-height: 1.5; }
-.hero__ctas { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 2px; }
-.hero__ctas .btn { padding: 14px 20px 14px 22px; font-size: 15px; }
-.hero__side { display: flex; flex-direction: column; gap: 14px; align-items: flex-start; justify-self: end; max-width: 580px; }
-.hero__badges { display: flex; flex-direction: row; flex-wrap: wrap; gap: 10px; }
+.hero__lead { max-width: 44ch; margin-top: 28px; }
+.hero__ctas { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 36px; }
+.hero__side { display: flex; flex-direction: column; gap: 18px; align-items: flex-start; justify-self: end; }
+.hero__badges { display: flex; flex-direction: column; gap: 12px; }
 .badge { display: inline-flex; align-items: center; gap: 12px; padding: 10px 16px 10px 12px; border: 1px solid var(--line-2); background: rgba(16,21,18,0.6); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); font-size: 13px; font-weight: 600; color: var(--ink-2); }
 .badge img { height: 22px; width: auto; }
 .badge b { color: var(--ink); font-weight: 700; }
@@ -439,11 +437,9 @@ body.cursor-drag .cursor__ring::after { content: "GLISSER"; position: absolute; 
 @media (max-width: 900px) {
   .hero { align-items: flex-end; height: 100vh; height: 100svh; min-height: 0; }
   .hero__content { grid-template-columns: 1fr; gap: 16px; padding-top: calc(var(--header-h) + 8px); padding-bottom: 72px; }
-  .hero__kicker { top: calc(var(--header-h) + 6px); }
-  .hero__kicker .ticker-line { font-size: 10.5px; }
   .hero__title { font-size: clamp(40px, 11.5vw, 64px); }
-  .hero__lead { margin-top: 4px; font-size: 16px; line-height: 1.45; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
-  .hero__ctas { margin-top: 0; gap: 10px; }
+  .hero__lead { margin-top: 16px; font-size: 16px; line-height: 1.45; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+  .hero__ctas { margin-top: 20px; gap: 10px; }
   .hero__ctas .btn { width: 100%; justify-content: space-between; padding-block: 14px; }
   .hero__side { justify-self: start; max-width: none; gap: 14px; align-items: stretch; width: 100%; }
   .hero__lead, .hero__ctas { width: 100%; max-width: none; }
