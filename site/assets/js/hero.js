@@ -159,7 +159,56 @@
     return { arr: out, heights, x0, colW, gap };
   }
 
-  INDRA.initHero = function (wrap) {
+  // Rééquilibrage des catégories vers la composition réelle (n'affecte que les couleurs à l'explosion)
+  function rebalance(pts) {
+    const total = pts.length; const target = CATS.map(c => Math.round(total * c.pct / 100));
+    const count = CATS.map(() => 0); pts.forEach(p => count[p.cat]++);
+    for (let c = 1; c < CATS.length; c++) {
+      let diff = count[c] - target[c]; let tries = 0;
+      while (diff !== 0 && tries++ < total * 6) {
+        const p = pts[Math.floor(Math.random() * total)];
+        if (diff > 0 && p.cat === c) { p.cat = 0; diff--; }
+        else if (diff < 0 && p.cat === 0) { p.cat = c; diff++; }
+      }
+    }
+  }
+
+  // Nuage de points à partir d'une photo détourée : chaque pixel opaque devient une particule
+  // qui garde sa couleur au repos. Les familles de matières sont déduites de la position et de la teinte.
+  function buildFromImage(img, N) {
+    const W = 420, H = Math.round(W * img.naturalHeight / img.naturalWidth);
+    const c = document.createElement('canvas'); c.width = W; c.height = H;
+    const g = c.getContext('2d', { willReadFrequently: true }); g.drawImage(img, 0, 0, W, H);
+    const d = g.getImageData(0, 0, W, H).data;
+    let minx = W, maxx = 0, miny = H, maxy = 0, count = 0;
+    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+      if (d[(y * W + x) * 4 + 3] > 110) { count++; if (x < minx) minx = x; if (x > maxx) maxx = x; if (y < miny) miny = y; if (y > maxy) maxy = y; }
+    }
+    if (count < 500) throw new Error('image sans pixels opaques');
+    const bw = maxx - minx + 1, bh = maxy - miny + 1; const keep = Math.min(1, N / count); const scale = 4.5 / bw;
+    // repères en fractions de la boîte englobante (vue trois quarts avant) : roues avant et arrière
+    const wheels = [{ u: 0.32, v: 0.70, r: 0.11 }, { u: 0.045, v: 0.53, r: 0.085 }];
+    const pts = [];
+    for (let y = miny; y <= maxy; y++) for (let x = minx; x <= maxx; x++) {
+      const i = (y * W + x) * 4; if (d[i + 3] <= 110 || Math.random() > keep) continue;
+      const r = d[i] / 255, gg = d[i + 1] / 255, b = d[i + 2] / 255; const lum = 0.3 * r + 0.59 * gg + 0.11 * b;
+      const u = (x - minx) / bw, v = (y - miny) / bh;
+      const inWheel = wheels.some(w => Math.hypot((u - w.u) * bw, (v - w.v) * bh) < w.r * bw);
+      let cat = 0;
+      if (inWheel && lum < 0.42) cat = 2;                                  // pneus
+      else if (r > 0.55 && gg < 0.35 && b < 0.35) cat = 3;                 // rouges (étriers, surpiqûres) → fluides
+      else if (lum < 0.36 && v < 0.48 && u > 0.16 && u < 0.7) cat = 4;     // vitrages
+      else if (!inWheel && (v > 0.6 || (lum < 0.3 && v >= 0.48))) cat = 1; // bouclier, bas de caisse, grilles, rétroviseurs
+      const px = (x - (minx + bw / 2)) * scale, py = ((miny + bh / 2) - y) * scale;
+      const z = (lum - 0.5) * 0.45 + rnd(-0.05, 0.05);
+      pts.push({ x: px, y: py, z, cat, size: rnd(0.85, 1.25), tone: 0, rgb: [Math.min(1, r * 1.08), Math.min(1, gg * 1.08), Math.min(1, b * 1.08)] });
+    }
+    rebalance(pts);
+    return pts;
+  }
+
+  INDRA.initHero = function (wrap, opts) {
+    opts = Object.assign({ image: null }, opts || {});
     if (!wrap || typeof THREE === 'undefined') return null;
     const canvas = document.createElement('canvas'); wrap.appendChild(canvas);
     let renderer;
@@ -169,36 +218,19 @@
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 100);
     camera.position.set(0, 1.0, 8.4);
-
-    const N = (window.innerWidth < 800 ? 6500 : 12500);
-    const pts = buildCar(N);
-    const car = new Float32Array(pts.length * 3);
-    pts.forEach((p, i) => { car[i * 3] = p.x; car[i * 3 + 1] = p.y - 0.75; car[i * 3 + 2] = p.z; });
-    const tgt = buildTargets(pts);
-    const pos = new Float32Array(car);
-    const col = new Float32Array(pts.length * 3);
-    const size = new Float32Array(pts.length);
-    const seed = new Float32Array(pts.length);
-    pts.forEach((p, i) => {
-      const c = CATS[p.cat].color; const tone = p.tone ? 1.22 : 1; // arêtes plus lumineuses
-      col[i * 3] = Math.min(1, c[0] * tone); col[i * 3 + 1] = Math.min(1, c[1] * tone); col[i * 3 + 2] = Math.min(1, c[2] * tone);
-      size[i] = p.size * (p.cat === 0 ? 1 : 1.15); seed[i] = Math.random();
-    });
-    const geo = new THREE.BufferGeometry();
-    geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-    geo.setAttribute('color', new THREE.BufferAttribute(col, 3));
-    geo.setAttribute('aSize', new THREE.BufferAttribute(size, 1));
-    geo.setAttribute('aSeed', new THREE.BufferAttribute(seed, 1));
+    const group = new THREE.Group(); scene.add(group);
+    const grid = new THREE.GridHelper(30, 60, 0x2a3530, 0x1a221d);
+    grid.material.transparent = true; grid.material.opacity = 0; scene.add(grid);
 
     const mat = new THREE.ShaderMaterial({
       transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, vertexColors: true,
-      uniforms: { uTime: { value: 0 }, uPix: { value: renderer.getPixelRatio() }, uProgress: { value: 0 } },
+      uniforms: { uTime: { value: 0 }, uPix: { value: renderer.getPixelRatio() }, uProgress: { value: 0 }, uAlpha: { value: 1 } },
       vertexShader: `
-        attribute float aSize; attribute float aSeed;
+        attribute float aSize; attribute float aSeed; attribute vec3 aColor2;
         uniform float uTime; uniform float uPix; uniform float uProgress;
         varying vec3 vColor; varying float vA;
         void main(){
-          vColor = color;
+          vColor = mix(color, aColor2, smoothstep(0.12, 0.6, uProgress));
           vec3 p = position;
           p.y += sin(uTime*1.3 + aSeed*40.0)*0.012;
           vec4 mv = modelViewMatrix * vec4(p,1.0);
@@ -208,83 +240,101 @@
           gl_Position = projectionMatrix * mv;
         }`,
       fragmentShader: `
+        uniform float uAlpha;
         varying vec3 vColor; varying float vA;
         void main(){
           vec2 uv = gl_PointCoord - 0.5; float d = length(uv);
           if(d>0.5) discard;
           float a = smoothstep(0.5, 0.05, d);
-          gl_FragColor = vec4(vColor, a * (0.55 + 0.45*vA));
+          gl_FragColor = vec4(vColor, a * uAlpha * (0.55 + 0.45*vA));
         }`
     });
-    const cloud = new THREE.Points(geo, mat);
-    const group = new THREE.Group(); group.add(cloud); scene.add(group);
 
-    // sol : grille fine, alignée sur la base des colonnes une fois éclaté
-    const grid = new THREE.GridHelper(30, 60, 0x2a3530, 0x1a221d);
-    grid.material.transparent = true; grid.material.opacity = 0; scene.add(grid);
-
-    // lignes de contour du profil (accent)
-    const outline = new THREE.BufferGeometry().setFromPoints(BODY.concat([BODY[0]]).map(([x, y]) => new THREE.Vector3(x, y - 0.75, 0.95)));
-    const outlineL = new THREE.Line(outline, new THREE.LineBasicMaterial({ color: 0xa0bf38, transparent: true, opacity: 0.25 }));
-    const outlineR = outlineL.clone(); outlineR.position.z = -1.9;
-    group.add(outlineL, outlineR);
-
-    // État : progression (0 = voiture, 1 = colonnes), rotation cumulée, souris
-    // Mise en scène : au repos, la voiture occupe l'espace libre en haut à droite ;
+    // État de la scène
+    const N = opts.image ? (window.innerWidth < 800 ? 8000 : 19000) : (window.innerWidth < 800 ? 6500 : 12500);
+    const S = { built: false, mode: 'model', pts: [], car: null, tgt: null, geo: null, stagger: [] };
+    let progress = 0, target = 0, mouseX = 0, mouseY = 0, isMobile = false, lastNow = 0;
+    const hooks = { onFrame: null };
+    // Mise en scène : au repos, le véhicule occupe l'espace libre en haut à droite ;
     // au défilement, les colonnes viennent se recentrer à l'écran.
     const POSE = {
       desktop: { rest: { x: 2.25, y: 1.6, s: 0.85 }, exploded: { x: 0, y: 0.95, s: 1 } },
       mobile: { rest: { x: 0, y: 1.35, s: 1 }, exploded: { x: 0, y: 2.45, s: 0.7 } }
     };
-    let progress = 0, target = 0, mouseX = 0, mouseY = 0, isMobile = false, rotY = 0.35, lastNow = 0;
-    const stagger = pts.map(p => (p.x + 2.4) / 4.8); // vague de gauche à droite
-    const hooks = { onFrame: null };
+
+    function build(pts, mode) {
+      S.mode = mode; S.pts = pts;
+      const n = pts.length;
+      const car = new Float32Array(n * 3), col = new Float32Array(n * 3), col2 = new Float32Array(n * 3);
+      const size = new Float32Array(n), seed = new Float32Array(n);
+      pts.forEach((p, i) => {
+        car[i * 3] = p.x; car[i * 3 + 1] = mode === 'image' ? p.y : p.y - 0.75; car[i * 3 + 2] = p.z;
+        const c = CATS[p.cat].color; const tone = p.tone ? 1.22 : 1;
+        col2[i * 3] = Math.min(1, c[0] * tone); col2[i * 3 + 1] = Math.min(1, c[1] * tone); col2[i * 3 + 2] = Math.min(1, c[2] * tone);
+        if (p.rgb) { col[i * 3] = p.rgb[0]; col[i * 3 + 1] = p.rgb[1]; col[i * 3 + 2] = p.rgb[2]; }
+        else { col[i * 3] = col2[i * 3]; col[i * 3 + 1] = col2[i * 3 + 1]; col[i * 3 + 2] = col2[i * 3 + 2]; }
+        size[i] = p.size * (p.cat === 0 || mode === 'image' ? 1 : 1.15); seed[i] = Math.random();
+      });
+      const geo = new THREE.BufferGeometry();
+      geo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(car), 3));
+      geo.setAttribute('color', new THREE.BufferAttribute(col, 3));
+      geo.setAttribute('aColor2', new THREE.BufferAttribute(col2, 3));
+      geo.setAttribute('aSize', new THREE.BufferAttribute(size, 1));
+      geo.setAttribute('aSeed', new THREE.BufferAttribute(seed, 1));
+      group.add(new THREE.Points(geo, mat));
+      mat.uniforms.uAlpha.value = mode === 'image' ? 0.95 : 1;
+      S.car = car; S.geo = geo; S.tgt = buildTargets(pts); S.stagger = pts.map(p => (p.x + 2.4) / 4.8);
+      api.heights = S.tgt.heights; api.x0 = S.tgt.x0; api.colW = S.tgt.colW; api.gap = S.tgt.gap; api.ready = true;
+      S.built = true;
+    }
+    if (opts.image) {
+      const img = new Image(); img.crossOrigin = 'anonymous';
+      img.onload = () => { try { build(buildFromImage(img, N), 'image'); } catch (e) { build(buildCar(N), 'model'); } };
+      img.onerror = () => build(buildCar(N), 'model');
+      img.src = opts.image;
+    } else build(buildCar(N), 'model');
 
     function resize() {
       const w = wrap.clientWidth, h = wrap.clientHeight;
       renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix();
       isMobile = w < 800; camera.position.z = isMobile ? 15.5 : 8.4;
-      // au repos, la voiture reste entièrement visible à droite quel que soit le ratio de l'écran
+      // au repos, le véhicule reste entièrement visible à droite quel que soit le ratio de l'écran
       const halfW = Math.tan(camera.fov * Math.PI / 360) * camera.position.z * camera.aspect;
       POSE.desktop.rest.x = Math.max(0.6, Math.min(2.25, halfW - 2.15));
     }
     window.addEventListener('resize', resize); resize();
     window.addEventListener('mousemove', e => { mouseX = (e.clientX / innerWidth - 0.5); mouseY = (e.clientY / innerHeight - 0.5); }, { passive: true });
-
     let visible = true;
     new IntersectionObserver(en => { visible = en[0].isIntersecting; }).observe(wrap);
 
     function frame(now) {
       requestAnimationFrame(frame);
       if (!visible) { lastNow = now; return; }
-      const dt = Math.min(0.05, lastNow ? (now - lastNow) / 1000 : 0.016); lastNow = now;
+      lastNow = now;
       const t = now * 0.001;
       progress += (target - progress) * 0.08;
       if (Math.abs(target - progress) < 0.0005) progress = target;
       const e = ease(progress);
       mat.uniforms.uTime.value = t; mat.uniforms.uProgress.value = progress;
 
-      // positions des points : voiture → colonnes, en vague, avec trajectoire en arche
-      const p = geo.attributes.position.array;
-      for (let i = 0; i < pts.length; i++) {
-        const local = Math.min(1, Math.max(0, (progress * 1.5 - stagger[i] * 0.5)));
-        const k = ease(local);
-        const arc = Math.sin(k * Math.PI) * 0.9;
-        p[i * 3] = car[i * 3] + (tgt.arr[i * 3] - car[i * 3]) * k;
-        p[i * 3 + 1] = car[i * 3 + 1] + (tgt.arr[i * 3 + 1] - car[i * 3 + 1]) * k + arc;
-        p[i * 3 + 2] = car[i * 3 + 2] + (tgt.arr[i * 3 + 2] - car[i * 3 + 2]) * k;
+      if (S.built) {
+        const p = S.geo.attributes.position.array, car = S.car, tgt = S.tgt.arr, n = S.pts.length;
+        for (let i = 0; i < n; i++) {
+          const local = Math.min(1, Math.max(0, (progress * 1.5 - S.stagger[i] * 0.5)));
+          const k = ease(local);
+          const arc = Math.sin(k * Math.PI) * 0.9;
+          p[i * 3] = car[i * 3] + (tgt[i * 3] - car[i * 3]) * k;
+          p[i * 3 + 1] = car[i * 3 + 1] + (tgt[i * 3 + 1] - car[i * 3 + 1]) * k + arc;
+          p[i * 3 + 2] = car[i * 3 + 2] + (tgt[i * 3 + 2] - car[i * 3 + 2]) * k;
+        }
+        S.geo.attributes.position.needsUpdate = true;
       }
-      geo.attributes.position.needsUpdate = true;
 
-      // rotation : lente au repos, puis se cale de face (tour complet le plus proche) une fois éclaté.
-      // L'angle est cumulé image par image, jamais dérivé du temps absolu : pas de déroulé intempestif.
-      if (!reduced) rotY += dt * 0.14 * (1 - progress);
-      const nearest = Math.round(rotY / TAU) * TAU;
-      rotY += (nearest - rotY) * Math.min(1, progress * 0.12);
-      group.rotation.y = rotY + mouseX * 0.25 * (1 - 0.7 * e);
-      group.rotation.x = 0.06 + mouseY * 0.08 * (1 - e);
+      // Léger balancement au repos (la photo est un plan en relief), aucune rotation cumulée.
+      const sway = reduced ? 0 : Math.sin(t * 0.5) * 0.05;
+      group.rotation.y = (sway + mouseX * 0.16) * (1 - e);
+      group.rotation.x = (Math.cos(t * 0.37) * 0.02 + mouseY * 0.06) * (1 - e);
 
-      // mise en scène (position / échelle) selon la progression
       const pose = isMobile ? POSE.mobile : POSE.desktop;
       group.position.x = pose.rest.x + (pose.exploded.x - pose.rest.x) * e;
       group.position.y = pose.rest.y + (pose.exploded.y - pose.rest.y) * e;
@@ -292,7 +342,6 @@
       group.scale.setScalar(s);
       grid.position.y = group.position.y + BASE_Y * s - 0.03;
       grid.material.opacity = 0.45 * e;
-      outlineL.material.opacity = 0.25 * (1 - progress);
 
       group.updateMatrixWorld();
       if (hooks.onFrame) hooks.onFrame(progress);
@@ -301,9 +350,10 @@
     requestAnimationFrame(frame);
 
     const api = {
+      ready: false,
       setProgress(v) { target = Math.min(1, Math.max(0, v)); },
       get progress() { return progress; },
-      heights: tgt.heights, x0: tgt.x0, colW: tgt.colW, gap: tgt.gap, camera, group, hooks,
+      heights: null, x0: 0, colW: 0, gap: 0, camera, group, hooks,
       project(x, y, z) { // repère du groupe -> % du conteneur
         const v = new THREE.Vector3(x, y, z).applyMatrix4(group.matrixWorld).project(camera);
         return { x: (v.x + 1) / 2 * 100, y: (1 - v.y) / 2 * 100 };
@@ -322,14 +372,13 @@
     });
     const mobile = () => window.innerWidth < 700;
     const place = () => {
-      if (mobile()) return; // sur mobile, la légende est une grille statique (CSS)
+      if (mobile() || !api.ready) return; // sur mobile, la légende est une grille statique (CSS)
       labels.forEach((el, i) => {
         const cx = api.x0 + i * (api.colW + api.gap);
         const pr = api.project(cx, BASE_Y - 0.12, 0.32);
         el.style.left = pr.x + '%'; el.style.top = pr.y + '%';
       });
     };
-    // repositionnement à chaque image tant que la scène bouge ou que la légende est visible
     api.hooks.onFrame = progress => { if (progress > 0.4) place(); };
     if (reduced || !window.gsap || !window.ScrollTrigger) { api.setProgress(0); return; }
     ScrollTrigger.create({

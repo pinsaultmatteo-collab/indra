@@ -491,7 +491,7 @@
 <script>
   document.addEventListener('indra:ready', function () {
     if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
-    var api = INDRA.initHero(document.getElementById('hero-canvas'));
+    var api = INDRA.initHero(document.getElementById('hero-canvas'), { image: 'assets/img/hero-car.png' });
     INDRA.bindHeroScroll(api, document.getElementById('hero-pin'), document.getElementById('compo'));
     INDRA.initMap(document.getElementById('home-map'), { compact: true, interactive: true });
     INDRA.initLoop(document.getElementById('tfin-loop'));
