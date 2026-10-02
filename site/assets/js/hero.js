@@ -305,12 +305,73 @@
       img.src = opts.image;
     } else build(buildCar(N), 'model');
 
+    // Champ de particules ambiant : réparti sur tout l'écran et en profondeur au repos,
+    // quelques particules floues au premier plan ; il s'efface quand la voiture se déconstruit.
+    const AN = window.innerWidth < 800 ? 1100 : 2900;
+    const aU = new Float32Array(AN), aV = new Float32Array(AN), aZ = new Float32Array(AN);
+    const aPos = new Float32Array(AN * 3), aCol = new Float32Array(AN * 3), aSz = new Float32Array(AN), aSd = new Float32Array(AN);
+    const PAL = [[0.62, 0.68, 0.72], [0.63, 0.75, 0.22], [0.5, 0.83, 0.91], [0.94, 0.63, 0.19]];
+    for (let i = 0; i < AN; i++) {
+      aU[i] = rnd(-1.08, 1.08); aV[i] = rnd(-1.08, 1.08);
+      const near = Math.random() < 0.1; aZ[i] = near ? rnd(2.6, 5.4) : rnd(-12, 2.4);
+      const r = Math.random(); const c = r < 0.66 ? PAL[0] : r < 0.9 ? PAL[1] : r < 0.96 ? PAL[2] : PAL[3];
+      aCol[i * 3] = c[0]; aCol[i * 3 + 1] = c[1]; aCol[i * 3 + 2] = c[2];
+      aSz[i] = near ? rnd(2.4, 4.6) : rnd(0.7, 1.8); aSd[i] = Math.random();
+    }
+    const aGeo = new THREE.BufferGeometry();
+    aGeo.setAttribute('position', new THREE.BufferAttribute(aPos, 3));
+    aGeo.setAttribute('color', new THREE.BufferAttribute(aCol, 3));
+    aGeo.setAttribute('aSize', new THREE.BufferAttribute(aSz, 1));
+    aGeo.setAttribute('aSeed', new THREE.BufferAttribute(aSd, 1));
+    const aMat = new THREE.ShaderMaterial({
+      transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, vertexColors: true,
+      uniforms: { uTime: { value: 0 }, uPix: { value: renderer.getPixelRatio() }, uFade: { value: 1 }, uMouse: { value: new THREE.Vector2() } },
+      vertexShader: `
+        attribute float aSize; attribute float aSeed;
+        uniform float uTime; uniform float uPix; uniform vec2 uMouse;
+        varying vec3 vColor; varying float vA; varying float vSoft;
+        void main(){
+          vColor = color;
+          vec3 p = position;
+          float ph = aSeed * 6.2831;
+          float depth = clamp((p.z + 12.0) / 17.5, 0.0, 1.0);
+          p.x += sin(uTime*0.11 + ph) * 0.34 + sin(uTime*0.23 + ph*2.1) * 0.12;
+          p.y += cos(uTime*0.09 + ph*1.3) * 0.28 + sin(uTime*0.17 + ph*0.7) * 0.1;
+          p.xy += uMouse * (0.12 + depth * 0.85);
+          vec4 mv = modelViewMatrix * vec4(p, 1.0);
+          gl_PointSize = aSize * uPix * (22.0 / -mv.z);
+          vA = 0.5 + 0.5 * sin(uTime * (0.7 + aSeed) + aSeed * 50.0);
+          vSoft = smoothstep(2.2, 5.0, position.z);
+          gl_Position = projectionMatrix * mv;
+        }`,
+      fragmentShader: `
+        uniform float uFade;
+        varying vec3 vColor; varying float vA; varying float vSoft;
+        void main(){
+          vec2 uv = gl_PointCoord - 0.5; float d = length(uv);
+          if(d > 0.5) discard;
+          float a = mix(smoothstep(0.5, 0.05, d), smoothstep(0.5, 0.0, d) * 0.32, vSoft);
+          gl_FragColor = vec4(vColor, a * uFade * (0.22 + 0.42 * vA));
+        }`
+    });
+    scene.add(new THREE.Points(aGeo, aMat));
+    const amb = { mx: 0, my: 0 };
+    function layoutAmbient() { // positions recalculées pour couvrir tout le cadre, quel que soit le ratio
+      const tanH = Math.tan(camera.fov * Math.PI / 360);
+      for (let i = 0; i < AN; i++) {
+        const hh = tanH * (camera.position.z - aZ[i]);
+        aPos[i * 3] = aU[i] * hh * camera.aspect; aPos[i * 3 + 1] = camera.position.y + aV[i] * hh; aPos[i * 3 + 2] = aZ[i];
+      }
+      aGeo.attributes.position.needsUpdate = true;
+    }
+
     function resize() {
       const w = wrap.clientWidth, h = wrap.clientHeight;
       renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix();
       isMobile = w < 800; camera.position.z = isMobile ? 15.5 : 8.4;
       // au repos, le véhicule est centré en arrière-plan du texte ; un peu plus petit sur les écrans peu hauts
       POSE.desktop.rest.s = h < 760 ? 0.95 : 1.12;
+      layoutAmbient();
     }
     window.addEventListener('resize', resize); resize();
     window.addEventListener('mousemove', e => { mouseX = (e.clientX / innerWidth - 0.5); mouseY = (e.clientY / innerHeight - 0.5); }, { passive: true });
@@ -330,6 +391,11 @@
       // sortie : chaque colonne quitte l'écran vers la gauche avec un léger décalage (de gauche à droite)
       if (S.built) for (let c = 0; c < CATS.length; c++) { const k = Math.min(1, Math.max(0, exit * 1.6 - c * 0.11)); const ke = k * k * (3 - 2 * k); S.kexit[c] = ke; S.xoff[c] = -ke * ke * EXIT_DIST; }
       mat.uniforms.uTime.value = t; mat.uniforms.uProgress.value = progress;
+      // particules ambiantes : dérive lente, parallaxe souris, effacement progressif à la déconstruction
+      aMat.uniforms.uTime.value = reduced ? 0 : t;
+      aMat.uniforms.uFade.value = 1 - 0.88 * Math.min(1, progress / 0.45);
+      amb.mx += (mouseX * 0.7 - amb.mx) * 0.05; amb.my += (-mouseY * 0.5 - amb.my) * 0.05;
+      aMat.uniforms.uMouse.value.set(amb.mx, amb.my);
 
       if (S.built) {
         const p = S.geo.attributes.position.array, car = S.car, tgt = S.tgt.arr, n = S.pts.length, exiting = exit > 0.0005;
