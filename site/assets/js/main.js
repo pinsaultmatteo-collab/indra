@@ -124,7 +124,7 @@
             <li><a href="https://sira.indra.fr" target="_blank" rel="noopener">SIRA</a></li><li><a href="https://www.opisto.fr" target="_blank" rel="noopener">Opisto</a></li><li><a href="https://www.goodbye-car.com" target="_blank" rel="noopener">Goodbye Car</a></li><li><a href="https://reseau.goodbye-car.com/cvhu" target="_blank" rel="noopener">Portail CVHU</a></li><li><a href="contact.html">Contact</a></li></ul></div>
         </div>
         <div class="footer__tfin">
-          <img src="assets/img/logos/tfin.png" alt="The Future Is NEUTRAL">
+          <img src="assets/img/logos/tfin-white.png" alt="The Future Is NEUTRAL">
           <span>INDRA Automobile Recycling est une entreprise de <b>The Future Is NEUTRAL</b>, l'écosystème d'économie circulaire automobile de Renault Group et Suez.</span>
         </div>
         <div class="footer__bottom">
