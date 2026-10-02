@@ -28,11 +28,13 @@
     .values p { color: var(--light-ink-2); font-size: 14.5px; }
     @media (max-width: 900px) { .values { grid-template-columns: 1fr 1fr; } }
     @media (max-width: 560px) { .values { grid-template-columns: 1fr; } }
-    .brands { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
-    .brands div { background: var(--bg-2); padding: 26px 24px; min-height: 170px; display: flex; flex-direction: column; gap: 10px; }
-    .brands img { height: 34px; width: auto; align-self: flex-start; background: #fff; padding: 4px 8px; object-fit: contain; max-width: 150px; }
-    .brands b { font-family: var(--font-display); font-size: 20px; letter-spacing: 0.04em; text-transform: uppercase; }
-    .brands p { color: var(--ink-3); font-size: 13.5px; margin-top: auto; }
+    .brands { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: rgba(15,20,17,0.1); border: 1px solid rgba(255,255,255,0.1); }
+    .brands div { background: #fff; color: var(--light-ink); padding: 28px 26px; min-height: 190px; display: flex; flex-direction: column; gap: 12px; transition: background 0.3s; }
+    .brands div:hover { background: #f6f7f2; }
+    .brands img { height: 44px; width: auto; align-self: flex-start; object-fit: contain; max-width: 170px; transition: transform 0.5s var(--ease); }
+    .brands div:hover img { transform: scale(1.06); }
+    .brands b { font-family: var(--font-display); font-size: 20px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--light-ink); }
+    .brands p { color: var(--light-ink-2); font-size: 13.5px; margin-top: auto; }
     .brands > div { min-width: 0; }
     @media (max-width: 900px) { .brands { grid-template-columns: 1fr 1fr; } }
     @media (max-width: 560px) { .brands { grid-template-columns: 1fr; } .brands div { min-height: 0; } }

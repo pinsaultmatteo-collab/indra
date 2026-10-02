@@ -136,6 +136,11 @@
       <div class="footer__big" aria-hidden="true">INDRA</div>
       <button class="to-top" aria-label="Retour en haut"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>`;
     document.body.append(f);
+    const credit = document.createElement('aside');
+    credit.className = 'pmc-credit';
+    credit.setAttribute('aria-label', 'Réalisation du site');
+    credit.innerHTML = `<a href="https://www.agence-pmc-marketing.com/" target="_blank" rel="noopener"><span>Site créé par</span><img src="assets/img/logos/pmc-marketing.png" alt="PMC Marketing, agence digitale et IA à Toulouse" width="310" height="66" loading="lazy"><em>agence-pmc-marketing.com ${ARROW}</em></a>`;
+    document.body.append(credit);
     $('.to-top', f).addEventListener('click', () => INDRA.lenis ? INDRA.lenis.scrollTo(0) : window.scrollTo({ top: 0, behavior: 'smooth' }));
   }
 

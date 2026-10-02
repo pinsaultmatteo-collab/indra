@@ -816,8 +816,9 @@ body.cursor-drag .cursor__ring::after { content: "GLISSER"; position: absolute; 
 .site-card--light { background: #fff; border-color: rgba(15,20,17,0.08); color: var(--light-ink); }
 .site-card--light:hover { border-color: var(--green-dark); }
 .site-card--light .site-card__dept { color: var(--green-dark); }
-.site-card--light p { color: var(--light-ink-2); }
-.site-card--light .site-card__meta { color: #6b746d; }
+.site-card.site-card--light p { color: #333b35; font-weight: 500; }
+.site-card.site-card--light .site-card__meta { color: #3a423c; font-weight: 500; font-size: 12px; line-height: 1.5; }
+.site-card.site-card--light h3 { color: var(--light-ink); }
 .site-card--light .site-card__logo { height: 52px; }
 .site-card--light .site-card__logo img { background: transparent; padding: 0; max-height: 52px; max-width: 130px; }
 .card--light .card__num { color: var(--green-dark); }
@@ -843,6 +844,18 @@ body.cursor-drag .cursor__ring::after { content: "GLISSER"; position: absolute; 
 .footer__bottom { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; padding-top: 26px; font-family: var(--font-mono); font-size: 11.5px; color: var(--ink-3); letter-spacing: 0.04em; }
 .footer__bottom a:hover { color: var(--green); }
 .footer__credit { flex-basis: 100%; opacity: 0.8; }
+/* signature de l'agence, tout en bas du site */
+.pmc-credit { background: #050606; border-top: 1px solid rgba(139,92,246,0.25); position: relative; overflow: hidden; }
+.pmc-credit::before { content: ""; position: absolute; inset: 0; background: radial-gradient(ellipse 40% 140% at 50% 100%, rgba(139,92,246,0.16), transparent 70%); pointer-events: none; }
+.pmc-credit a { position: relative; display: flex; align-items: center; justify-content: center; gap: 26px; flex-wrap: wrap; padding: 34px var(--gutter); color: var(--ink-2); transition: color 0.3s; }
+.pmc-credit span { font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.16em; text-transform: uppercase; }
+.pmc-credit img { height: 44px; width: auto; transition: transform 0.5s var(--ease), filter 0.5s; }
+.pmc-credit em { font-style: normal; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.06em; color: #a78bfa; display: inline-flex; align-items: center; gap: 8px; }
+.pmc-credit em svg { width: 14px; height: 14px; transition: transform 0.4s var(--ease); }
+.pmc-credit a:hover { color: var(--ink); }
+.pmc-credit a:hover img { transform: scale(1.04); filter: drop-shadow(0 0 14px rgba(139,92,246,0.55)); }
+.pmc-credit a:hover em svg { transform: translateX(4px); }
+@media (max-width: 560px) { .pmc-credit a { gap: 12px; flex-direction: column; } .pmc-credit img { height: 30px; } }
 .footer__big { position: absolute; right: -0.02em; bottom: -0.18em; font-family: var(--font-display); font-weight: 700; font-size: clamp(120px, 22vw, 360px); line-height: 1; color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,0.05); pointer-events: none; user-select: none; letter-spacing: -0.02em; }
 @media (max-width: 1000px) { .footer__top { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 560px) { .footer__top { grid-template-columns: 1fr; } }
@@ -897,6 +910,20 @@ body.cursor-drag .cursor__ring::after { content: "GLISSER"; position: absolute; 
 .coverage p { color: var(--ink-3); font-size: 13px; font-family: var(--font-mono); letter-spacing: 0.06em; margin-top: 6px; }
 
 /* Studio strip */
+/* mosaïque : une grande photo + deux petites, légendées */
+.mosaic { display: grid; grid-template-columns: 1.35fr 1fr; grid-template-rows: repeat(2, minmax(0, 1fr)); gap: 14px; aspect-ratio: 16 / 11; }
+.mosaic .media { height: 100%; }
+.mosaic .media:first-child { grid-row: span 2; }
+.mosaic .media img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s var(--ease); }
+.mosaic .media:hover img { transform: scale(1.05); }
+.mosaic .media__cap { font-size: 11.5px; }
+.mosaic__badge { position: absolute; top: 18px; left: 18px; z-index: 2; display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px; background: rgba(10,13,11,0.82); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #fff; }
+.mosaic__badge::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 0 var(--glow); animation: pulse 2s infinite; }
+@media (max-width: 700px) {
+  .mosaic { aspect-ratio: auto; grid-template-columns: 1fr 1fr; grid-template-rows: auto; gap: 10px; }
+  .mosaic .media { aspect-ratio: 4 / 3; height: auto; }
+  .mosaic .media:first-child { grid-column: span 2; grid-row: auto; aspect-ratio: 16 / 10; }
+}
 .strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
 .strip .media { aspect-ratio: 4 / 3; }
 .strip .media:nth-child(2) { transform: translateY(40px); }
