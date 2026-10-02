@@ -293,8 +293,21 @@
       track.addEventListener('pointerdown', e => { down = true; sx = e.clientX; sl = track.scrollLeft; track.classList.add('is-dragging'); });
       window.addEventListener('pointerup', () => { down = false; track.classList.remove('is-dragging'); });
       track.addEventListener('pointermove', e => { if (!down) return; track.scrollLeft = sl - (e.clientX - sx); });
-      const wrap = track.closest('.tl-wrap') || track.parentElement;
-      $$('.tl-nav button', wrap).forEach(b => b.addEventListener('click', () => { track.scrollBy({ left: (b.dataset.dir === 'prev' ? -1 : 1) * 360, behavior: 'smooth' }); }));
+      // les flèches sont dans l'en-tête de la section, hors du conteneur de la frise
+      const scope = track.closest('section') || track.closest('.tl-wrap') || track.parentElement;
+      const btns = $$('.tl-nav button', scope);
+      const step = () => { const it = track.querySelector('.tl-item'); return it ? it.getBoundingClientRect().width : 360; };
+      const sync = () => {
+        const max = track.scrollWidth - track.clientWidth - 2;
+        btns.forEach(b => { const off = b.dataset.dir === 'prev' ? track.scrollLeft <= 2 : track.scrollLeft >= max; b.disabled = off; b.setAttribute('aria-disabled', off); });
+      };
+      btns.forEach(b => b.addEventListener('click', () => {
+        // pas de magnétisme pendant le défilement programmé, sinon le navigateur ramène la frise en place
+        track.style.scrollSnapType = 'none';
+        track.scrollTo({ left: track.scrollLeft + (b.dataset.dir === 'prev' ? -1 : 1) * step(), behavior: 'smooth' });
+        clearTimeout(track._snapT); track._snapT = setTimeout(() => { track.style.scrollSnapType = ''; }, 700);
+      }));
+      track.addEventListener('scroll', sync, { passive: true }); window.addEventListener('resize', sync); sync();
     });
   }
 

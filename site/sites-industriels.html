@@ -15,12 +15,14 @@
     .sites-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
     @media (max-width: 900px) { .sites-grid { grid-template-columns: 1fr 1fr; } }
     @media (max-width: 560px) { .sites-grid { grid-template-columns: 1fr; } }
-    .acq { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
-    .acq > div { background: var(--bg-2); padding: 28px 26px; min-height: 220px; display: flex; flex-direction: column; gap: 10px; }
-    .acq .year { font-family: var(--font-display); font-weight: 700; font-size: 44px; line-height: 0.9; color: var(--green); }
-    .acq p { color: var(--ink-2); font-size: 14.5px; }
+    .acq { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: rgba(15,20,17,0.1); border: 1px solid rgba(255,255,255,0.08); }
+    .acq > div { background: #fff; color: var(--light-ink); padding: 28px 26px; min-height: 220px; display: flex; flex-direction: column; gap: 10px; }
+    .acq .year { font-family: var(--font-display); font-weight: 700; font-size: 44px; line-height: 0.9; color: var(--green-dark); }
+    .acq p { color: var(--light-ink-2); font-size: 14.5px; }
     .acq .logos { display: flex; gap: 8px; flex-wrap: wrap; margin-top: auto; }
-    .acq .logos img { height: 30px; width: auto; background: #fff; padding: 3px 6px; max-width: 110px; object-fit: contain; }
+    .acq .logos { align-items: center; }
+    .acq .logos img { height: 34px; width: auto; max-width: 120px; object-fit: contain; }
+    .acq .logos img[src*="lga47"], .acq .logos img[src*="acciauto"] { height: 48px; }
     @media (max-width: 900px) { .acq { grid-template-columns: 1fr 1fr; } }
   </style>
 </head>
@@ -50,17 +52,17 @@
         <p class="eyebrow" data-reveal>Implantations</p>
         <h2 class="display-3 split-words mb-3">Un maillage industriel du Val de Loire au Sud-Ouest.</h2>
         <div class="sites-grid" data-stagger="0.06">
-          <div class="site-card"><div class="site-card__dept">38</div><h3>A7 Auto Pièces</h3><p>Seyssuel · Isère</p><span class="site-card__meta">Acquis en 2005 · site historique · ISO 14001 (Re-source Auto Pièces)</span></div>
-          <div class="site-card"><div class="site-card__dept">41</div><h3>Site industriel de Pruniers-en-Sologne</h3><p>Romorantin · Loir-et-Cher</p><span class="site-card__meta">Inauguré en 2007 · R&amp;D matières (PP, PMMA) · SMI ISO 9001, 14001, 45001</span></div>
-          <div class="site-card"><div class="site-card__dept">89</div><h3>Cars Pièces Express</h3><p>Auxerre · Yonne</p><span class="site-card__meta">Acquis en 2023 · premier site du programme d'acquisitions</span></div>
-          <div class="site-card"><div class="site-card__dept">47</div><h3>Re-source Industries 47</h3><p>Allez-et-Cazeneuve · Lot-et-Garonne</p><span class="site-card__meta">Acquis en 2024 (ex-LGA 47)</span><div class="site-card__logo"><img src="assets/img/logos/lga47.png" alt="LGA 47"></div></div>
-          <div class="site-card"><div class="site-card__dept">82</div><h3>ACCIAUTO</h3><p>Valence-d'Agen · Tarn-et-Garonne</p><span class="site-card__meta">Acquis en 2024</span><div class="site-card__logo"><img src="assets/img/logos/acciauto.png" alt="ACCIAUTO"></div></div>
-          <div class="site-card"><div class="site-card__dept">37</div><h3>ADCO · Auto&amp;Co / Moto&amp;Co</h3><p>Chambray-lès-Tours · Indre-et-Loire</p><span class="site-card__meta">Acquis en 2025 · pièces auto et moto</span><div class="site-card__logo"><img src="assets/img/logos/autoco.png" alt="Auto&Co"></div></div>
-          <div class="site-card"><div class="site-card__dept">71</div><h3>SMAP Pièces Auto</h3><p>Saint-Marcel · Saône-et-Loire</p><span class="site-card__meta">Acquis en 2025</span><div class="site-card__logo"><img src="assets/img/logos/smap.png" alt="SMAP"></div></div>
-          <div class="site-card"><div class="site-card__dept">71</div><h3>TDA · Tournus Démolition Automobile</h3><p>Tournus · Saône-et-Loire</p><span class="site-card__meta">Acquis en 2025</span><div class="site-card__logo"><img src="assets/img/logos/tda.jpg" alt="TDA"></div></div>
-          <div class="site-card"><div class="site-card__dept">17</div><h3>Re-source Industries 17</h3><p>Cabariot · Charente-Maritime</p><span class="site-card__meta">Acquis en 2025</span><div class="site-card__logo"><img src="assets/img/logos/resource17.png" alt="Re-source Industries 17"></div></div>
+          <div class="site-card site-card--light"><div class="site-card__dept">38</div><h3>A7 Auto Pièces</h3><p>Seyssuel · Isère</p><span class="site-card__meta">Acquis en 2005 · site historique · ISO 14001 (Re-source Auto Pièces)</span></div>
+          <div class="site-card site-card--light"><div class="site-card__dept">41</div><h3>Site industriel de Pruniers-en-Sologne</h3><p>Romorantin · Loir-et-Cher</p><span class="site-card__meta">Inauguré en 2007 · R&amp;D matières (PP, PMMA) · SMI ISO 9001, 14001, 45001</span></div>
+          <div class="site-card site-card--light"><div class="site-card__dept">89</div><h3>Cars Pièces Express</h3><p>Auxerre · Yonne</p><span class="site-card__meta">Acquis en 2023 · premier site du programme d'acquisitions</span></div>
+          <div class="site-card site-card--light"><div class="site-card__dept">47</div><h3>Re-source Industries 47</h3><p>Allez-et-Cazeneuve · Lot-et-Garonne</p><span class="site-card__meta">Acquis en 2024 (ex-LGA 47)</span><div class="site-card__logo"><img src="assets/img/logos/lga47.png" alt="LGA 47"></div></div>
+          <div class="site-card site-card--light"><div class="site-card__dept">82</div><h3>ACCIAUTO</h3><p>Valence-d'Agen · Tarn-et-Garonne</p><span class="site-card__meta">Acquis en 2024</span><div class="site-card__logo"><img src="assets/img/logos/acciauto.png" alt="ACCIAUTO"></div></div>
+          <div class="site-card site-card--light"><div class="site-card__dept">37</div><h3>ADCO · Auto&amp;Co / Moto&amp;Co</h3><p>Chambray-lès-Tours · Indre-et-Loire</p><span class="site-card__meta">Acquis en 2025 · pièces auto et moto</span><div class="site-card__logo"><img src="assets/img/logos/autoco.png" alt="Auto&Co"></div></div>
+          <div class="site-card site-card--light"><div class="site-card__dept">71</div><h3>SMAP Pièces Auto</h3><p>Saint-Marcel · Saône-et-Loire</p><span class="site-card__meta">Acquis en 2025</span><div class="site-card__logo"><img src="assets/img/logos/smap.png" alt="SMAP"></div></div>
+          <div class="site-card site-card--light"><div class="site-card__dept">71</div><h3>TDA · Tournus Démolition Automobile</h3><p>Tournus · Saône-et-Loire</p><span class="site-card__meta">Acquis en 2025</span><div class="site-card__logo"><img src="assets/img/logos/tda.jpg" alt="TDA"></div></div>
+          <div class="site-card site-card--light"><div class="site-card__dept">17</div><h3>Re-source Industries 17</h3><p>Cabariot · Charente-Maritime</p><span class="site-card__meta">Acquis en 2025</span><div class="site-card__logo"><img src="assets/img/logos/resource17.png" alt="Re-source Industries 17"></div></div>
         </div>
-        <div class="site-card mt-2" data-reveal style="border-color:rgba(160,191,56,0.4)"><div class="site-card__dept" style="font-size:28px">Siège</div><h3>INDRA SAS · Vaulx-Milieu (38)</h3><p>ZAC Business Airport, Immeuble Gazelle, 80 avenue Condorcet. Direction, grands comptes, animation réseau, Re-source Engineering Solutions, AURECA.</p></div>
+        <div class="site-card site-card--light mt-2" data-reveal style="border-color:var(--green-dark)"><div class="site-card__dept" style="font-size:28px">Siège</div><h3>INDRA SAS · Vaulx-Milieu (38)</h3><p>ZAC Business Airport, Immeuble Gazelle, 80 avenue Condorcet. Direction, grands comptes, animation réseau, Re-source Engineering Solutions, AURECA.</p></div>
       </div>
     </div>
   </div>

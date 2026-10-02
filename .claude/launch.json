@@ -4,8 +4,9 @@
     {
       "name": "indra-site",
       "runtimeExecutable": "node",
-      "runtimeArgs": ["/Users/matteo/Desktop/BUSINESS/PMC MARKETING/clients/indra-automobile-recycling/tools/serve.js", "/Users/matteo/Desktop/BUSINESS/PMC MARKETING/clients/indra-automobile-recycling/site", "8790"],
-      "port": 8790
+      "runtimeArgs": ["/Users/matteo/Desktop/BUSINESS/PMC MARKETING/clients/indra-automobile-recycling/tools/serve.js", "/Users/matteo/Desktop/BUSINESS/PMC MARKETING/clients/indra-automobile-recycling/site"],
+      "port": 8791,
+      "autoPort": true
     }
   ]
 }

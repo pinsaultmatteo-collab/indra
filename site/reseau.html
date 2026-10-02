@@ -65,9 +65,11 @@
           <h2 class="h2">Où que soit le véhicule, un centre INDRA est à portée.</h2>
         </div>
         <div class="map-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input type="search" placeholder="Ville, code postal, département…" aria-label="Rechercher un centre"></div>
+        <div class="map-filters" role="group" aria-label="Filtrer par type de centre"></div>
         <div class="map-count"></div>
         <div class="map-results" data-lenis-prevent></div>
-        <div class="map-legend"><span><i></i>Centre agréé partenaire</span><span><i class="site"></i>Site détenu INDRA</span><span><i class="own"></i>Siège · Vaulx-Milieu</span></div>
+        <div class="map-legend"><span><i></i>Centre agréé partenaire</span><span><i class="ev"></i>Centre expert électrique</span><span><i class="site"></i>Site détenu INDRA</span><span><i class="own"></i>Siège · Vaulx-Milieu</span></div>
+        <p class="small muted">Types de centres issus de la plateforme <a class="accent" href="https://sira.indra.fr/map" target="_blank" rel="noopener">SIRA</a>.</p>
       </div>
       <div class="map-big"><div class="map-wrap" id="big-map"></div></div>
     </div>
@@ -126,15 +128,16 @@
     <p class="eyebrow" data-reveal>Un centre membre, vu de l'intérieur</p>
     <h2 class="display-3 split-words mb-4">Le réseau, à hauteur d'atelier.</h2>
     <div class="member" data-reveal>
-      <div class="member__img"><img src="assets/img/door-removal.jpg" alt="Dépose d'une portière sur une ligne de déconstruction" loading="lazy"></div>
+      <div class="member__img"><img src="assets/img/cazenave-atelier.jpg" alt="Atelier de dépollution et de déconstruction de Cazenave Pièces Auto, véhicules sur bascules" loading="lazy"></div>
       <div class="member__body">
-        <span class="pill">Membre du réseau · Occitanie</span>
+        <div class="flex" style="gap:8px"><span class="pill">Membre du réseau · Occitanie</span><span class="pill pill--ev">Centre expert électrique</span></div>
         <h3 class="h2" id="member-name">Cazenave Pièces Auto</h3>
         <dl>
           <dt>Adresse</dt><dd id="member-addr">Colomiers (31)</dd>
           <dt>Statut</dt><dd>Centre VHU agréé préfecture · réseau INDRA</dd>
           <dt>Standards</dt><dd>Process INDRA en 5 étapes, traçabilité code-barres, reporting ADEME</dd>
-          <dt>Compétences</dt><dd>Enlèvement, dépollution, déconstruction, pièces de réemploi</dd>
+          <dt>Compétences</dt><dd>Enlèvement, dépollution, déconstruction, pièces de réemploi, véhicules électriques et hybrides</dd>
+          <dt>Réseaux</dt><dd>Réseau assureur, réseau assistance · habilitation électrique B2XL</dd>
         </dl>
         <p class="muted">Chaque centre du réseau applique les mêmes standards, utilise les mêmes outils et remonte les mêmes indicateurs. C'est ce qui permet à un assureur national de confier ses sinistres sans distinction de département.</p>
         <a class="link-arrow" href="#carte">Voir le centre sur la carte <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
@@ -203,7 +206,7 @@
     if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
     INDRA.initMap(document.getElementById('big-map'), { compact: false, interactive: true, panel: '#map-panel' });
     var c = (window.INDRA_CENTRES || []).find(function (x) { return /cazenave/i.test(x.n); });
-    if (c) { document.getElementById('member-name').textContent = c.n; document.getElementById('member-addr').textContent = c.a + ', ' + c.cp + ' ' + c.v; }
+    if (c) { document.getElementById('member-addr').textContent = c.a + ', ' + c.cp + ' ' + c.v; }
   });
 </script>
 </body>

@@ -617,6 +617,7 @@ body.cursor-drag .cursor__ring::after { content: "GLISSER"; position: absolute; 
 .tl-nav { display: flex; gap: 10px; }
 .tl-nav button { width: 52px; height: 52px; border: 1px solid var(--line-2); display: grid; place-items: center; transition: border-color 0.3s, background 0.3s; }
 .tl-nav button:hover { border-color: var(--green); background: rgba(160,191,56,0.08); }
+.tl-nav button:disabled { opacity: 0.3; cursor: default; border-color: var(--line-2); background: transparent; }
 .tl-nav svg { width: 18px; height: 18px; }
 
 /* ---------- Map ---------- */
@@ -658,7 +659,41 @@ body.cursor-drag .cursor__ring::after { content: "GLISSER"; position: absolute; 
 .map-legend i.site { background: transparent; border: 2px solid var(--green); border-radius: 0; transform: rotate(45deg); width: 8px; height: 8px; }
 .map-count { font-family: var(--font-mono); font-size: 12px; color: var(--ink-3); letter-spacing: 0.1em; text-transform: uppercase; }
 .map-count b { color: var(--green); font-weight: 500; }
-.map-site { fill: var(--bg); stroke: var(--green); stroke-width: 1.4; }
+.map-site { fill: var(--bg); stroke: var(--green); stroke-width: 1.4; transition: opacity 0.4s, stroke-width 0.3s; }
+.map-sites.is-dim { opacity: 0.2; }
+.map-sites.is-hi .map-site { stroke: #fff; stroke-width: 2; fill: var(--green); }
+/* centres experts électriques : point jaune + anneau */
+.map-pt.is-ev { fill: #ffd23f; }
+.map-pt.is-ev.is-in { opacity: 1; }
+.map-pt.is-ev:hover { fill: #ffe680; }
+.map-ev-ring { fill: none; stroke: #ffd23f; stroke-width: 1; opacity: 0; transition: opacity 0.4s; pointer-events: none; }
+.map-ev-ring.is-in { opacity: 0.55; }
+.map-ev-ring.is-dim { opacity: 0.08; }
+.map-svg[data-filter="e"] .map-ev-ring.is-in:not(.is-dim) { opacity: 0.9; animation: evring 2.2s ease-in-out infinite; }
+@keyframes evring { 0%, 100% { stroke-width: 1; } 50% { stroke-width: 2.4; } }
+.map-pt.is-dim { opacity: 0.12; }
+.map-pt.is-ev.is-dim { opacity: 0.18; }
+/* filtres par type de centre */
+.map-filters { display: flex; flex-direction: column; gap: 6px; }
+.map-filter { display: grid; grid-template-columns: 16px 1fr auto; align-items: center; gap: 12px; padding: 11px 14px; border: 1px solid var(--line); background: var(--bg-2); text-align: left; font-size: 14px; font-weight: 600; color: var(--ink-2); transition: border-color 0.25s, background 0.25s, color 0.25s; }
+.map-filter:hover { border-color: var(--line-2); color: var(--ink); }
+.map-filter.is-on { border-color: var(--green); background: rgba(160,191,56,0.1); color: var(--ink); }
+.map-filter b { font-family: var(--font-mono); font-weight: 500; font-size: 12px; color: var(--ink-3); }
+.map-filter.is-on b { color: var(--green); }
+.map-swatch { width: 12px; height: 12px; border-radius: 50%; justify-self: center; }
+.map-swatch--all { background: conic-gradient(var(--green) 0 50%, #ffd23f 50% 100%); }
+.map-swatch--ev { background: #ffd23f; box-shadow: 0 0 0 3px rgba(255,210,63,0.25); }
+.map-swatch--ins { background: var(--green); }
+.map-swatch--ast { background: var(--steel); }
+.map-swatch--own { background: transparent; border: 2px solid var(--green); border-radius: 0; transform: rotate(45deg); width: 9px; height: 9px; }
+.map-results.is-empty { display: none; }
+.map-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 8px; vertical-align: 1px; }
+.map-dot--ev { background: #ffd23f; }
+.map-badges { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 10px; }
+.map-badge { font-style: normal; font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; padding: 4px 7px; border: 1px solid var(--line-2); color: var(--ink-2); }
+.map-badge--e { border-color: rgba(255,210,63,0.6); color: #ffd23f; }
+.map-badge--a { border-color: rgba(160,191,56,0.5); color: var(--green); }
+.map-legend i.ev { background: #ffd23f; box-shadow: 0 0 0 3px rgba(255,210,63,0.25); }
 
 /* ---------- Loop diagram / flow ---------- */
 .flow svg { width: 100%; height: auto; overflow: visible; }
@@ -777,6 +812,16 @@ body.cursor-drag .cursor__ring::after { content: "GLISSER"; position: absolute; 
 
 /* ---------- Site cards ---------- */
 .site-card { position: relative; border: 1px solid var(--line); padding: 26px; background: var(--bg-2); display: flex; flex-direction: column; gap: 14px; min-height: 230px; transition: border-color 0.3s, transform 0.5s var(--ease); }
+/* variante claire : les logos ressortent sur fond blanc */
+.site-card--light { background: #fff; border-color: rgba(15,20,17,0.08); color: var(--light-ink); }
+.site-card--light:hover { border-color: var(--green-dark); }
+.site-card--light .site-card__dept { color: var(--green-dark); }
+.site-card--light p { color: var(--light-ink-2); }
+.site-card--light .site-card__meta { color: #6b746d; }
+.site-card--light .site-card__logo { height: 52px; }
+.site-card--light .site-card__logo img { background: transparent; padding: 0; max-height: 52px; max-width: 130px; }
+.card--light .card__num { color: var(--green-dark); }
+.card--light .h3, .card--light h3 { color: var(--light-ink); }
 .site-card:hover { border-color: rgba(160,191,56,0.5); transform: translateY(-4px); }
 .site-card__dept { font-family: var(--font-display); font-weight: 700; font-size: 44px; line-height: 0.9; color: var(--green); }
 .site-card h3 { font-size: 18px; }
@@ -815,6 +860,7 @@ body.cursor-drag .cursor__ring::after { content: "GLISSER"; position: absolute; 
 .pill { display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 999px; background: rgba(160,191,56,0.12); color: var(--green); font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.1em; text-transform: uppercase; }
 .pill--amber { background: rgba(240,160,48,0.12); color: var(--amber); }
 .pill--steel { background: rgba(180,190,197,0.12); color: var(--steel); }
+.pill--ev { background: rgba(255,210,63,0.14); color: #ffd23f; }
 
 /* Laptop mock (SIRA) */
 .laptop { position: relative; padding: 2.2% 2.2% 0; background: linear-gradient(180deg, #2a3136, #14191c); border-radius: 14px 14px 0 0; box-shadow: 0 40px 80px -30px rgba(0,0,0,0.8); }

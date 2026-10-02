@@ -16,7 +16,7 @@ Les bibliothèques (GSAP, Lenis, Three.js) et les polices Google sont chargées 
 
 | Page | Fichier | Point fort |
 | --- | --- | --- |
-| Accueil | `index.html` | Hero 3D : un VHU en nuage de points qui se déconstruit en 6 familles de matières au défilement ; process en 5 étapes épinglé ; carte du réseau ; boucle TFIN |
+| Accueil | `index.html` | Bloc Goodbye Car (lien goodbye-car.com) ; hero 3D : un VHU en nuage de points qui se déconstruit en 6 familles de matières au défilement ; process en 5 étapes épinglé ; carte du réseau ; boucle TFIN |
 | Assureurs | `assureurs.html` | Parcours d'un véhicule sinistré, maquette SIRA avec carte, formulaire rendez-vous grands comptes |
 | Constructeurs | `constructeurs.html` | Objectifs REP animés, guichet unique, vue éclatée 3D d'un pack batterie, reporting |
 | Le réseau | `reseau.html` | Carte interactive des 351 centres (recherche ville / CP / département, DROM), standards, rejoindre, cas Cazenave |
@@ -57,5 +57,5 @@ Liens externes SIRA (`sira.indra.fr`), catalogue PDF, présentation PDF : adress
 
 ## Données
 
-- `assets/data/reseau.js` : les 351 centres de l'annuaire indra.fr (nom, adresse, téléphone, coordonnées) projetés pour la carte SVG.
+- `assets/data/reseau.js` : 363 centres. Base : les 351 centres de l'annuaire indra.fr (nom, adresse, téléphone, coordonnées), enrichis avec les types de centres de la plateforme SIRA (`https://sira.indra.fr/dev/data/fiches`, données publiques lues le 02/10/2026) et complétés des 12 centres SIRA absents de l'annuaire. Champ `k` : `e` centre expert électrique (14, point jaune), `a` réseau assureur (104), `s` réseau assistance (208), `i` site INDRA, `h` habilitation électrique B2XL (58). Le filtre « Réseau AGEC » de SIRA ne contient aucun centre à cette date et n'est pas repris.
 - `assets/data/france.js` : contours des 96 départements (simplifiés).
