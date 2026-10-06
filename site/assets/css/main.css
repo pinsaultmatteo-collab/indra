@@ -260,6 +260,10 @@ p + p { margin-top: 1em; }
   background: linear-gradient(to bottom, rgba(10, 13, 11, 0.85), rgba(10, 13, 11, 0));
   opacity: 1; transition: opacity 0.4s;
 }
+/* iOS Safari (barre d'adresse en bas) : la page est peinte sous la barre d'état, au-dessus du bord de l'en-tête,
+   et son contenu y défile. Un bouclier prolonge le fond de l'en-tête bien au-delà du haut de l'écran. */
+.site-header::after { content: ""; position: absolute; left: 0; right: 0; bottom: 100%; height: 160px; background: rgba(10, 13, 11, 0.85); transition: background 0.4s; pointer-events: none; }
+.site-header.is-scrolled::after { background: rgba(10, 13, 11, 0.97); }
 .site-header.is-scrolled::before { opacity: 0; }
 .site-header.is-scrolled { background: rgba(10, 13, 11, 0.72); backdrop-filter: blur(18px) saturate(140%); -webkit-backdrop-filter: blur(18px) saturate(140%); border-bottom: 1px solid var(--line); }
 .site-header.is-hidden { transform: translateY(-100%); }
