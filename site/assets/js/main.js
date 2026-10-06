@@ -97,7 +97,8 @@
     const onScroll = () => {
       const y = window.scrollY;
       header.classList.toggle('is-scrolled', y > 40);
-      header.classList.toggle('is-hidden', y > lastY && y > 400 && !document.body.classList.contains('menu-open'));
+      // sur téléphone, l'en-tête reste figé en haut : le masquer/révéler au défilement laissait voir le contenu passer derrière
+      header.classList.toggle('is-hidden', window.innerWidth > 900 && y > lastY && y > 400 && !document.body.classList.contains('menu-open'));
       lastY = y;
       const tt = $('.to-top'); if (tt) tt.classList.toggle('is-on', y > 900);
     };
@@ -381,17 +382,22 @@
     };
     setPos(0.5);
     if (mobileMode) {
-      // le schéma reste collé sous l'en-tête avec sa barre de progression ; l'étape qui traverse le milieu
-      // de l'écran le pilote, et le passage d'une étape à l'autre est interpolé pour rester fluide
+      // carrousel horizontal : la barre de progression rejoint le schéma, l'étape visible pilote le schéma
+      // (interpolé pour rester fluide), les flèches font glisser la piste d'une étape
+      const track = $('.process__steps', proc); const btns = $$('.process__arrow', proc);
       const prog = $('.process__progress', proc); if (prog && svg) svg.parentElement.appendChild(prog);
+      track.setAttribute('data-lenis-prevent', '');
       let cur = 0.5, from = 0.5, to = 0.5, t0 = 0, raf = 0;
       const ease = x => 1 - Math.pow(1 - x, 3);
-      const tick = now => { const k = Math.min(1, (now - t0) / 700); cur = from + (to - from) * ease(k); setPos(cur); if (k < 1) raf = requestAnimationFrame(tick); };
+      const tick = now => { const k = Math.min(1, (now - t0) / 600); cur = from + (to - from) * ease(k); setPos(cur); if (k < 1) raf = requestAnimationFrame(tick); };
       const goTo = p => { if (p === to) return; from = cur; to = p; t0 = performance.now(); cancelAnimationFrame(raf); raf = requestAnimationFrame(tick); };
-      const io = new IntersectionObserver(entries => {
-        entries.forEach(en => { if (en.isIntersecting) goTo(steps.indexOf(en.target) + 0.5); });
-      }, { rootMargin: '-42% 0px -42% 0px', threshold: 0 });
-      steps.forEach(st => io.observe(st));
+      const left = k => steps[k].offsetLeft - steps[0].offsetLeft;
+      const index = () => { const x = track.scrollLeft; let best = 0; steps.forEach((_, k) => { if (Math.abs(left(k) - x) < Math.abs(left(best) - x)) best = k; }); return best; };
+      const sync = () => { const i = index(); goTo(i + 0.5); btns.forEach(b => { b.disabled = +b.dataset.dir < 0 ? i === 0 : i === n - 1; }); };
+      let pending = 0;
+      track.addEventListener('scroll', () => { if (!pending) pending = requestAnimationFrame(() => { pending = 0; sync(); }); }, { passive: true });
+      btns.forEach(b => b.addEventListener('click', () => { const i = Math.min(n - 1, Math.max(0, index() + +b.dataset.dir)); track.scrollTo({ left: left(i), behavior: 'smooth' }); }));
+      sync();
       return;
     }
     if (reduced || !window.gsap || !window.ScrollTrigger) return;

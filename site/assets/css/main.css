@@ -260,6 +260,9 @@ p + p { margin-top: 1em; }
 .site-header.is-scrolled::before { opacity: 0; }
 .site-header.is-scrolled { background: rgba(10, 13, 11, 0.72); backdrop-filter: blur(18px) saturate(140%); -webkit-backdrop-filter: blur(18px) saturate(140%); border-bottom: 1px solid var(--line); }
 .site-header.is-hidden { transform: translateY(-100%); }
+/* sur téléphone, rien ne doit créer de défilement horizontal (étiquettes 3D projetées hors cadre, décalages) */
+@media (max-width: 900px) { body { overflow-x: clip; } #tfin-loop { overflow: hidden; } }
+@media (max-width: 900px) { .site-header.is-hidden { transform: none; } .site-header.is-scrolled { background: rgba(10, 13, 11, 0.97); backdrop-filter: none; -webkit-backdrop-filter: none; } }
 .nav { display: flex; align-items: center; justify-content: space-between; gap: 24px; width: min(var(--container), 100% - 2 * var(--gutter)); margin-inline: auto; }
 .nav__logo { display: block; width: 138px; flex: none; }
 .nav__logo img { width: 100%; }
@@ -414,6 +417,7 @@ body.cursor-drag .cursor__ring::after { content: "GLISSER"; position: absolute; 
 .section--light .kpi-band { border-color: var(--light-line); }
 @media (max-width: 1000px) { .kpi-grid { grid-template-columns: 1fr 1fr; } .kpi:nth-child(2) { border-right: 0; } .kpi:nth-child(-n+2) { border-bottom: 1px solid var(--line); } }
 @media (max-width: 560px) { .kpi { padding: 28px 10px; } .kpi__num { font-size: 40px; } .kpi__label { font-size: 14px; margin-top: 10px; } .kpi__src { font-size: 10.5px; } }
+@media (max-width: 700px) { .kpi-band { position: relative; z-index: 3; margin-top: -190px; background: var(--bg); } }
 
 .stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
 .stat .num { font-size: clamp(44px, 4.4vw, 68px); color: var(--green); }
@@ -571,20 +575,30 @@ body.cursor-drag .cursor__ring::after { content: "GLISSER"; position: absolute; 
 .process__progress span { flex: 1; height: 2px; background: var(--line-2); position: relative; overflow: hidden; }
 .process__progress span::after { content: ""; position: absolute; inset: 0; background: var(--green); transform: scaleX(var(--p, 0)); transform-origin: left; transition: transform 0.12s linear; }
 .process__progress b { font-family: var(--font-mono); font-size: 12px; color: var(--ink-3); font-weight: 400; letter-spacing: 0.1em; }
+.process__nav { display: none; }
 @media (max-width: 900px) {
-  .process { height: auto !important; padding-bottom: 64px; }
-  .process__sticky { position: static; height: auto; overflow: visible; display: flex; flex-direction: column; gap: 0; }
-  .process__viz { position: sticky; top: var(--header-h); z-index: 2; order: 0; height: auto; padding: 10px 0 0; background: var(--bg); border-bottom: 1px solid var(--line); display: flex; flex-direction: column; place-items: stretch; }
-  .process__viz svg { flex: none; width: 100%; height: auto; aspect-ratio: 620 / 360; max-height: 32svh; }
-  .process__viz .process__progress { position: static; flex: none; padding: 8px 0 10px; }
-  .process__steps { order: 1; height: auto; padding-top: 8px; }
-  .step { position: relative; inset: auto; opacity: 1; transform: none; transition: opacity 0.4s; pointer-events: auto; justify-content: flex-start; padding: 48px 0 56px; min-height: 0; border-bottom: 1px solid var(--line); }
-  .step:not(.is-active) { opacity: 0.38; }
-  .step:last-child { border-bottom: 0; }
-  .step__idx { font-size: 52px; margin-bottom: 10px; }
-  .step .h2 { font-size: 25px; margin-bottom: 10px; }
-  .step p { font-size: 15px; line-height: 1.55; max-width: none; }
-  .step__tags { display: flex; margin-top: 16px; }
+  /* sur téléphone : schéma en haut, puis un carrousel horizontal des cinq étapes (flèches + glissement) */
+  .process { height: auto !important; padding: 0 0 56px; }
+  .process__sticky { position: static; height: auto; overflow: visible; display: flex; flex-direction: column; align-items: stretch; gap: 0; }
+  .process__viz { position: relative; order: 0; height: auto; padding: 12px 0 0; display: flex; flex-direction: column; place-items: stretch; }
+  .process__viz svg { flex: none; width: 100%; height: auto; aspect-ratio: 620 / 360; max-height: 34svh; }
+  .process__viz .process__progress { position: static; flex: none; padding: 12px 0 0; }
+  .process__nav { order: 1; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 22px 0 14px; }
+  .process__hint { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-3); line-height: 1.45; max-width: 30ch; display: flex; align-items: center; gap: 10px; }
+  .process__hint svg { width: 22px; height: 22px; flex: none; color: var(--green); }
+  .process__arrows { display: flex; gap: 8px; flex: none; }
+  .process__arrow { width: 46px; height: 46px; border: 1px solid var(--line-2); display: grid; place-items: center; color: var(--ink); background: transparent; transition: border-color 0.3s, background 0.3s, opacity 0.3s; }
+  .process__arrow svg { width: 18px; height: 18px; }
+  .process__arrow:active { border-color: var(--green); background: rgba(160,191,56,0.1); }
+  .process__arrow:disabled { opacity: 0.3; }
+  .process__steps { order: 2; height: auto; display: flex; gap: 16px; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scrollbar-width: none; -webkit-overflow-scrolling: touch; margin: 0 calc(-1 * var(--gutter)); padding: 0 var(--gutter); scroll-padding-inline: var(--gutter); }
+  .process__steps::-webkit-scrollbar { display: none; }
+  .step { position: relative; inset: auto; flex: 0 0 calc(100% - 36px); scroll-snap-align: start; opacity: 1; transform: none; transition: opacity 0.4s; pointer-events: auto; justify-content: flex-start; padding: 20px 0 6px; min-height: 0; border-top: 1px solid var(--line); }
+  .step:not(.is-active) { opacity: 0.55; }
+  .step__idx { font-size: 48px; margin-bottom: 10px; }
+  .step .h2 { font-size: 23px; margin-bottom: 10px; }
+  .step p { font-size: 14.5px; line-height: 1.55; max-width: none; }
+  .step__tags { display: flex; margin-top: 14px; }
   .step__tags span { font-size: 11px; padding: 5px 8px; }
 }
 @media (max-width: 900px) and (max-height: 640px) { .process__viz svg { max-height: 28svh; } }
