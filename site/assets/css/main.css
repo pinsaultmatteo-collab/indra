@@ -43,7 +43,7 @@
   --chamfer: 14px;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-2: cubic-bezier(0.65, 0, 0.35, 1);
-  --header-h: 84px;
+  --header-h: calc(84px + env(safe-area-inset-top, 0px));
 }
 
 /* ---------- Reset ---------- */
@@ -146,7 +146,7 @@ hr { border: 0; border-top: 1px solid var(--line); margin: 0; }
 }
 @media (max-width: 780px) {
   .grid-2, .grid-3, .grid-4, .grid-5, .grid-6, .split-60, .split-40 { grid-template-columns: 1fr; }
-  :root { --header-h: 68px; }
+  :root { --header-h: calc(68px + env(safe-area-inset-top, 0px)); }
 }
 
 /* ---------- Typography ---------- */
@@ -249,6 +249,9 @@ p + p { margin-top: 1em; }
 /* ---------- Header ---------- */
 .site-header {
   position: fixed; inset: 0 0 auto 0; z-index: 900; height: var(--header-h);
+  /* iOS Safari : la page passe sous la barre d'état (viewport-fit=cover) ; l'en-tête s'étend dessus avec son fond,
+     sinon on voit le contenu défiler au-dessus du logo */
+  padding: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) 0 env(safe-area-inset-left, 0px);
   display: flex; align-items: center;
   transition: transform 0.5s var(--ease), background 0.4s, backdrop-filter 0.4s;
 }
