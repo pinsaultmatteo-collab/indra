@@ -358,12 +358,13 @@
     const proc = $('.process'); if (!proc) return;
     const steps = $$('.step', proc); const bars = $$('.process__progress span', proc); const label = $('.process__progress b', proc);
     const svg = $('.process__viz svg', proc); const n = steps.length;
+    const mobileMode = window.matchMedia('(max-width: 900px)').matches;
     const smooth = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
-    steps.forEach(st => { st.style.transition = 'none'; st.style.willChange = 'opacity, transform'; });
-    // p ∈ [0, n] : position continue dans la séquence. Chaque étape est pleine autour de son centre
-    // et se fond avec la suivante autour de la frontière, en glissant vers le haut (fondu enchaîné).
+    if (!mobileMode) steps.forEach(st => { st.style.transition = 'none'; st.style.willChange = 'opacity, transform'; });
+    // p ∈ [0, n] : position continue dans la séquence. Sur ordinateur, les étapes se fondent l'une dans
+    // l'autre ; sur mobile, elles restent empilées dans le flux et seul le schéma change d'état.
     const setPos = p => {
-      steps.forEach((st, k) => {
+      if (!mobileMode) steps.forEach((st, k) => {
         const d = p - (k + 0.5);
         const w = 1 - smooth(0.28, 0.62, Math.abs(d));
         st.style.opacity = w.toFixed(3);
@@ -374,10 +375,25 @@
       const i = Math.min(n - 1, Math.max(0, Math.floor(p))); const frac = Math.min(1, Math.max(0, p - i));
       bars.forEach((b, k) => b.style.setProperty('--p', k < i ? 1 : k === i ? frac : 0));
       const cur = Math.min(n - 1, Math.max(0, Math.round(p - 0.5)));
+      if (mobileMode) steps.forEach((st, k) => st.classList.toggle('is-active', k === cur));
       if (label) label.textContent = `Étape ${String(cur + 1).padStart(2, '0')} / ${String(n).padStart(2, '0')}`;
       if (svg) { svg.setAttribute('data-step', cur); svg.style.setProperty('--pos', p.toFixed(3)); }
     };
     setPos(0.5);
+    if (mobileMode) {
+      // le schéma reste collé sous l'en-tête avec sa barre de progression ; l'étape qui traverse le milieu
+      // de l'écran le pilote, et le passage d'une étape à l'autre est interpolé pour rester fluide
+      const prog = $('.process__progress', proc); if (prog && svg) svg.parentElement.appendChild(prog);
+      let cur = 0.5, from = 0.5, to = 0.5, t0 = 0, raf = 0;
+      const ease = x => 1 - Math.pow(1 - x, 3);
+      const tick = now => { const k = Math.min(1, (now - t0) / 700); cur = from + (to - from) * ease(k); setPos(cur); if (k < 1) raf = requestAnimationFrame(tick); };
+      const goTo = p => { if (p === to) return; from = cur; to = p; t0 = performance.now(); cancelAnimationFrame(raf); raf = requestAnimationFrame(tick); };
+      const io = new IntersectionObserver(entries => {
+        entries.forEach(en => { if (en.isIntersecting) goTo(steps.indexOf(en.target) + 0.5); });
+      }, { rootMargin: '-42% 0px -42% 0px', threshold: 0 });
+      steps.forEach(st => io.observe(st));
+      return;
+    }
     if (reduced || !window.gsap || !window.ScrollTrigger) return;
     ScrollTrigger.create({
       trigger: proc, start: 'top top', end: 'bottom bottom', scrub: 0.9,

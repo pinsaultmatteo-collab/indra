@@ -11,12 +11,12 @@
 
   // Composition massique d'un véhicule récent (analyse Re-source, indra.fr)
   const CATS = [
-    { key: 'metaux', label: 'Métaux', pct: 75.6, color: [0.72, 0.78, 0.82] },
-    { key: 'polymeres', label: 'Polymères', pct: 14.3, color: [0.63, 0.75, 0.22] },
-    { key: 'elastomeres', label: 'Élastomères', pct: 4.2, color: [0.36, 0.4, 0.42] },
-    { key: 'fluides', label: 'Fluides', pct: 2.3, color: [0.94, 0.63, 0.19] },
-    { key: 'verre', label: 'Verres', pct: 2.1, color: [0.5, 0.83, 0.91] },
-    { key: 'autres', label: 'Naturels & autres', pct: 1.4, color: [0.62, 0.6, 0.5] }
+    { key: 'metaux', label: 'Métaux', short: 'Métaux', pct: 75.6, color: [0.72, 0.78, 0.82] },
+    { key: 'polymeres', label: 'Polymères', short: 'Polym.', pct: 14.3, color: [0.63, 0.75, 0.22] },
+    { key: 'elastomeres', label: 'Élastomères', short: 'Élast.', pct: 4.2, color: [0.36, 0.4, 0.42] },
+    { key: 'fluides', label: 'Fluides', short: 'Fluides', pct: 2.3, color: [0.94, 0.63, 0.19] },
+    { key: 'verre', label: 'Verres', short: 'Verres', pct: 2.1, color: [0.5, 0.83, 0.91] },
+    { key: 'autres', label: 'Naturels & autres', short: 'Autres', pct: 1.4, color: [0.62, 0.6, 0.5] }
   ];
 
   // Profil latéral d'une berline compacte (x : -2.3 → 2.3 ; y : 0 → 1.45)
@@ -269,7 +269,7 @@
     // au défilement, les colonnes viennent se recentrer à l'écran.
     const POSE = {
       desktop: { rest: { x: 0.35, y: 1.2, s: 1.12 }, exploded: { x: 0, y: 0.95, s: 1 } },
-      mobile: { rest: { x: 0, y: 1.35, s: 1 }, exploded: { x: 0, y: 2.45, s: 0.7 } }
+      mobile: { rest: { x: 0, y: 1.35, s: 1 }, exploded: { x: 0, y: 0.2, s: 0.72 } } // colonnes recentrées sous le titre, étiquettes au-dessus
     };
 
     function build(pts, mode) {
@@ -463,13 +463,23 @@
       el.innerHTML = `<i></i><div class="num">${c.pct.toString().replace('.', ',')}<small> %</small></div><p>${c.label}</p>`;
       compoEl.appendChild(el); return el;
     });
+    // sur mobile : le pourcentage se pose juste au-dessus de sa barre, le nom (abrégé) sous la base
+    const names = CATS.map(c => { const el = document.createElement('div'); el.className = 'compo__name'; el.textContent = c.short; compoEl.appendChild(el); return el; });
     const mobile = () => window.innerWidth < 700;
     const place = () => {
-      if (mobile() || !api.ready) return; // sur mobile, la légende est une grille statique (CSS)
+      if (!api.ready) return;
+      const mob = mobile();
       labels.forEach((el, i) => {
         const cx = api.x0 + i * (api.colW + api.gap) + api.colOffset(i);
-        const pr = api.project(cx, BASE_Y - 0.12, 0.32);
-        el.style.left = pr.x + '%'; el.style.top = pr.y + '%';
+        if (mob) {
+          const top = api.project(cx, BASE_Y + api.heights[i] + 0.16, 0.32);
+          el.style.left = top.x + '%'; el.style.top = top.y + '%';
+          const base = api.project(cx, BASE_Y - 0.1, 0.32);
+          names[i].style.left = base.x + '%'; names[i].style.top = base.y + '%';
+        } else {
+          const pr = api.project(cx, BASE_Y - 0.12, 0.32);
+          el.style.left = pr.x + '%'; el.style.top = pr.y + '%';
+        }
         const ke = api.colExit(i); el.style.opacity = ke > 0.001 ? String(Math.max(0, 1 - ke * 1.6)) : '';
       });
     };
