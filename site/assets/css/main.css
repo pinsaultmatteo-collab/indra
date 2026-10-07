@@ -922,7 +922,17 @@ body.cursor-drag .cursor__ring::after { content: "GLISSER"; position: absolute; 
 @media (max-width: 560px) { .pmc-credit a { gap: 12px; flex-direction: column; } .pmc-credit img { height: 30px; } }
 .footer__big { position: absolute; right: -0.02em; bottom: -0.18em; font-family: var(--font-display); font-weight: 700; font-size: clamp(120px, 22vw, 360px); line-height: 1; color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,0.05); pointer-events: none; user-select: none; letter-spacing: -0.02em; }
 @media (max-width: 1000px) { .footer__top { grid-template-columns: 1fr 1fr; } }
-@media (max-width: 560px) { .footer__top { grid-template-columns: 1fr; } }
+@media (max-width: 560px) {
+  /* pied de page téléphone : marque centrée sur toute la largeur, menus sur deux colonnes, bandeau TFIN centré */
+  .footer { padding-top: 56px; }
+  .footer__top { grid-template-columns: 1fr 1fr; gap: 32px 20px; padding-bottom: 44px; }
+  .footer__brand { grid-column: 1 / -1; text-align: center; }
+  .footer__brand img { display: block; margin-inline: auto; width: 150px; }
+  .footer__brand p { margin-inline: auto; }
+  .footer__tfin { flex-direction: column; text-align: center; gap: 14px; padding: 26px 0; }
+  .footer__tfin img { height: 30px; }
+  .footer__bottom { justify-content: center; text-align: center; }
+}
 
 /* ---------- Utility overlays ---------- */
 .ticker-line { display: flex; align-items: center; gap: 16px; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); }
