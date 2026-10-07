@@ -83,6 +83,10 @@
       </div>`;
     document.body.prepend(menu);
     document.body.prepend(header);
+    // bouclier collant (dans la couche du document, pas en position fixe) : Safari iOS peint la page sous la barre
+    // d'état, au-dessus de la zone des éléments fixes ; ce bloc sombre y suit le défilement et masque le contenu
+    const shield = document.createElement('div'); shield.className = 'status-shield'; shield.setAttribute('aria-hidden', 'true');
+    document.body.prepend(shield);
 
     const burger = $('.burger', header);
     burger.addEventListener('click', () => {
@@ -97,6 +101,7 @@
     const onScroll = () => {
       const y = window.scrollY;
       header.classList.toggle('is-scrolled', y > 40);
+      shield.classList.toggle('is-on', y > 200);
       // sur téléphone, l'en-tête reste figé en haut : le masquer/révéler au défilement laissait voir le contenu passer derrière
       header.classList.toggle('is-hidden', window.innerWidth > 900 && y > lastY && y > 400 && !document.body.classList.contains('menu-open'));
       lastY = y;
