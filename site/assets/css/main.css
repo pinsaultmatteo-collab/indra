@@ -929,6 +929,8 @@ body.cursor-drag .cursor__ring::after { content: "GLISSER"; position: absolute; 
   .footer__brand { grid-column: 1 / -1; text-align: center; }
   .footer__brand img { display: block; margin-inline: auto; width: 150px; }
   .footer__brand p { margin-inline: auto; }
+  .footer__top > div:not(.footer__brand) { text-align: center; }
+  .footer li a:hover { padding-left: 0; }
   .footer__tfin { flex-direction: column; text-align: center; gap: 14px; padding: 26px 0; }
   .footer__tfin img { height: 30px; }
   .footer__bottom { justify-content: center; text-align: center; }
